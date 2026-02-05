@@ -110,7 +110,7 @@ const now=document.getElementById("now");
 categories.forEach(cat=>{
   const div = document.createElement("div");
   div.className = "category";
-  div.textContent = cat.label;
+  div.textContent = cat.label;      // testo visibile nel menu
   div.onclick = () => openCategory(cat.id, div);
   categoriesEl.appendChild(div);
 });
