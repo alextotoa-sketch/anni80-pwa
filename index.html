@@ -10,10 +10,6 @@
 <meta name="theme-color" content="#00e5ff">
 <link rel="apple-touch-icon" href="images/icon-192.png">
 
-<!-- Firebase SDK compatibile script -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
 <style>
 :root{
   --bg:#0f0f0f;
@@ -40,14 +36,6 @@ main{flex:1;padding:20px;padding-bottom:170px;}
 #player{position:fixed;bottom:0;left:0;width:100%;background:var(--card);border-top:2px solid var(--accent);padding:10px;text-align:center;}
 #now{color:var(--accent);font-weight:700;margin-bottom:6px;}
 audio{width:90%;}
-
-/* CHAT */
-#chat{margin-top:20px;}
-#chat h2{color: var(--accent);margin-bottom:6px;}
-#chat-messages{height:200px;overflow-y:auto;border:2px solid var(--accent);border-radius:12px;padding:10px;background:var(--card);margin-bottom:10px;}
-#chat-input{width:70%;padding:8px;border-radius:8px;border:1px solid var(--accent);background:#1c1c1c;color:#fff;}
-#chat-send{padding:8px 12px;border-radius:8px;border:none;background:var(--accent);color:#000;font-weight:700;cursor:pointer;}
-.message-admin{color:#ff5555;cursor:pointer;float:right;font-weight:700;}
 </style>
 </head>
 
@@ -60,14 +48,6 @@ audio{width:90%;}
 <main>
 <div class="categories" id="categories"></div>
 <div id="content">Seleziona una categoria.</div>
-
-<!-- Chat sempre visibile -->
-<div id="chat">
-  <h2>Chat Anni '80</h2>
-  <div id="chat-messages"></div>
-  <input type="text" id="chat-input" placeholder="Scrivi qui...">
-  <button id="chat-send">Invia</button>
-</div>
 </main>
 
 <div id="player">
@@ -76,125 +56,94 @@ audio{width:90%;}
 </div>
 
 <script>
-/* ===== FIREBASE CONFIG ===== */
-const firebaseConfig = {
-  apiKey: "AIzaSyA5AYaeZEXxmzV2iKZ40H_0rKz0jrx8jEM",
-  authDomain: "anni-80-chat-c13ed.firebaseapp.com",
-  databaseURL: "https://anni-80-chat-c13ed.firebaseio.com",
-  projectId: "anni-80-chat-c13ed",
-  storageBucket: "anni-80-chat-c13ed.firebasestorage.app",
-  messagingSenderId: "1012957587774",
-  appId: "1:1012957587774:web:476859d9ea2c9ce6b5246f"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-
 /* ===== CATEGORIE ===== */
 const categories = [
-  { id: "musica", label: "Musica" },
-  { id: "radio", label: "Radio" },
-  { id: "giochi", label: "Giochi" }
+  {id:"musica", label:"Musica"},
+  {id:"radio", label:"Radio"},
+  {id:"giochi", label:"Giochi"}
 ];
 
-const musica = [{ name:"Playlist anni '80", url:"https://youtu.be/6_cAP0aXZXA" }];
+/* ===== CONTENUTI ===== */
+const musica = [
+  { name:"Playlist anni '80", url:"https://youtu.be/6_cAP0aXZXA" }
+];
 const radio = [
   {name:"Radio 80", url:"https://sphera.fluidstream.eu/radio80.aac", desc:"Pop e rock anni '80"},
   {name:"SomaFM Underground 80s", url:"http://ice1.somafm.com/u80s-128-mp3", desc:"New wave, synth, alternative"},
   {name:"80s80s Italo Disco", url:"https://streams.80s80s.de/italodiscomix/mp3-192/streams.80s80s.de/", desc:"Italo disco anni '80"},
   {name:"Italia 80", url:"https://stream.laut.fm/italia80", desc:"Musica italiana anni '80"}
 ];
-const giochi = [{name:"🎮 Giochi retrò", url:"https://www.retrogames.cc/arcade-games/space-invaders.html", desc:"Arcade anni ’80 – gioca online"}];
+const giochi = [
+  {name:"🎮 Giochi retrò", url:"https://www.retrogames.cc/arcade-games/space-invaders.html", desc:"Arcade anni ’80 – gioca online"}
+];
 
-const categoriesEl=document.getElementById("categories");
-const contentEl=document.getElementById("content");
-const audio=document.getElementById("audio");
-const now=document.getElementById("now");
+/* ===== ELEMENTI ===== */
+const categoriesEl = document.getElementById("categories");
+const contentEl = document.getElementById("content");
+const audio = document.getElementById("audio");
+const now = document.getElementById("now");
 
-/* ===== MENU ===== */
-categories.forEach(cat=>{
-  const div = document.createElement("div");
-  div.className = "category";
-  div.textContent = cat.label;
-  div.onclick = () => openCategory(cat.id, div);
+/* ===== CREAZIONE MENU ===== */
+categories.forEach(c=>{
+  const div=document.createElement("div");
+  div.className="category";
+  div.textContent=c.label;
+  div.onclick=()=>openCategory(c.id,div);
   categoriesEl.appendChild(div);
 });
 
-function resetCategories(){document.querySelectorAll(".category").forEach(c=>c.classList.remove("active"));}
+function resetCategories(){
+  document.querySelectorAll(".category").forEach(c=>c.classList.remove("active"));
+}
 
-/* ===== SEZIONI ===== */
-function openCategory(id, el){
-  resetCategories(); el.classList.add("active");
+/* ===== APERTURA SEZIONI ===== */
+function openCategory(id,el){
+  resetCategories();
+  el.classList.add("active");
 
   if(id==="musica"){
-    contentEl.innerHTML = `<div class="grid">${musica.map(m=>`
-      <div class="card" onclick="window.open('${m.url}','_blank')">
-        <div class="title">${m.name}</div>
-        <div class="desc">Apri su YouTube</div>
-      </div>`).join("")}</div>`;
+    contentEl.innerHTML=`
+      <div class="grid">
+        ${musica.map(m=>`
+          <div class="card" onclick="window.open('${m.url}','_blank')">
+            <div class="title">${m.name}</div>
+            <div class="desc">Apri su YouTube</div>
+          </div>
+        `).join("")}
+      </div>`;
   }
 
   if(id==="radio"){
-    contentEl.innerHTML = `<div class="grid">${radio.map(r=>`
-      <div class="card" onclick="playRadio('${r.url}','${r.name}')">
-        <div class="title">${r.name}</div>
-        <div class="desc">${r.desc}</div>
-      </div>`).join("")}</div>`;
+    contentEl.innerHTML=`
+      <div class="grid">
+        ${radio.map(r=>`
+          <div class="card" onclick="playRadio('${r.url}','${r.name}')">
+            <div class="title">${r.name}</div>
+            <div class="desc">${r.desc}</div>
+          </div>
+        `).join("")}
+      </div>`;
   }
 
   if(id==="giochi"){
-    contentEl.innerHTML = `<div class="grid">${giochi.map(g=>`
-      <div class="card" onclick="window.open('${g.url}','_blank')">
-        <div class="title">${g.name}</div>
-        <div class="desc">${g.desc}</div>
-      </div>`).join("")}</div>`;
+    contentEl.innerHTML=`
+      <div class="grid">
+        ${giochi.map(g=>`
+          <div class="card" onclick="window.open('${g.url}','_blank')">
+            <div class="title">${g.name}</div>
+            <div class="desc">${g.desc}</div>
+          </div>
+        `).join("")}
+      </div>`;
   }
 }
 
-/* ===== RADIO PLAYER ===== */
+/* ===== PLAYER RADIO ===== */
 function playRadio(url,name){
   audio.src=url;
   audio.play();
   now.textContent="In riproduzione: "+name;
 }
-
-/* ===== CHAT ===== */
-let nickname = localStorage.getItem("nickname") || "";
-if(!nickname){
-  nickname = prompt("Scegli un nickname:", "Guest80") || "Guest80";
-  localStorage.setItem("nickname", nickname);
-}
-const adminNickname = "Admin80";
-const isAdmin = nickname === adminNickname;
-
-const chatMessages = document.getElementById("chat-messages");
-const chatInput = document.getElementById("chat-input");
-const chatSend = document.getElementById("chat-send");
-
-function addMessage(msg,id){
-  const div = document.createElement("div");
-  div.textContent = `${msg.nickname}: ${msg.text}`;
-  if(isAdmin){
-    const del = document.createElement("span");
-    del.textContent=" ✖";
-    del.className="message-admin";
-    del.onclick = () => db.ref("messages/"+id).remove();
-    div.appendChild(del);
-  }
-  chatMessages.appendChild(div);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-chatSend.onclick = () => {
-  const text = chatInput.value.trim();
-  if(text.length===0) return;
-  if(text.length>200) return alert("Messaggio troppo lungo!");
-  db.ref("messages").push({nickname,text,timestamp:Date.now()});
-  chatInput.value="";
-}
-
-db.ref("messages").on("child_added", snapshot => {
-  addMessage(snapshot.val(), snapshot.key);
-});
 
 /* ===== SERVICE WORKER ===== */
 if("serviceWorker" in navigator){
