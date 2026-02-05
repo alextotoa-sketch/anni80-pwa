@@ -5,10 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Io negli anni '80 c'ero</title>
 
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#00e5ff">
-<link rel="apple-touch-icon" href="images/icon-192.png">
-
 <style>
 :root{
   --bg:#0f0f0f;
@@ -17,125 +13,222 @@
   --text:#ffffff;
   --muted:#aaaaaa;
 }
-*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
-body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
-header{padding:20px;text-align:center;border-bottom:2px solid var(--accent);}
-header h1{color:var(--accent);font-size:2rem;}
-header p{color:var(--muted);margin-top:6px;}
-main{flex:1;padding:20px;padding-bottom:170px;}
-.categories{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:20px;}
-.category{border:2px solid var(--accent);padding:12px;text-align:center;border-radius:12px;cursor:pointer;font-weight:600;transition:0.2s;}
-.category.active,.category:hover{background:var(--accent);color:#000;}
-#content{border:2px solid var(--accent);border-radius:14px;padding:16px;min-height:300px;}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;}
-.card{background:var(--card);border:2px solid var(--accent);border-radius:14px;padding:14px;cursor:pointer;transition:0.2s;}
-.card:hover{background:var(--accent);color:#000;}
-.card .title{font-weight:700;margin-bottom:6px;}
-.card .desc{font-size:0.85rem;color:var(--muted);}
-#player{position:fixed;bottom:0;left:0;width:100%;background:var(--card);border-top:2px solid var(--accent);padding:10px;text-align:center;}
-#now{color:var(--accent);font-weight:700;margin-bottom:6px;}
-audio{width:90%;}
 
-/* Stile chat semplice */
-#chat{
-  position:fixed;
-  bottom:70px;
-  right:20px;
-  width:300px;
-  max-height:400px;
-  background:var(--card);
-  border:2px solid var(--accent);
-  border-radius:10px;
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
   display:flex;
   flex-direction:column;
 }
-#chatMessages{
+
+header{
+  padding:20px;
+  text-align:center;
+  border-bottom:2px solid var(--accent);
+}
+
+header h1{
+  color:var(--accent);
+  font-size:2rem;
+}
+
+header p{
+  color:var(--muted);
+  margin-top:6px;
+}
+
+main{
   flex:1;
-  overflow-y:auto;
-  padding:10px;
-  font-size:0.85rem;
-  color:var(--text);
+  padding:20px;
+  padding-bottom:220px;
 }
-#chatForm{
-  display:flex;
-  border-top:2px solid var(--accent);
+
+.categories{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  gap:10px;
+  margin-bottom:20px;
 }
-#chatForm input{
-  flex:1;
-  padding:6px;
-  border:none;
-  border-radius:0 0 0 10px;
-  background:#1c1c1c;
-  color:#fff;
+
+.category{
+  border:2px solid var(--accent);
+  padding:12px;
+  text-align:center;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:600;
+  transition:0.2s;
 }
-#chatForm button{
-  padding:6px 10px;
-  border:none;
+
+.category.active,
+.category:hover{
   background:var(--accent);
   color:#000;
+}
+
+#content{
+  border:2px solid var(--accent);
+  border-radius:14px;
+  padding:16px;
+  min-height:300px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:14px;
+}
+
+.card{
+  background:var(--card);
+  border:2px solid var(--accent);
+  border-radius:14px;
+  padding:14px;
   cursor:pointer;
-  border-radius:0 0 10px 0;
+  transition:0.2s;
+}
+
+.card:hover{
+  background:var(--accent);
+  color:#000;
+}
+
+.card .title{
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+.card .desc{
+  font-size:0.85rem;
+  color:var(--muted);
+}
+
+#player{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  background:var(--card);
+  border-top:2px solid var(--accent);
+  padding:10px;
+  text-align:center;
+}
+
+#now{
+  color:var(--accent);
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+audio{
+  width:90%;
 }
 </style>
 </head>
-
 <body>
+
 <header>
-<h1>io negli anni '80 c'ero</h1>
-<p>Musica, radio e giochi retrò</p>
+  <h1>Io negli anni '80 c'ero</h1>
+  <p>Musica, radio e giochi retrò</p>
 </header>
 
 <main>
-<div class="categories" id="categories"></div>
-<div id="content">Seleziona una categoria.</div>
+  <div class="categories" id="categories"></div>
+  <div id="content">Seleziona una categoria.</div>
 </main>
 
 <div id="player">
-<div id="now">Nessuna radio in riproduzione</div>
-<audio id="audio" controls></audio>
+  <div id="now">Nessuna radio in riproduzione</div>
+  <audio id="audio" controls></audio>
 </div>
 
 <!-- Chat di gruppo -->
-<div id="chat">
-  <div id="chatMessages"></div>
-  <form id="chatForm">
-    <input type="text" id="chatInput" placeholder="Scrivi un messaggio..." autocomplete="off"/>
-    <button type="submit">Invia</button>
+<div id="chat" style="position:fixed;bottom:270px;right:20px;width:300px;height:400px;background:#1c1c1c;border:2px solid #00e5ff;border-radius:10px;display:flex;flex-direction:column;">
+  <div id="chatMessages" style="flex:1;overflow-y:auto;padding:10px;color:#fff;font-size:0.85rem;"></div>
+  <form id="chatForm" style="display:flex;border-top:2px solid #00e5ff;">
+    <input type="text" id="chatInput" placeholder="Scrivi un messaggio..." autocomplete="off" style="flex:1;padding:6px;border:none;background:#222;color:#fff;"/>
+    <button type="submit" style="padding:6px 10px;border:none;background:#00e5ff;color:#000;cursor:pointer;">Invia</button>
   </form>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<!-- Firebase modulare v12 -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+  import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
+
+  // 🔹 Configurazione completa del tuo progetto Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyB8h3fvyPxq_Tjp2R5RzsgEC7jv6FASeWE",
+    authDomain: "anni-80-chat-a1192.firebaseapp.com",
+    databaseURL: "https://anni-80-chat-a1192-default-rtdb.europe-west1.firebasedatabase.app/",
+    projectId: "anni-80-chat-a1192",
+    storageBucket: "anni-80-chat-a1192.firebasestorage.app",
+    messagingSenderId: "578541128805",
+    appId: "1:578541128805:web:854a987bf16439cb758a8c"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const chatRef = ref(db, 'chat');
+
+  // Chat
+  const chatForm = document.getElementById("chatForm");
+  const chatInput = document.getElementById("chatInput");
+  const chatMessages = document.getElementById("chatMessages");
+
+  chatForm.addEventListener("submit", e => {
+    e.preventDefault();
+    const text = chatInput.value.trim();
+    if(text){
+      push(chatRef, { text });
+      chatInput.value = "";
+    }
+  });
+
+  onChildAdded(chatRef, snapshot => {
+    const msg = document.createElement("div");
+    msg.textContent = snapshot.val().text;
+    chatMessages.appendChild(msg);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  });
+</script>
 
 <script>
 /* ===== CATEGORIE ===== */
 const categories = [
   {id:"musica", label:"Musica"},
   {id:"radio", label:"Radio"},
-  {id:"giochi", label:"Giochi"}
+  {id:"giochi", label:"Giochi"},
+  {id:"chat", label:"Chat"}
 ];
 
-/* ===== CONTENUTI ===== */
+/* ===== MUSICA ===== */
 const musica = [
   { name:"Playlist anni '80", url:"https://youtu.be/6_cAP0aXZXA" }
 ];
+
+/* ===== RADIO ===== */
 const radio = [
   {name:"Radio 80", url:"https://sphera.fluidstream.eu/radio80.aac", desc:"Pop e rock anni '80"},
   {name:"SomaFM Underground 80s", url:"http://ice1.somafm.com/u80s-128-mp3", desc:"New wave, synth, alternative"},
   {name:"80s80s Italo Disco", url:"https://streams.80s80s.de/italodiscomix/mp3-192/streams.80s80s.de/", desc:"Italo disco anni '80"},
   {name:"Italia 80", url:"https://stream.laut.fm/italia80", desc:"Musica italiana anni '80"}
 ];
+
+/* ===== GIOCHI ===== */
 const giochi = [
   {name:"🎮 Giochi retrò", url:"https://www.retrogames.cc/arcade-games/space-invaders.html", desc:"Arcade anni ’80 – gioca online"}
 ];
 
-/* ===== ELEMENTI ===== */
+/* ===== MENU ===== */
 const categoriesEl = document.getElementById("categories");
 const contentEl = document.getElementById("content");
 const audio = document.getElementById("audio");
 const now = document.getElementById("now");
 
-/* ===== CREAZIONE MENU ===== */
 categories.forEach(c=>{
   const div=document.createElement("div");
   div.className="category";
@@ -144,12 +237,12 @@ categories.forEach(c=>{
   categoriesEl.appendChild(div);
 });
 
-function resetCategories(){
+function reset(){
   document.querySelectorAll(".category").forEach(c=>c.classList.remove("active"));
 }
 
 function openCategory(id,el){
-  resetCategories();
+  reset();
   el.classList.add("active");
 
   if(id==="musica"){
@@ -187,51 +280,18 @@ function openCategory(id,el){
         `).join("")}
       </div>`;
   }
+
+  if(id==="chat"){
+    contentEl.innerHTML=`<p>Usa la chat a destra per scrivere messaggi in tempo reale!</p>`;
+  }
 }
 
-/* ===== PLAYER RADIO ===== */
 function playRadio(url,name){
   audio.src=url;
   audio.play();
   now.textContent="In riproduzione: "+name;
 }
-
-/* ===== FIREBASE CHAT ===== */
-// Configurazione Firebase (sostituisci con la tua)
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-const chatRef = db.ref("chat");
-
-// Elementi chat
-const chatForm = document.getElementById("chatForm");
-const chatInput = document.getElementById("chatInput");
-const chatMessages = document.getElementById("chatMessages");
-
-// Invia messaggio
-chatForm.addEventListener("submit", e => {
-  e.preventDefault();
-  if(chatInput.value.trim() !== ""){
-    chatRef.push({text: chatInput.value});
-    chatInput.value = "";
-  }
-});
-
-// Mostra messaggi in tempo reale
-chatRef.on("child_added", snapshot => {
-  const msg = document.createElement("div");
-  msg.textContent = snapshot.val().text;
-  chatMessages.appendChild(msg);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-});
 </script>
+
 </body>
 </html>
