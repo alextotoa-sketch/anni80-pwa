@@ -1,39 +1,259 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Io negli anni '80 c'ero</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Io negli anni '80 c'ero</title>
 
-  <!-- PWA manifest -->
-  <link rel="manifest" href="manifest.json">
+<!-- PWA manifest -->
+<link rel="manifest" href="manifest.json">
 
-  <!-- Favicon e icone PWA -->
-  <link rel="icon" href="images/icon-192.png" type="image/png">
+<!-- Favicon e icone PWA -->
+<link rel="icon" href="images/icon-192.png" type="image/png">
 
-  <!-- Icone per iOS -->
-  <link rel="apple-touch-icon" sizes="152x152" href="images/icon-192.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="images/icon-512.png">
-  <meta name="apple-mobile-web-app-title" content="Io negli anni '80 c'ero">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Icone per iOS -->
+<link rel="apple-touch-icon" sizes="152x152" href="images/icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="images/icon-512.png">
+<meta name="apple-mobile-web-app-title" content="Io negli anni '80 c'ero">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-  <!-- Tema colore -->
-  <meta name="theme-color" content="#00e5ff">
+<!-- Tema colore -->
+<meta name="theme-color" content="#00e5ff">
 
-  <style>
-    :root{
-      --bg:#0f0f0f;
-      --card:#1c1c1c;
-      --accent:#00e5ff;
-      --text:#ffffff;
-      --muted:#aaaaaa;
-    }
+<style>
+:root {
+  --bg:#0f0f0f;
+  --card:#1c1c1c;
+  --accent:#00e5ff;
+  --text:#ffffff;
+  --muted:#aaaaaa;
 
-    *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
+  --vh: 100%; /* variabile per altezza viewport corretta su iOS */
+}
 
-    body{
-      background:var(--bg);
+/* Reset base */
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
+
+/* Corpo pagina con altezza corretta su iOS */
+body{
+  background:var(--bg);
+  color:var(--text);
+  min-height: calc(var(--vh, 1vh) * 100);
+  display:flex;
+  flex-direction:column;
+}
+
+/* Header */
+header{
+  padding:20px;
+  text-align:center;
+  border-bottom:2px solid var(--accent);
+}
+header h1{ color:var(--accent); font-size:2rem; }
+header p{ color:var(--muted); margin-top:6px; }
+
+/* Main scrollabile */
+main{
+  flex:1;
+  padding:20px;
+  overflow-y:auto;
+}
+
+/* Categorie */
+.categories{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  gap:10px;
+  margin-bottom:20px;
+}
+.category{
+  border:2px solid var(--accent);
+  padding:12px;
+  text-align:center;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:600;
+  transition:0.2s;
+}
+.category.active,
+.category:hover{
+  background:var(--accent);
+  color:#000;
+}
+
+/* Contenuto categorie */
+#content{
+  border:2px solid var(--accent);
+  border-radius:14px;
+  padding:16px;
+  min-height:300px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:14px;
+}
+.card{
+  background:var(--card);
+  border:2px solid var(--accent);
+  border-radius:14px;
+  padding:14px;
+  cursor:pointer;
+  transition:0.2s;
+}
+.card:hover{
+  background:var(--accent);
+  color:#000;
+}
+.card .title{ font-weight:700; margin-bottom:6px; }
+.card .desc{ font-size:0.85rem; color:var(--muted); }
+
+/* Player fisso in fondo */
+#player{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  background:var(--card);
+  border-top:2px solid var(--accent);
+  padding:10px;
+  text-align:center;
+  z-index:10;
+}
+#now{ color:var(--accent); font-weight:700; margin-bottom:6px; }
+audio{ width:90%; }
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Io negli anni '80 c'ero</h1>
+  <p>Musica, radio e giochi retrò</p>
+</header>
+
+<main>
+  <div class="categories" id="categories"></div>
+  <div id="content">Seleziona una categoria.</div>
+</main>
+
+<div id="player">
+  <div id="now">Nessuna radio in riproduzione</div>
+  <audio id="audio" controls></audio>
+</div>
+
+<script>
+/* ===== Correzione altezza viewport iOS ===== */
+function setVh(){
+  document.documentElement.style.setProperty('--vh', window.innerHeight*0.01+'px');
+}
+window.addEventListener('resize', setVh);
+window.addEventListener('load', setVh);
+
+/* ===== CATEGORIE ===== */
+const categories = [
+  {id:"musica", label:"Musica"},
+  {id:"radio", label:"Radio"},
+  {id:"giochi", label:"Giochi"}
+];
+
+/* ===== MUSICA ===== */
+const musica = [
+  { name:"Playlist anni '80", url:"https://youtu.be/6_cAP0aXZXA" }
+];
+
+/* ===== RADIO ===== */
+const radio = [
+  {name:"Radio 80", url:"https://sphera.fluidstream.eu/radio80.aac", desc:"Pop e rock anni '80"},
+  {name:"SomaFM Underground 80s", url:"http://ice1.somafm.com/u80s-128-mp3", desc:"New wave, synth, alternative"},
+  {name:"80s80s Italo Disco", url:"https://streams.80s80s.de/italodiscomix/mp3-192/streams.80s80s.de/", desc:"Italo disco anni '80"},
+  {name:"Italia 80", url:"https://stream.laut.fm/italia80", desc:"Musica italiana anni '80"}
+];
+
+/* ===== GIOCHI ===== */
+const giochi = [
+  {name:"🎮 Giochi retrò", url:"https://www.retrogames.cc/arcade-games/space-invaders.html", desc:"Arcade anni ’80 – gioca online"}
+];
+
+const categoriesEl = document.getElementById("categories");
+const contentEl = document.getElementById("content");
+const audio = document.getElementById("audio");
+const now = document.getElementById("now");
+
+/* ===== MENU ===== */
+categories.forEach(c=>{
+  const div=document.createElement("div");
+  div.className="category";
+  div.textContent=c.label;
+  div.onclick=()=>openCategory(c.id,div);
+  categoriesEl.appendChild(div);
+});
+
+function reset(){
+  document.querySelectorAll(".category").forEach(c=>c.classList.remove("active"));
+}
+
+/* ===== SEZIONI ===== */
+function openCategory(id,el){
+  reset();
+  el.classList.add("active");
+
+  if(id==="musica"){
+    contentEl.innerHTML=`
+      <div class="grid">
+        ${musica.map(m=>`
+          <div class="card" onclick="window.open('${m.url}','_blank')">
+            <div class="title">${m.name}</div>
+            <div class="desc">Apri su YouTube</div>
+          </div>
+        `).join("")}
+      </div>`;
+  }
+
+  if(id==="radio"){
+    contentEl.innerHTML=`
+      <div class="grid">
+        ${radio.map(r=>`
+          <div class="card" onclick="playRadio('${r.url}','${r.name}')">
+            <div class="title">${r.name}</div>
+            <div class="desc">${r.desc}</div>
+          </div>
+        `).join("")}
+      </div>`;
+  }
+
+  if(id==="giochi"){
+    contentEl.innerHTML=`
+      <div class="grid">
+        ${giochi.map(g=>`
+          <div class="card" onclick="window.open('${g.url}','_blank')">
+            <div class="title">${g.name}</div>
+            <div class="desc">${g.desc}</div>
+          </div>
+        `).join("")}
+      </div>`;
+  }
+}
+
+/* ===== RADIO PLAYER ===== */
+function playRadio(url,name){
+  audio.src=url;
+  audio.play();
+  now.textContent="In riproduzione: "+name;
+}
+
+/* ===== REGISTRA SERVICE WORKER ===== */
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js")
+    .then(() => console.log("Service Worker registrato ✅"))
+    .catch(err => console.error("Errore registrazione SW:", err));
+}
+</script>
+
+</body>
+</html>
       color:var(--text);
       min-height:100vh;
       display:flex;
