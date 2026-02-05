@@ -213,16 +213,9 @@ audio{
   display:none;
 }
 
-/* MOBILE */
 @media (max-width:900px){
-  #chat{
-    width:90%;
-    height:60%;
-    display:none;
-  }
-  #chatToggle{
-    display:block;
-  }
+  #chat{ display:none; width:90%; height:60%; }
+  #chatToggle{ display:block; }
 }
 </style>
 </head>
@@ -231,7 +224,7 @@ audio{
 
 <header>
   <h1>Io negli anni ’80 c’ero</h1>
-  <p>Musica, radio e chat in tempo reale</p>
+  <p>Musica, radio, giochi e chat in tempo reale</p>
 </header>
 
 <main>
@@ -253,47 +246,36 @@ audio{
   </div>
   <div id="chatMessages"></div>
   <form id="chatForm">
-    <input id="chatInput" placeholder="Scrivi un messaggio…" autocomplete="off">
+    <input id="chatInput" placeholder="Scrivi un messaggio…">
     <button type="submit">Invia</button>
   </form>
 </div>
 
-<!-- FIREBASE CHAT -->
+<!-- FIREBASE -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
 import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyB8h3fvyPxq_Tjp2R5RzsgEC7jv6FASeWE",
-  authDomain: "anni-80-chat-a1192.firebaseapp.com",
-  databaseURL: "https://anni-80-chat-a1192-default-rtdb.europe-west1.firebasedatabase.app/",
-  projectId: "anni-80-chat-a1192",
-  storageBucket: "anni-80-chat-a1192.firebasestorage.app",
-  messagingSenderId: "578541128805",
-  appId: "1:578541128805:web:854a987bf16439cb758a8c"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-const chatRef = ref(db,"chat");
-
-const chatForm = document.getElementById("chatForm");
-const chatInput = document.getElementById("chatInput");
-const chatMessages = document.getElementById("chatMessages");
-
-chatForm.addEventListener("submit", e => {
-  e.preventDefault();
-  const text = chatInput.value.trim();
-  if(text){
-    push(chatRef,{text});
-    chatInput.value="";
-  }
+const app = initializeApp({
+  apiKey:"AIzaSyB8h3fvyPxq_Tjp2R5RzsgEC7jv6FASeWE",
+  databaseURL:"https://anni-80-chat-a1192-default-rtdb.europe-west1.firebasedatabase.app/"
 });
 
-onChildAdded(chatRef,snap=>{
-  const div=document.createElement("div");
-  div.textContent=snap.val().text;
-  chatMessages.appendChild(div);
+const db=getDatabase(app);
+const chatRef=ref(db,"chat");
+
+chatForm.onsubmit=e=>{
+  e.preventDefault();
+  if(chatInput.value.trim()){
+    push(chatRef,{text:chatInput.value});
+    chatInput.value="";
+  }
+};
+
+onChildAdded(chatRef,s=>{
+  const d=document.createElement("div");
+  d.textContent=s.val().text;
+  chatMessages.appendChild(d);
   chatMessages.scrollTop=chatMessages.scrollHeight;
 });
 </script>
@@ -302,37 +284,33 @@ onChildAdded(chatRef,snap=>{
 /* CATEGORIE */
 const categories=[
   {id:"radio",label:"Radio"},
+  {id:"musica",label:"Musica"},
+  {id:"giochi",label:"Giochi"},
   {id:"chat",label:"Chat"}
 ];
 
-/* RADIO – STREAM COMPATIBILI MAC / SAFARI */
+/* RADIO */
 const radio=[
-  {
-    name:"Radio 80",
-    url:"https://sphera.fluidstream.eu/radio80.aac",
-    desc:"Pop e rock anni ’80"
-  },
-  {
-    name:"SomaFM Underground 80s",
-    url:"https://ice2.somafm.com/u80s-128-aac",
-    desc:"Alternative & new wave anni ’80"
-  },
-  {
-    name:"80s80s Italo Disco",
-    url:"https://regiocast.streamabc.net/regc-80s80sitalodisco-mp3-192-9093510",
-    desc:"Italo disco anni ’80"
-  },
-  {
-    name:"Italia 80",
-    url:"https://stream.laut.fm/italia80",
-    desc:"Musica italiana anni ’80"
-  }
+  {name:"Radio 80",url:"https://sphera.fluidstream.eu/radio80.aac",desc:"Pop & rock anni ’80"},
+  {name:"SomaFM Underground 80s",url:"https://ice2.somafm.com/u80s-128-aac",desc:"New wave & alternative"},
+  {name:"80s80s Italo Disco",url:"https://regiocast.streamabc.net/regc-80s80sitalodisco-mp3-192-9093510",desc:"Italo disco"},
+  {name:"Italia 80",url:"https://stream.laut.fm/italia80",desc:"Musica italiana"}
 ];
 
-const categoriesEl=document.getElementById("categories");
-const contentEl=document.getElementById("content");
-const audio=document.getElementById("audio");
-const now=document.getElementById("now");
+/* MUSICA */
+const musica=[
+  {name:"Playlist Spotify Anni 80",url:"https://open.spotify.com/playlist/37i9dQZF1DX4UtSsGT1Sbe"},
+  {name:"YouTube Hits 80",url:"https://www.youtube.com/results?search_query=hit+anni+80"},
+  {name:"Top 100 Anni 80",url:"https://www.youtube.com/watch?v=ZZ5LpwO-An4"}
+];
+
+/* GIOCHI */
+const giochi=[
+  {name:"Pac-Man",url:"https://www.retrogames.cz/play_001-NES.php"},
+  {name:"Space Invaders",url:"https://www.retrogames.cz/play_030-Atari2600.php"},
+  {name:"Tetris",url:"https://tetris.com/play-tetris"},
+  {name:"Bubble Bobble",url:"https://www.retrogames.cz/play_092-NES.php"}
+];
 
 categories.forEach(c=>{
   const d=document.createElement("div");
@@ -347,18 +325,31 @@ function openCategory(id,el){
   el.classList.add("active");
 
   if(id==="radio"){
-    contentEl.innerHTML=`
-      <div class="grid">
-        ${radio.map(r=>`
-          <div class="card" onclick="playRadio('${r.url}','${r.name}')">
-            <div class="title">${r.name}</div>
-            <div class="desc">${r.desc}</div>
-          </div>`).join("")}
-      </div>`;
+    contentEl.innerHTML=`<div class="grid">${radio.map(r=>`
+      <div class="card" onclick="playRadio('${r.url}','${r.name}')">
+        <div class="title">${r.name}</div>
+        <div class="desc">${r.desc}</div>
+      </div>`).join("")}</div>`;
+  }
+
+  if(id==="musica"){
+    contentEl.innerHTML=`<div class="grid">${musica.map(m=>`
+      <a class="card" href="${m.url}" target="_blank">
+        <div class="title">${m.name}</div>
+        <div class="desc">Apri link</div>
+      </a>`).join("")}</div>`;
+  }
+
+  if(id==="giochi"){
+    contentEl.innerHTML=`<div class="grid">${giochi.map(g=>`
+      <a class="card" href="${g.url}" target="_blank">
+        <div class="title">${g.name}</div>
+        <div class="desc">Gioca ora</div>
+      </a>`).join("")}</div>`;
   }
 
   if(id==="chat"){
-    contentEl.innerHTML="<p>Usa la chat qui sotto per parlare con gli altri utenti.</p>";
+    contentEl.innerHTML="<p>Usa la chat qui sotto 👇</p>";
   }
 }
 
@@ -369,25 +360,14 @@ function playRadio(url,name){
 }
 
 /* CHAT VISIBILITY */
-const chat=document.getElementById("chat");
-const toggle=document.getElementById("chatToggle");
-const closeBtn=document.getElementById("chatClose");
-
 function layoutChat(){
-  if(window.innerWidth>900){
-    chat.style.display="flex";
-    toggle.style.display="none";
-  }else{
-    chat.style.display="none";
-    toggle.style.display="block";
-  }
+  chat.style.display=window.innerWidth>900?"flex":"none";
+  chatToggle.style.display=window.innerWidth>900?"none":"block";
 }
-
-toggle.onclick=()=>chat.style.display="flex";
-closeBtn.onclick=()=>chat.style.display="none";
-
+chatToggle.onclick=()=>chat.style.display="flex";
+chatClose.onclick=()=>chat.style.display="none";
 layoutChat();
-window.addEventListener("resize",layoutChat);
+window.onresize=layoutChat;
 </script>
 
 </body>
