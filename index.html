@@ -35,8 +35,15 @@ header{
   border-bottom:2px solid var(--accent);
 }
 
-header h1{ color:var(--accent); }
-header p{ color:var(--muted); margin-top:6px; }
+header h1{
+  color:var(--accent);
+  font-size:2rem;
+}
+
+header p{
+  color:var(--muted);
+  margin-top:6px;
+}
 
 main{
   flex:1;
@@ -94,8 +101,15 @@ main{
   color:#000;
 }
 
-.card .title{ font-weight:700; margin-bottom:6px; }
-.card .desc{ font-size:0.85rem; color:var(--muted); }
+.card .title{
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+.card .desc{
+  font-size:0.85rem;
+  color:var(--muted);
+}
 
 /* PLAYER */
 #player{
@@ -110,13 +124,20 @@ main{
   z-index:400;
 }
 
-#now{ color:var(--accent); font-weight:700; margin-bottom:6px; }
-audio{ width:90%; }
+#now{
+  color:var(--accent);
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+audio{
+  width:90%;
+}
 
 /* CHAT */
 #chat{
   position:fixed;
-  bottom:calc(100px + env(safe-area-inset-bottom));
+  bottom:calc(120px + env(safe-area-inset-bottom));
   left:50%;
   transform:translateX(-50%);
   width:600px;
@@ -157,24 +178,25 @@ audio{ width:90%; }
 #chatForm{
   display:flex;
   border-top:2px solid var(--accent);
+  background:#1c1c1c;
 }
 
 #chatInput{
   flex:1;
-  padding:8px;
+  padding:6px;
   border:none;
   background:#222;
   color:#fff;
 }
 
 #chatForm button{
-  padding:8px 14px;
+  padding:6px 12px;
   border:none;
   background:var(--accent);
   cursor:pointer;
 }
 
-/* MOBILE */
+/* CHAT MOBILE */
 #chatToggle{
   position:fixed;
   bottom:120px;
@@ -186,13 +208,18 @@ audio{ width:90%; }
   border:none;
   font-size:22px;
   cursor:pointer;
-  display:none;
   z-index:1001;
+  display:none;
 }
 
 @media (max-width:900px){
-  #chat{ display:none; height:60%; }
-  #chatToggle{ display:block; }
+  #chat{
+    display:none;
+    height:60%;
+  }
+  #chatToggle{
+    display:block;
+  }
 }
 </style>
 </head>
@@ -201,7 +228,7 @@ audio{ width:90%; }
 
 <header>
   <h1>Io negli anni ’80 c’ero</h1>
-  <p>Musica, radio, giochi e chat</p>
+  <p>Musica, radio e chat in tempo reale</p>
 </header>
 
 <main>
@@ -223,46 +250,82 @@ audio{ width:90%; }
   </div>
   <div id="chatMessages"></div>
   <form id="chatForm">
-    <input id="chatInput" placeholder="Scrivi un messaggio…">
+    <input id="chatInput" placeholder="Scrivi un messaggio…" autocomplete="off">
     <button type="submit">Invia</button>
   </form>
 </div>
 
-<script>
-/* ELEMENTI */
-const categoriesEl = document.getElementById("categories");
-const contentEl = document.getElementById("content");
-const audio = document.getElementById("audio");
-const now = document.getElementById("now");
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
 
+const firebaseConfig = {
+  apiKey: "AIzaSyB8h3fvyPxq_Tjp2R5RzsgEC7jv6FASeWE",
+  authDomain: "anni-80-chat-a1192.firebaseapp.com",
+  databaseURL: "https://anni-80-chat-a1192-default-rtdb.europe-west1.firebasedatabase.app/",
+  projectId: "anni-80-chat-a1192",
+  storageBucket: "anni-80-chat-a1192.firebasestorage.app",
+  messagingSenderId: "578541128805",
+  appId: "1:578541128805:web:854a987bf16439cb758a8c"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const chatRef = ref(db,"chat");
+
+const chatForm = document.getElementById("chatForm");
+const chatInput = document.getElementById("chatInput");
+const chatMessages = document.getElementById("chatMessages");
+
+chatForm.addEventListener("submit", e => {
+  e.preventDefault();
+  const text = chatInput.value.trim();
+  if(text){
+    push(chatRef,{text});
+    chatInput.value="";
+  }
+});
+
+onChildAdded(chatRef,snap=>{
+  const div=document.createElement("div");
+  div.textContent=snap.val().text;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop=chatMessages.scrollHeight;
+});
+</script>
+
+<script>
 /* CATEGORIE */
-const categories = [
-  {id:"radio",label:"Radio"},
+const categories=[
   {id:"musica",label:"Musica"},
+  {id:"radio",label:"Radio"},
   {id:"giochi",label:"Giochi"},
   {id:"chat",label:"Chat"}
 ];
 
-/* DATI */
-const radio = [
-  {name:"Radio 80",url:"https://sphera.fluidstream.eu/radio80.aac",desc:"Pop & rock"},
-  {name:"SomaFM Underground 80s",url:"https://ice2.somafm.com/u80s-128-aac",desc:"New wave"},
+const radio=[
+  {name:"Radio 80",url:"https://sphera.fluidstream.eu/radio80.aac",desc:"Pop e rock anni ’80"},
+  {name:"SomaFM Underground 80s",url:"https://ice2.somafm.com/u80s-128-aac",desc:"New wave anni ’80"},
   {name:"80s80s Italo Disco",url:"https://regiocast.streamabc.net/regc-80s80sitalodisco-mp3-192-9093510",desc:"Italo disco"},
-  {name:"Italia 80",url:"https://stream.laut.fm/italia80",desc:"Italian hits"}
+  {name:"Italia 80",url:"https://stream.laut.fm/italia80",desc:"Musica italiana"}
 ];
 
-const musica = [
+const musica=[
   {name:"Spotify Anni 80",url:"https://open.spotify.com/playlist/37i9dQZF1DX4UtSsGT1Sbe"},
   {name:"YouTube Hits 80",url:"https://www.youtube.com/results?search_query=hit+anni+80"}
 ];
 
-const giochi = [
+const giochi=[
   {name:"Pac-Man",url:"https://www.retrogames.cz/play_001-NES.php"},
-  {name:"Space Invaders",url:"https://www.retrogames.cz/play_030-Atari2600.php"},
   {name:"Tetris",url:"https://tetris.com/play-tetris"}
 ];
 
-/* UI */
+const categoriesEl=document.getElementById("categories");
+const contentEl=document.getElementById("content");
+const audio=document.getElementById("audio");
+const now=document.getElementById("now");
+
 categories.forEach(c=>{
   const d=document.createElement("div");
   d.className="category";
@@ -309,6 +372,26 @@ function playRadio(url,name){
   audio.play();
   now.textContent="In riproduzione: "+name;
 }
+
+/* CHAT MOBILE */
+const chat=document.getElementById("chat");
+const toggle=document.getElementById("chatToggle");
+const closeBtn=document.getElementById("chatClose");
+
+toggle.onclick=()=>chat.style.display="flex";
+closeBtn.onclick=()=>chat.style.display="none";
+
+function layoutChat(){
+  if(window.innerWidth>900){
+    chat.style.display="flex";
+    toggle.style.display="none";
+  }else{
+    chat.style.display="none";
+    toggle.style.display="block";
+  }
+}
+layoutChat();
+window.addEventListener("resize",layoutChat);
 </script>
 
 </body>
