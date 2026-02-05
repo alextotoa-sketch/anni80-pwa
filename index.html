@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Io negli anni '80 c'ero</title>
 
-<!-- PWA manifest e tema -->
+<!-- Manifest PWA -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#00e5ff">
 <link rel="apple-touch-icon" href="images/icon-192.png">
 
-<!-- Firebase -->
+<!-- Firebase SDK compatibile script -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
@@ -22,9 +22,7 @@
   --text:#ffffff;
   --muted:#aaaaaa;
 }
-
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
-
 body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
 header{padding:20px;text-align:center;border-bottom:2px solid var(--accent);}
 header h1{color:var(--accent);font-size:2rem;}
@@ -54,7 +52,6 @@ audio{width:90%;}
 </head>
 
 <body>
-
 <header>
 <h1>io negli anni '80 c'ero</h1>
 <p>Musica, radio e giochi retrò</p>
@@ -64,7 +61,7 @@ audio{width:90%;}
 <div class="categories" id="categories"></div>
 <div id="content">Seleziona una categoria.</div>
 
-<!-- CHAT sempre visibile -->
+<!-- Chat sempre visibile -->
 <div id="chat">
   <h2>Chat Anni '80</h2>
   <div id="chat-messages"></div>
@@ -81,13 +78,13 @@ audio{width:90%;}
 <script>
 /* ===== FIREBASE CONFIG ===== */
 const firebaseConfig = {
-  apiKey: "TUO_API_KEY",
-  authDomain: "TUO_PROGETTO.firebaseapp.com",
-  databaseURL: "https://TUO_PROGETTO.firebaseio.com",
-  projectId: "TUO_PROGETTO",
-  storageBucket: "TUO_PROGETTO.appspot.com",
-  messagingSenderId: "TUO_ID",
-  appId: "TUO_APP_ID"
+  apiKey: "AIzaSyA5AYaeZEXxmzV2iKZ40H_0rKz0jrx8jEM",
+  authDomain: "anni-80-chat-c13ed.firebaseapp.com",
+  databaseURL: "https://anni-80-chat-c13ed.firebaseio.com",
+  projectId: "anni-80-chat-c13ed",
+  storageBucket: "anni-80-chat-c13ed.firebasestorage.app",
+  messagingSenderId: "1012957587774",
+  appId: "1:1012957587774:web:476859d9ea2c9ce6b5246f"
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
