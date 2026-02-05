@@ -46,7 +46,7 @@ main{flex:1;padding:20px;padding-bottom:170px;}
 audio{width:90%;}
 
 /* CHAT */
-#chat{display:none;margin-top:20px;}
+#chat{display:block;margin-top:20px;}
 #chat h2{color: var(--accent);margin-bottom:6px;}
 #chat-messages{height:200px;overflow-y:auto;border:2px solid var(--accent);border-radius:12px;padding:10px;background:var(--card);margin-bottom:10px;}
 #chat-input{width:70%;padding:8px;border-radius:8px;border:1px solid var(--accent);background:#1c1c1c;color:#fff;}
@@ -102,13 +102,13 @@ const categories = [
   { id: "giochi", label: "Giochi" }
 ];
 
-const musica=[{ name:"Playlist anni '80", url:"https://youtu.be/6_cAP0aXZXA"}];
-const radio=[
+const musica = [{ name:"Playlist anni '80", url:"https://youtu.be/6_cAP0aXZXA" }];
+const radio = [
 {name:"Radio 80", url:"https://sphera.fluidstream.eu/radio80.aac", desc:"Pop e rock anni '80"},
 {name:"SomaFM Underground 80s", url:"http://ice1.somafm.com/u80s-128-mp3", desc:"New wave, synth, alternative"},
 {name:"80s80s Italo Disco", url:"https://streams.80s80s.de/italodiscomix/mp3-192/streams.80s80s.de/", desc:"Italo disco anni '80"},
 {name:"Italia 80", url:"https://stream.laut.fm/italia80", desc:"Musica italiana anni '80"}];
-const giochi=[{name:"🎮 Giochi retrò", url:"https://www.retrogames.cc/arcade-games/space-invaders.html", desc:"Arcade anni ’80 – gioca online"}];
+const giochi = [{name:"🎮 Giochi retrò", url:"https://www.retrogames.cc/arcade-games/space-invaders.html", desc:"Arcade anni ’80 – gioca online"}];
 
 const categoriesEl=document.getElementById("categories");
 const contentEl=document.getElementById("content");
@@ -117,21 +117,21 @@ const now=document.getElementById("now");
 
 /* ===== MENU ===== */
 categories.forEach(cat=>{
-  const div=document.createElement("div");
-  div.className="category";
-  div.textContent=cat.label;
-  div.onclick=()=>openCategory(cat.id,div);
+  const div = document.createElement("div");
+  div.className = "category";
+  div.textContent = cat.label;
+  div.onclick = () => openCategory(cat.id, div);
   categoriesEl.appendChild(div);
 });
 
 function resetCategories(){document.querySelectorAll(".category").forEach(c=>c.classList.remove("active"));}
 
 /* ===== SEZIONI ===== */
-function openCategory(id,el){
-  resetCategories();el.classList.add("active");
+function openCategory(id, el){
+  resetCategories(); el.classList.add("active");
 
   if(id==="musica"){
-    contentEl.innerHTML=`<div class="grid">${musica.map(m=>`
+    contentEl.innerHTML = `<div class="grid">${musica.map(m=>`
       <div class="card" onclick="window.open('${m.url}','_blank')">
         <div class="title">${m.name}</div>
         <div class="desc">Apri su YouTube</div>
@@ -139,7 +139,7 @@ function openCategory(id,el){
   }
 
   if(id==="radio"){
-    contentEl.innerHTML=`<div class="grid">${radio.map(r=>`
+    contentEl.innerHTML = `<div class="grid">${radio.map(r=>`
       <div class="card" onclick="playRadio('${r.url}','${r.name}')">
         <div class="title">${r.name}</div>
         <div class="desc">${r.desc}</div>
@@ -147,28 +147,30 @@ function openCategory(id,el){
   }
 
   if(id==="giochi"){
-    contentEl.innerHTML=`<div class="grid">${giochi.map(g=>`
+    contentEl.innerHTML = `<div class="grid">${giochi.map(g=>`
       <div class="card" onclick="window.open('${g.url}','_blank')">
         <div class="title">${g.name}</div>
         <div class="desc">${g.desc}</div>
       </div>`).join("")}</div>`;
   }
-
-  document.getElementById("chat").style.display="block";
 }
 
 /* ===== RADIO PLAYER ===== */
-function playRadio(url,name){audio.src=url;audio.play();now.textContent="In riproduzione: "+name;}
+function playRadio(url,name){
+  audio.src=url;
+  audio.play();
+  now.textContent="In riproduzione: "+name;
+}
 
 /* ===== CHAT GUEST + ADMIN ===== */
 let nickname = localStorage.getItem("nickname") || "";
 if(!nickname){
   nickname = prompt("Scegli un nickname per la chat:", "Guest80");
-  if(!nickname) nickname="Guest80";
+  if(!nickname) nickname = "Guest80";
   localStorage.setItem("nickname",nickname);
 }
 
-// Imposta admin nickname (tu puoi cambiare qui)
+// Admin nickname
 const adminNickname = "Admin80";
 const isAdmin = nickname === adminNickname;
 
@@ -184,9 +186,13 @@ function addMessage(msg,id){
     div.appendChild(del);
   }
   chatEl.appendChild(div);
-  chatEl.scrollTop=chatEl.scrollHeight;
+  chatEl.scrollTop = chatEl.scrollHeight;
 }
 
+// Mostra la chat subito
+document.getElementById("chat").style.display = "block";
+
+// Invia messaggio
 document.getElementById("chat-send").onclick=()=>{
   const input=document.getElementById("chat-input");
   const text=input.value.trim();
@@ -201,7 +207,7 @@ db.ref("messages").on("child_added", snapshot => {
   addMessage(snapshot.val(), snapshot.key);
 });
 
-// SERVICE WORKER
+/* ===== SERVICE WORKER ===== */
 if("serviceWorker" in navigator){
   navigator.serviceWorker.register("service-worker.js")
     .then(()=>console.log("Service Worker registrato ✅"))
