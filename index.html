@@ -9,8 +9,6 @@
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#00e5ff">
 <link rel="apple-touch-icon" href="images/icon-192.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -46,8 +44,8 @@ main{flex:1;padding:20px;padding-bottom:170px;}
 audio{width:90%;}
 
 /* CHAT */
-#chat{display:block;margin-top:20px;}
-#chat h2{color: var(--accent);margin-bottom:6px;}
+#chat-category{margin-top:20px;}
+#chat-category h2{color: var(--accent);margin-bottom:6px;}
 #chat-messages{height:200px;overflow-y:auto;border:2px solid var(--accent);border-radius:12px;padding:10px;background:var(--card);margin-bottom:10px;}
 #chat-input{width:70%;padding:8px;border-radius:8px;border:1px solid var(--accent);background:#1c1c1c;color:#fff;}
 #chat-send{padding:8px 12px;border-radius:8px;border:none;background:var(--accent);color:#000;font-weight:700;cursor:pointer;}
@@ -65,14 +63,6 @@ audio{width:90%;}
 <main>
 <div class="categories" id="categories"></div>
 <div id="content">Seleziona una categoria.</div>
-
-<!-- CHAT -->
-<div id="chat">
-<h2>Chat Anni '80</h2>
-<div id="chat-messages"></div>
-<input type="text" id="chat-input" placeholder="Scrivi qui...">
-<button id="chat-send">Invia</button>
-</div>
 </main>
 
 <div id="player">
@@ -99,7 +89,8 @@ const db = firebase.database();
 const categories = [
   { id: "musica", label: "Musica" },
   { id: "radio", label: "Radio" },
-  { id: "giochi", label: "Giochi" }
+  { id: "giochi", label: "Giochi" },
+  { id: "chat", label: "Chat" } // nuova categoria
 ];
 
 const musica = [{ name:"Playlist anni '80", url:"https://youtu.be/6_cAP0aXZXA" }];
@@ -153,6 +144,56 @@ function openCategory(id, el){
         <div class="desc">${g.desc}</div>
       </div>`).join("")}</div>`;
   }
+
+  if(id==="chat"){
+    contentEl.innerHTML = `
+      <div id="chat-category">
+        <h2>Chat Anni '80</h2>
+        <div id="chat-messages"></div>
+        <input type="text" id="chat-input" placeholder="Scrivi qui...">
+        <button id="chat-send">Invia</button>
+      </div>
+    `;
+
+    // Inizializza chat
+    let nickname = localStorage.getItem("nickname") || "";
+    if(!nickname){
+      nickname = prompt("Scegli un nickname:", "Guest80") || "Guest80";
+      localStorage.setItem("nickname", nickname);
+    }
+    const adminNickname = "Admin80";
+    const isAdmin = nickname === adminNickname;
+
+    const chatMessages = document.getElementById("chat-messages");
+    const chatInput = document.getElementById("chat-input");
+    const chatSend = document.getElementById("chat-send");
+
+    function addMessage(msg,id){
+      const div = document.createElement("div");
+      div.textContent = `${msg.nickname}: ${msg.text}`;
+      if(isAdmin){
+        const del = document.createElement("span");
+        del.textContent=" ✖";
+        del.className="message-admin";
+        del.onclick = () => db.ref("messages/"+id).remove();
+        div.appendChild(del);
+      }
+      chatMessages.appendChild(div);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    chatSend.onclick = () => {
+      const text = chatInput.value.trim();
+      if(text.length===0) return;
+      if(text.length>200) return alert("Messaggio troppo lungo!");
+      db.ref("messages").push({nickname,text,timestamp:Date.now()});
+      chatInput.value="";
+    }
+
+    db.ref("messages").on("child_added", snapshot => {
+      addMessage(snapshot.val(), snapshot.key);
+    });
+  }
 }
 
 /* ===== RADIO PLAYER ===== */
@@ -162,51 +203,6 @@ function playRadio(url,name){
   now.textContent="In riproduzione: "+name;
 }
 
-/* ===== CHAT GUEST + ADMIN ===== */
-let nickname = localStorage.getItem("nickname") || "";
-if(!nickname){
-  nickname = prompt("Scegli un nickname per la chat:", "Guest80");
-  if(!nickname) nickname = "Guest80";
-  localStorage.setItem("nickname",nickname);
-}
-
-// Admin nickname
-const adminNickname = "Admin80";
-const isAdmin = nickname === adminNickname;
-
-function addMessage(msg,id){
-  const chatEl=document.getElementById("chat-messages");
-  const div=document.createElement("div");
-  div.textContent=`${msg.nickname}: ${msg.text}`;
-  if(isAdmin){
-    const del = document.createElement("span");
-    del.textContent=" ✖";
-    del.className="message-admin";
-    del.onclick=()=>db.ref("messages/"+id).remove();
-    div.appendChild(del);
-  }
-  chatEl.appendChild(div);
-  chatEl.scrollTop = chatEl.scrollHeight;
-}
-
-// Mostra la chat subito
-document.getElementById("chat").style.display = "block";
-
-// Invia messaggio
-document.getElementById("chat-send").onclick=()=>{
-  const input=document.getElementById("chat-input");
-  const text=input.value.trim();
-  if(text.length===0) return;
-  if(text.length>200) return alert("Messaggio troppo lungo!");
-  db.ref("messages").push({nickname,text,timestamp:Date.now()});
-  input.value="";
-};
-
-// Lettura messaggi in tempo reale
-db.ref("messages").on("child_added", snapshot => {
-  addMessage(snapshot.val(), snapshot.key);
-});
-
 /* ===== SERVICE WORKER ===== */
 if("serviceWorker" in navigator){
   navigator.serviceWorker.register("service-worker.js")
@@ -214,5 +210,6 @@ if("serviceWorker" in navigator){
     .catch(err=>console.error("Errore SW:",err));
 }
 </script>
+
 </body>
 </html>
