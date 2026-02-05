@@ -29,6 +29,7 @@ body{
   flex-direction:column;
 }
 
+/* HEADER */
 header{
   padding:20px;
   text-align:center;
@@ -45,10 +46,11 @@ header p{
   margin-top:6px;
 }
 
+/* MAIN */
 main{
   flex:1;
   padding:20px;
-  padding-bottom:200px;
+  padding-bottom:220px;
 }
 
 .categories{
@@ -119,7 +121,7 @@ main{
   border-top:2px solid var(--accent);
   padding:10px;
   text-align:center;
-  z-index:500;
+  z-index:400;
 }
 
 #now{
@@ -135,13 +137,13 @@ audio{
 /* CHAT */
 #chat{
   position:fixed;
-  bottom:90px;
+  bottom:calc(100px + env(safe-area-inset-bottom));
   left:50%;
   transform:translateX(-50%);
   width:600px;
   max-width:90%;
   height:260px;
-  background:#1c1c1c;
+  background:var(--card);
   border:2px solid var(--accent);
   border-radius:14px;
   display:flex;
@@ -151,7 +153,6 @@ audio{
 
 #chatHeader{
   height:40px;
-  flex-shrink:0;
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -177,27 +178,29 @@ audio{
 #chatForm{
   display:flex;
   border-top:2px solid var(--accent);
+  background:#1c1c1c;
 }
 
 #chatInput{
   flex:1;
-  padding:6px;
+  padding:8px;
   border:none;
   background:#222;
   color:#fff;
 }
 
 #chatForm button{
-  padding:6px 12px;
+  padding:8px 14px;
   border:none;
   background:var(--accent);
+  font-weight:700;
   cursor:pointer;
 }
 
-/* Bottone chat mobile */
+/* CHAT TOGGLE MOBILE */
 #chatToggle{
   position:fixed;
-  bottom:90px;
+  bottom:120px;
   right:20px;
   width:52px;
   height:52px;
@@ -217,6 +220,9 @@ audio{
     height:60%;
     display:none;
   }
+  #chatToggle{
+    display:block;
+  }
 }
 </style>
 </head>
@@ -235,7 +241,7 @@ audio{
 
 <div id="player">
   <div id="now">Nessuna radio in riproduzione</div>
-  <audio id="audio" controls></audio>
+  <audio id="audio" controls playsinline></audio>
 </div>
 
 <button id="chatToggle">💬</button>
@@ -252,7 +258,7 @@ audio{
   </form>
 </div>
 
-<!-- FIREBASE -->
+<!-- FIREBASE CHAT -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
 import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
@@ -295,12 +301,11 @@ onChildAdded(chatRef,snap=>{
 <script>
 /* CATEGORIE */
 const categories=[
-  {id:"musica",label:"Musica"},
   {id:"radio",label:"Radio"},
-  {id:"giochi",label:"Giochi"},
   {id:"chat",label:"Chat"}
 ];
 
+/* RADIO – STREAM COMPATIBILI MAC / SAFARI */
 const radio=[
   {
     name:"Radio 80",
@@ -308,19 +313,19 @@ const radio=[
     desc:"Pop e rock anni ’80"
   },
   {
+    name:"SomaFM Underground 80s",
+    url:"https://ice2.somafm.com/u80s-128-aac",
+    desc:"Alternative & new wave anni ’80"
+  },
+  {
+    name:"80s80s Italo Disco",
+    url:"https://regiocast.streamabc.net/regc-80s80sitalodisco-mp3-192-9093510",
+    desc:"Italo disco anni ’80"
+  },
+  {
     name:"Italia 80",
     url:"https://stream.laut.fm/italia80",
     desc:"Musica italiana anni ’80"
-  },
-  {
-    name:"Disco 80",
-    url:"https://stream.laut.fm/disco80",
-    desc:"Disco e dance anni ’80"
-  },
-  {
-    name:"Rock 80",
-    url:"https://stream.laut.fm/rock80",
-    desc:"Rock internazionale anni ’80"
   }
 ];
 
@@ -363,7 +368,7 @@ function playRadio(url,name){
   now.textContent="In riproduzione: "+name;
 }
 
-/* CHAT LAYOUT */
+/* CHAT VISIBILITY */
 const chat=document.getElementById("chat");
 const toggle=document.getElementById("chatToggle");
 const closeBtn=document.getElementById("chatClose");
