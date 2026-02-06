@@ -2,7 +2,6 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
@@ -32,7 +31,7 @@ header p{color:#aaa;font-size:.9rem}
 main{
   flex:1;
   padding:12px;
-  padding-bottom:150px;
+  padding-bottom:180px;
 }
 
 /* CATEGORIE */
@@ -80,6 +79,32 @@ main{
 .card:hover{background:#00e5ff;color:#000}
 a.card{color:inherit;text-decoration:none}
 
+/* ===== VU METER ===== */
+#vumeter-wrapper{
+  display:flex;
+  justify-content:center;
+  margin-bottom:6px;
+}
+
+#vumeter{
+  display:flex;
+  gap:2px;
+  align-items:flex-end;
+  height:50px;
+}
+
+/* singola barra */
+.vu{
+  width:6px;
+  height:6px;
+  background:#222;
+  border-radius:2px;
+  transition:height .12s;
+}
+.vu.g{background:#00ff66}
+.vu.y{background:#ffee00}
+.vu.r{background:#ff0033}
+
 /* PLAYER */
 #player{
   position:fixed;
@@ -95,29 +120,7 @@ a.card{color:inherit;text-decoration:none}
 #now{color:#00e5ff;font-weight:bold;margin-bottom:6px}
 audio{width:95%}
 
-/* ===== VU METER ===== */
-#vumeter{
-  display:flex;
-  justify-content:center;
-  align-items:flex-end;
-  gap:2px;
-  height:40px;
-  margin-top:8px;
-}
-
-.vu{
-  width:6px;
-  height:6px;
-  background:#222;
-  border-radius:2px;
-  transition:height .1s;
-}
-
-.vu.g{background:#00ff66}
-.vu.y{background:#ffee00}
-.vu.r{background:#ff0033}
-
-/* CHAT MODERNA */
+/* CHAT */
 #chat{
   position:fixed;
   inset:0;
@@ -184,10 +187,10 @@ audio{width:95%}
   font-weight:bold;
 }
 
-/* TOGGLE CHAT */
+/* CHAT TOGGLE */
 #chatToggle{
   position:fixed;
-  bottom:170px;
+  bottom:190px;
   right:14px;
   width:56px;
   height:56px;
@@ -201,6 +204,10 @@ audio{width:95%}
 /* MOBILE */
 @media(max-width:900px){
   .categories{grid-template-columns:1fr 1fr}
+
+  #vumeter{
+    height:40px;
+  }
 }
 </style>
 </head>
@@ -218,11 +225,14 @@ audio{width:95%}
 </main>
 
 <div id="player">
+
+  <!-- VU METER SOPRA -->
+  <div id="vumeter-wrapper">
+    <div id="vumeter"></div>
+  </div>
+
   <div id="now">Nessuna radio in riproduzione</div>
   <audio id="audio" controls></audio>
-
-  <!-- VU METER -->
-  <div id="vumeter"></div>
 </div>
 
 <button id="chatToggle">💬</button>
@@ -302,19 +312,20 @@ const contentEl=document.getElementById("content");
 const audio=document.getElementById("audio");
 const now=document.getElementById("now");
 
-/* VU METER */
+/* ===== VU METER LOGIC ===== */
 const vumeter=document.getElementById("vumeter");
-let vuBars=[];
+let bars=[];
 let vuTimer=null;
 
 function buildVu(){
   vumeter.innerHTML="";
-  vuBars=[];
-  for(let i=0;i<24;i++){
+  bars=[];
+  const total=40; // molto largo
+  for(let i=0;i<total;i++){
     const b=document.createElement("div");
     b.className="vu";
     vumeter.appendChild(b);
-    vuBars.push(b);
+    bars.push(b);
   }
 }
 buildVu();
@@ -322,19 +333,27 @@ buildVu();
 function startVu(){
   stopVu();
   vuTimer=setInterval(()=>{
-    const lvl=Math.floor(Math.random()*vuBars.length);
-    vuBars.forEach((b,i)=>{
-      b.style.height=i<=lvl?(6+i*1.5)+"px":"6px";
-      b.className="vu "+(i>18?"r":i>13?"y":"g");
+    const center=bars.length/2;
+    const level=Math.random()*center;
+    bars.forEach((b,i)=>{
+      const dist=Math.abs(i-center);
+      if(dist<level){
+        const h=10+(level-dist)*2;
+        b.style.height=h+"px";
+        b.className="vu "+(h>40?"r":h>28?"y":"g");
+      }else{
+        b.style.height="6px";
+        b.className="vu";
+      }
     });
   },120);
 }
+
 function stopVu(){
   clearInterval(vuTimer);
-  vuBars.forEach(b=>b.style.height="6px");
+  bars.forEach(b=>b.style.height="6px");
 }
 
-/* AUDIO EVENTS */
 audio.onplay=startVu;
 audio.onpause=stopVu;
 
