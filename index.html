@@ -51,7 +51,16 @@ audio{width:95%}
 .message strong{color:#00e5ff;font-size:.85rem;display:block}
 
 /* REPLY */
-#replyBox{display:none;background:#222;padding:8px 12px;font-size:.85rem;border-left:4px solid #00e5ff;display:flex;justify-content:space-between;align-items:center}
+#replyBox{
+  display:none;
+  background:#222;
+  padding:8px 12px;
+  font-size:.85rem;
+  border-left:4px solid #00e5ff;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
 
 /* INPUT */
 #chatForm{display:flex;padding:10px;gap:8px;background:#161616;border-top:1px solid #222}
@@ -112,6 +121,7 @@ audio{width:95%}
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
 import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
 
+/* FIREBASE */
 const app=initializeApp({
   apiKey:"AIzaSyB8h3fvyPxq_Tjp2R5RzsgEC7jv6FASeWE",
   authDomain:"anni-80-chat-a1192.firebaseapp.com",
@@ -121,12 +131,14 @@ const app=initializeApp({
 const db=getDatabase(app);
 const chatRef=ref(db,"chat");
 
+/* NICK */
 let nickname=localStorage.getItem("anni80_nick");
 while(!nickname){
   nickname=prompt("Inserisci il tuo nickname anni ’80:");
   if(nickname) localStorage.setItem("anni80_nick",nickname);
 }
 
+/* CHAT */
 const chat=document.getElementById("chat");
 const chatForm=document.getElementById("chatForm");
 const chatInput=document.getElementById("chatInput");
@@ -151,11 +163,15 @@ onChildAdded(chatRef,s=>{
   d.className="message";
   d.innerHTML=`
     ${m.reply?`<div style="font-size:.8rem;opacity:.7;border-left:3px solid #00e5ff;padding-left:6px;margin-bottom:4px">${m.reply}</div>`:""}
-    <strong>${m.nick}</strong>${m.text}`;
+    <strong>${m.nick}</strong>${m.text}
+  `;
   d.onclick=()=>{
     replyTo=`${m.nick}: ${m.text}`;
     replyText.textContent=replyTo;
     replyBox.style.display="flex";
+
+    /* 👉 focus automatico */
+    setTimeout(()=>chatInput.focus(),50);
   };
   chatMessages.appendChild(d);
   chatMessages.scrollTop=chatMessages.scrollHeight;
@@ -178,10 +194,15 @@ const contentEl=document.getElementById("content");
 const audio=document.getElementById("audio");
 const now=document.getElementById("now");
 
-/* VU */
+/* VU METER */
 const vumeter=document.getElementById("vumeter");
 let bars=[],vuTimer=null;
-for(let i=0;i<40;i++){const b=document.createElement("div");b.className="vu";vumeter.appendChild(b);bars.push(b)}
+for(let i=0;i<40;i++){
+  const b=document.createElement("div");
+  b.className="vu";
+  vumeter.appendChild(b);
+  bars.push(b);
+}
 
 function startVu(){
   stopVu();
@@ -193,7 +214,10 @@ function startVu(){
         const h=10+(l-d)*2;
         b.style.height=h+"px";
         b.className="vu "+(h>40?"r":h>28?"y":"g");
-      }else{b.style.height="6px";b.className="vu"}
+      }else{
+        b.style.height="6px";
+        b.className="vu";
+      }
     });
   },120);
 }
