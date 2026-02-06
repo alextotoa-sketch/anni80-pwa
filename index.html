@@ -172,7 +172,7 @@ audio{width:95%}
   align-items:center;
 }
 #replyLabel{color:#fff}
-#replyNick{color:#00e5ff}
+#replyNick{color:#00e5ff;font-weight:bold}
 
 /* CHAT FORM */
 #chatForm{
@@ -236,9 +236,7 @@ audio{width:95%}
 </main>
 
 <div id="player">
-  <div id="vumeter-wrapper">
-    <div id="vumeter"></div>
-  </div>
+  <div id="vumeter-wrapper"><div id="vumeter"></div></div>
   <div id="now">Nessuna radio in riproduzione</div>
   <audio id="audio" controls></audio>
 </div>
@@ -286,27 +284,12 @@ while(!nickname){
 }
 
 const chat=document.getElementById("chat");
-const chatForm=document.getElementById("chatForm");
 const chatInput=document.getElementById("chatInput");
 const chatMessages=document.getElementById("chatMessages");
 const replyBox=document.getElementById("replyBox");
 const replyNick=document.getElementById("replyNick");
 
 let replyTo=null;
-
-chatForm.addEventListener("submit",e=>{
-  e.preventDefault();
-  if(chatInput.value.trim()){
-    push(chatRef,{
-      nick:nickname,
-      text:chatInput.value,
-      reply:replyTo
-    });
-    chatInput.value="";
-    replyTo=null;
-    replyBox.style.display="none";
-  }
-});
 
 onChildAdded(chatRef,s=>{
   const m=s.val();
@@ -321,7 +304,12 @@ onChildAdded(chatRef,s=>{
     replyTo = m.nick;
     replyNick.textContent = m.nick;
     replyBox.style.display="flex";
-    setTimeout(()=>chatInput.focus(),100);
+
+    /* 🔥 FOCUS + TASTIERA MOBILE */
+    setTimeout(()=>{
+      chatInput.focus();
+      chatInput.click();
+    },120);
   };
   chatMessages.appendChild(d);
   chatMessages.scrollTop=chatMessages.scrollHeight;
@@ -334,8 +322,6 @@ window.cancelReply=()=>{
 
 window.closeChat=()=>chat.style.display="none";
 document.getElementById("chatToggle").onclick=()=>chat.style.display="flex";
-
-/* RADIO + UI + VU METER invariati */
 </script>
 
 </body>
