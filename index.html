@@ -2,7 +2,6 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
@@ -10,9 +9,8 @@ content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-
 body{
-  background:#0f0f0f;
+  background:#0b0b0b;
   color:#fff;
   min-height:100vh;
   display:flex;
@@ -21,21 +19,21 @@ body{
 
 /* HEADER */
 header{
-  text-align:center;
   padding:16px;
+  text-align:center;
   border-bottom:2px solid #00e5ff;
 }
 header h1{color:#00e5ff}
-header p{color:#aaa;font-size:.9rem}
+header p{color:#aaa}
 
 /* MAIN */
 main{
   flex:1;
   padding:12px;
-  padding-bottom:90px;
+  padding-bottom:110px;
 }
 
-/* CATEGORIE */
+/* SEZIONI */
 .categories{
   display:grid;
   grid-template-columns:repeat(4,1fr);
@@ -55,22 +53,24 @@ main{
   color:#000;
 }
 
-/* 🎚️ V-METER */
+/* MOBILE: 2 sopra + 2 sotto */
+@media(max-width:900px){
+  .categories{grid-template-columns:1fr 1fr}
+}
+
+/* V-METER */
 #vmeterBox{
-  margin:10px 0 16px;
+  margin-bottom:12px;
   padding:10px;
   border:2px solid #00e5ff;
   border-radius:12px;
   background:#000;
 }
-
 #vmeter{
-  width:100%;
-  height:60px;
   display:flex;
-  gap:10px;
+  gap:12px;
+  height:60px;
 }
-
 .vbar{
   flex:1;
   background:#111;
@@ -78,38 +78,34 @@ main{
   overflow:hidden;
   position:relative;
 }
-
 .vfill{
   position:absolute;
   bottom:0;
   width:100%;
   height:0%;
   background:linear-gradient(to top,#00ff66,#ccffcc);
-  box-shadow:0 0 10px #00ff66;
-  transition:height 0.08s linear;
+  box-shadow:0 0 12px #00ff66;
 }
 
-/* CONTENUTO */
+/* CONTENT */
 #content{
   border:2px solid #00e5ff;
   border-radius:12px;
   padding:14px;
-  min-height:200px;
+  min-height:220px;
 }
-
 .grid{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:10px;
 }
-
 .card{
   border:2px solid #00e5ff;
   border-radius:12px;
   padding:12px;
-  background:#1c1c1c;
-  cursor:pointer;
+  background:#1b1b1b;
   text-align:center;
+  cursor:pointer;
 }
 .card:hover{background:#00e5ff;color:#000}
 a.card{color:inherit;text-decoration:none}
@@ -120,7 +116,7 @@ a.card{color:inherit;text-decoration:none}
   bottom:0;
   left:0;
   width:100%;
-  background:#1c1c1c;
+  background:#1b1b1b;
   border-top:2px solid #00e5ff;
   padding:10px;
   text-align:center;
@@ -129,35 +125,43 @@ a.card{color:inherit;text-decoration:none}
 #now{color:#00e5ff;font-weight:bold;margin-bottom:6px}
 audio{width:95%}
 
-/* CHAT FULLSCREEN */
+/* CHAT */
+#chatToggle{
+  position:fixed;
+  right:14px;
+  bottom:130px;
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  background:#00e5ff;
+  border:none;
+  font-size:26px;
+  z-index:800;
+}
 #chat{
   position:fixed;
   inset:0;
-  background:#0f0f0f;
+  background:#0b0b0b;
   display:none;
   flex-direction:column;
   z-index:2000;
 }
-
 #chatHeader{
   padding:14px;
+  background:#1b1b1b;
   border-bottom:2px solid #00e5ff;
   display:flex;
   justify-content:space-between;
-  background:#1c1c1c;
 }
-
 #chatMessages{
   flex:1;
   overflow-y:auto;
   padding:14px;
 }
-
 #chatForm{
   display:flex;
   border-top:2px solid #00e5ff;
 }
-
 #chatInput{
   flex:1;
   padding:14px;
@@ -166,31 +170,11 @@ audio{width:95%}
   border:none;
   font-size:16px;
 }
-
 #chatForm button{
   padding:14px;
   background:#00e5ff;
   border:none;
   font-weight:bold;
-}
-
-/* CHAT BUTTON */
-#chatToggle{
-  position:fixed;
-  bottom:110px;
-  right:14px;
-  width:56px;
-  height:56px;
-  border-radius:50%;
-  background:#00e5ff;
-  border:none;
-  font-size:26px;
-  z-index:1100;
-}
-
-/* MOBILE */
-@media (max-width:900px){
-  .categories{grid-template-columns:1fr 1fr}
 }
 </style>
 </head>
@@ -199,13 +183,12 @@ audio{width:95%}
 
 <header>
   <h1>Io negli anni ’80 c’ero</h1>
-  <p>Musica · Radio · Giochi · Chat</p>
+  <p>Radio · Musica · Giochi · Chat</p>
 </header>
 
 <main>
   <div class="categories" id="categories"></div>
 
-  <!-- V-METER -->
   <div id="vmeterBox">
     <div id="vmeter">
       <div class="vbar"><div class="vfill" id="vL"></div></div>
@@ -217,7 +200,7 @@ audio{width:95%}
 </main>
 
 <div id="player">
-  <div id="now">Nessuna radio in riproduzione</div>
+  <div id="now">Nessuna radio attiva</div>
   <audio id="audio" controls></audio>
 </div>
 
@@ -225,7 +208,7 @@ audio{width:95%}
 
 <div id="chat">
   <div id="chatHeader">
-    <strong>💬 Chat anni ’80</strong>
+    <strong>Chat anni ’80</strong>
     <button onclick="chat.style.display='none'"
       style="background:none;border:none;color:#00e5ff;font-size:22px">✕</button>
   </div>
@@ -259,9 +242,7 @@ if(!nickname){
 }
 
 /* CHAT */
-const chat=document.getElementById("chat");
 chatToggle.onclick=()=>chat.style.display="flex";
-
 chatForm.addEventListener("submit",e=>{
   e.preventDefault();
   if(chatInput.value.trim()){
@@ -269,7 +250,6 @@ chatForm.addEventListener("submit",e=>{
     chatInput.value="";
   }
 });
-
 onChildAdded(chatRef,s=>{
   const m=s.val();
   const d=document.createElement("div");
@@ -278,19 +258,18 @@ onChildAdded(chatRef,s=>{
   chatMessages.scrollTop=chatMessages.scrollHeight;
 });
 
-/* RADIO */
-const radio=[
+/* SEZIONI */
+const categoriesEl=document.getElementById("categories");
+const contentEl=document.getElementById("content");
+const audio=document.getElementById("audio");
+const now=document.getElementById("now");
+
+const radios=[
   {n:"Radio 80",u:"https://sphera.fluidstream.eu/radio80.aac"},
   {n:"SomaFM Underground 80s",u:"https://somafm.com/u80s130.pls"},
   {n:"80s80s Italo Disco",u:"https://streams.80s80s.de/italodisco/mp3-192"},
   {n:"Italia 80",u:"https://stream.laut.fm/italia80"}
 ];
-
-/* UI */
-const categoriesEl=document.getElementById("categories");
-const contentEl=document.getElementById("content");
-const audio=document.getElementById("audio");
-const now=document.getElementById("now");
 
 ["Musica","Radio","Giochi","Chat"].forEach((c,i)=>{
   const d=document.createElement("div");
@@ -304,42 +283,59 @@ function open(i,el){
   document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
   el.classList.add("active");
 
+  if(i===0){
+    contentEl.innerHTML=`<div class="grid">
+      <a class="card" href="https://www.youtube.com/results?search_query=italo+disco+80s" target="_blank">Italo Disco</a>
+      <a class="card" href="https://www.youtube.com/results?search_query=synth+pop+80s" target="_blank">Synth Pop</a>
+    </div>`;
+  }
   if(i===1){
     contentEl.innerHTML=`<div class="grid">${
-      radio.map(r=>`<div class="card" onclick="play('${r.u}','${r.n}')">${r.n}</div>`).join("")
+      radios.map(r=>`<div class="card" onclick="playRadio('${r.u}','${r.n}')">${r.n}</div>`).join("")
     }</div>`;
-  }else{
-    contentEl.innerHTML="Sezione in preparazione…";
+  }
+  if(i===2){
+    contentEl.innerHTML=`<div class="grid">
+      <a class="card" href="https://archive.org/details/msdos_Oregon_Trail_The_1990" target="_blank">Oregon Trail</a>
+      <a class="card" href="https://archive.org/details/msdos_Pac-Man_1983" target="_blank">Pac-Man</a>
+    </div>`;
+  }
+  if(i===3){
+    chat.style.display="flex";
   }
 }
 
-/* 🎚️ V-METER AUDIO */
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-const source = audioCtx.createMediaElementSource(audio);
-const analyser = audioCtx.createAnalyser();
-analyser.fftSize = 256;
-source.connect(analyser);
-analyser.connect(audioCtx.destination);
-
-const data = new Uint8Array(analyser.frequencyBinCount);
+/* V-METER FUNZIONANTE */
+let audioCtx, analyser, source;
 const vL=document.getElementById("vL");
 const vR=document.getElementById("vR");
 
-function animateV(){
+function startMeter(){
   analyser.getByteFrequencyData(data);
-  let avg = data.reduce((a,b)=>a+b)/data.length;
-  let level = Math.min(100,avg/1.5);
-  vL.style.height = level+"%";
-  vR.style.height = (level*0.9)+"%";
-  requestAnimationFrame(animateV);
+  let avg=data.reduce((a,b)=>a+b)/data.length;
+  let lvl=Math.min(100,avg/1.4);
+  vL.style.height=lvl+"%";
+  vR.style.height=(lvl*0.9)+"%";
+  requestAnimationFrame(startMeter);
 }
-animateV();
 
-window.play=(u,n)=>{
+let data;
+window.playRadio=(u,n)=>{
   audio.src=u;
   audio.play();
-  audioCtx.resume();
   now.textContent="In riproduzione: "+n;
+
+  if(!audioCtx){
+    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    source=audioCtx.createMediaElementSource(audio);
+    analyser=audioCtx.createAnalyser();
+    analyser.fftSize=256;
+    data=new Uint8Array(analyser.frequencyBinCount);
+    source.connect(analyser);
+    analyser.connect(audioCtx.destination);
+    startMeter();
+  }
+  audioCtx.resume();
 };
 </script>
 
