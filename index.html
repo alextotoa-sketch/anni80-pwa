@@ -32,7 +32,7 @@ header p{color:#aaa;font-size:.9rem}
 main{
   flex:1;
   padding:12px;
-  padding-bottom:110px;
+  padding-bottom:150px;
 }
 
 /* CATEGORIE */
@@ -95,8 +95,29 @@ a.card{color:inherit;text-decoration:none}
 #now{color:#00e5ff;font-weight:bold;margin-bottom:6px}
 audio{width:95%}
 
-/* ================= CHAT MODERNA ================= */
+/* ===== VU METER ===== */
+#vumeter{
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  gap:2px;
+  height:40px;
+  margin-top:8px;
+}
 
+.vu{
+  width:6px;
+  height:6px;
+  background:#222;
+  border-radius:2px;
+  transition:height .1s;
+}
+
+.vu.g{background:#00ff66}
+.vu.y{background:#ffee00}
+.vu.r{background:#ff0033}
+
+/* CHAT MODERNA */
 #chat{
   position:fixed;
   inset:0;
@@ -106,21 +127,15 @@ audio{width:95%}
   z-index:2000;
 }
 
-/* HEADER CHAT */
 #chatHeader{
-  padding:14px 16px;
+  padding:14px;
+  background:#161616;
   border-bottom:1px solid #222;
   display:flex;
   justify-content:space-between;
-  align-items:center;
-  background:#161616;
 }
-#chatHeader strong{
-  color:#00e5ff;
-  font-size:1.1rem;
-}
+#chatHeader strong{color:#00e5ff}
 
-/* MESSAGGI */
 #chatMessages{
   flex:1;
   overflow-y:auto;
@@ -130,26 +145,19 @@ audio{width:95%}
   gap:10px;
 }
 
-/* BOLLA */
 .message{
   background:#1f1f1f;
   border-radius:14px;
   padding:10px 12px;
   max-width:85%;
-  box-shadow:0 0 6px rgba(0,0,0,.6);
 }
 .message strong{
   color:#00e5ff;
   font-size:.85rem;
   display:block;
-  margin-bottom:2px;
 }
-.message span{
-  font-size:.95rem;
-  line-height:1.4;
-}
+.message span{font-size:.95rem}
 
-/* INPUT CHAT */
 #chatForm{
   display:flex;
   padding:10px;
@@ -174,13 +182,12 @@ audio{width:95%}
   border:none;
   background:#00e5ff;
   font-weight:bold;
-  cursor:pointer;
 }
 
 /* TOGGLE CHAT */
 #chatToggle{
   position:fixed;
-  bottom:130px;
+  bottom:170px;
   right:14px;
   width:56px;
   height:56px;
@@ -213,6 +220,9 @@ audio{width:95%}
 <div id="player">
   <div id="now">Nessuna radio in riproduzione</div>
   <audio id="audio" controls></audio>
+
+  <!-- VU METER -->
+  <div id="vumeter"></div>
 </div>
 
 <button id="chatToggle">💬</button>
@@ -224,9 +234,7 @@ audio{width:95%}
     <button onclick="closeChat()"
       style="background:none;border:none;color:#00e5ff;font-size:22px">✕</button>
   </div>
-
   <div id="chatMessages"></div>
-
   <form id="chatForm">
     <input id="chatInput" placeholder="Scrivi un messaggio…" autocomplete="off">
     <button>Invia</button>
@@ -252,9 +260,7 @@ const chatRef = ref(db,"chat");
 let nickname = localStorage.getItem("anni80_nick");
 while(!nickname){
   nickname = prompt("Inserisci il tuo nickname anni ’80:");
-  if(nickname){
-    localStorage.setItem("anni80_nick", nickname);
-  }
+  if(nickname) localStorage.setItem("anni80_nick", nickname);
 }
 
 /* CHAT */
@@ -296,6 +302,43 @@ const contentEl=document.getElementById("content");
 const audio=document.getElementById("audio");
 const now=document.getElementById("now");
 
+/* VU METER */
+const vumeter=document.getElementById("vumeter");
+let vuBars=[];
+let vuTimer=null;
+
+function buildVu(){
+  vumeter.innerHTML="";
+  vuBars=[];
+  for(let i=0;i<24;i++){
+    const b=document.createElement("div");
+    b.className="vu";
+    vumeter.appendChild(b);
+    vuBars.push(b);
+  }
+}
+buildVu();
+
+function startVu(){
+  stopVu();
+  vuTimer=setInterval(()=>{
+    const lvl=Math.floor(Math.random()*vuBars.length);
+    vuBars.forEach((b,i)=>{
+      b.style.height=i<=lvl?(6+i*1.5)+"px":"6px";
+      b.className="vu "+(i>18?"r":i>13?"y":"g");
+    });
+  },120);
+}
+function stopVu(){
+  clearInterval(vuTimer);
+  vuBars.forEach(b=>b.style.height="6px");
+}
+
+/* AUDIO EVENTS */
+audio.onplay=startVu;
+audio.onpause=stopVu;
+
+/* UI */
 ["Musica","Radio","Giochi","Chat"].forEach((c,i)=>{
   const d=document.createElement("div");
   d.className="category";
@@ -331,11 +374,7 @@ function open(i,el){
   }
 
   if(i===3){
-    contentEl.innerHTML=`
-      <div style="text-align:center;line-height:1.6">
-        💬 <strong>Chat anni ’80</strong><br><br>
-        Premi il pulsante 💬 per aprire la chat
-      </div>`;
+    contentEl.innerHTML=`💬 Premi il pulsante chat per parlare`;
   }
 }
 
