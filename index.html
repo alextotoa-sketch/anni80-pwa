@@ -64,11 +64,36 @@ audio{width:95%}
 
 /* INPUT */
 #chatForm{display:flex;padding:10px;gap:8px;background:#161616;border-top:1px solid #222}
-#chatInput{flex:1;padding:12px 14px;border-radius:20px;border:none;background:#2a2a2a;color:#fff;font-size:16px}
-#chatForm button{padding:12px 18px;border-radius:20px;border:none;background:#00e5ff;font-weight:bold}
+#chatInput{
+  flex:1;
+  padding:12px 14px;
+  border-radius:20px;
+  border:none;
+  background:#2a2a2a;
+  color:#fff;
+  font-size:16px;
+}
+#chatForm button{
+  padding:12px 18px;
+  border-radius:20px;
+  border:none;
+  background:#00e5ff;
+  font-weight:bold;
+}
 
 /* CHAT TOGGLE */
-#chatToggle{position:fixed;bottom:200px;right:14px;width:56px;height:56px;border-radius:50%;background:#00e5ff;border:none;font-size:26px;z-index:1100}
+#chatToggle{
+  position:fixed;
+  bottom:200px;
+  right:14px;
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  background:#00e5ff;
+  border:none;
+  font-size:26px;
+  z-index:1100;
+}
 
 /* MOBILE */
 @media(max-width:900px){
@@ -165,14 +190,18 @@ onChildAdded(chatRef,s=>{
     ${m.reply?`<div style="font-size:.8rem;opacity:.7;border-left:3px solid #00e5ff;padding-left:6px;margin-bottom:4px">${m.reply}</div>`:""}
     <strong>${m.nick}</strong>${m.text}
   `;
-  d.onclick=()=>{
+
+  d.addEventListener("click",()=>{
     replyTo=`${m.nick}: ${m.text}`;
     replyText.textContent=replyTo;
     replyBox.style.display="flex";
 
-    /* 👉 focus automatico */
-    setTimeout(()=>chatInput.focus(),50);
-  };
+    /* 👉 MOBILE: attiva tastiera */
+    chatInput.scrollIntoView({behavior:"smooth",block:"center"});
+    chatInput.focus();
+    chatInput.click();
+  });
+
   chatMessages.appendChild(d);
   chatMessages.scrollTop=chatMessages.scrollHeight;
 });
@@ -203,7 +232,6 @@ for(let i=0;i<40;i++){
   vumeter.appendChild(b);
   bars.push(b);
 }
-
 function startVu(){
   stopVu();
   vuTimer=setInterval(()=>{
