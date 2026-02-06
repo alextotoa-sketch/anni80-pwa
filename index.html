@@ -2,8 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Io negli anni ’80 c’ero</title>
 
@@ -17,7 +16,7 @@ header h1{color:#00e5ff}
 header p{color:#aaa}
 
 /* MAIN */
-main{flex:1;padding:12px;padding-bottom:120px}
+main{flex:1;padding:12px;padding-bottom:130px}
 
 /* SEZIONI */
 .categories{
@@ -35,6 +34,8 @@ main{flex:1;padding:12px;padding-bottom:120px}
   cursor:pointer;
 }
 .category.active{background:#00e5ff;color:#000}
+
+/* MOBILE: 2+2 */
 @media(max-width:900px){
   .categories{grid-template-columns:1fr 1fr}
 }
@@ -59,11 +60,11 @@ main{flex:1;padding:12px;padding-bottom:120px}
   overflow:hidden;
 }
 .vfill{
-  height:0%;
   width:100%;
+  height:0%;
   background:linear-gradient(to top,#00ff66,#ccffcc);
   box-shadow:0 0 12px #00ff66;
-  transition:height 0.05s linear;
+  transition:height 0.08s linear;
 }
 
 /* CONTENT */
@@ -167,7 +168,7 @@ audio{width:95%}
 
 <div id="player">
   <div id="now">Nessuna radio attiva</div>
-  <audio id="audio" controls playsinline></audio>
+  <audio id="audio" controls></audio>
 </div>
 
 <button id="chatToggle">💬</button>
@@ -264,44 +265,41 @@ function open(i,el){
   if(i===3){chat.style.display="flex";}
 }
 
-/* V-METER CORRETTO */
-const audio=document.getElementById("audio");
-const now=document.getElementById("now");
+/* 🎚️ V-METER FAKE */
+let meterTimer=null;
 const vL=document.getElementById("vL");
 const vR=document.getElementById("vR");
 
-let ctx, analyser, src, data;
-
-function meterLoop(){
-  analyser.getByteTimeDomainData(data);
-  let sum=0;
-  for(let i=0;i<data.length;i++){
-    let v=(data[i]-128)/128;
-    sum+=v*v;
-  }
-  let level=Math.min(100,Math.sqrt(sum/data.length)*160);
-  vL.style.height=level+"%";
-  vR.style.height=(level*0.9)+"%";
-  requestAnimationFrame(meterLoop);
+function startMeter(){
+  stopMeter();
+  meterTimer=setInterval(()=>{
+    const l=Math.random()*90+5;
+    const r=Math.random()*85+5;
+    vL.style.height=l+"%";
+    vR.style.height=r+"%";
+  },120);
 }
+
+function stopMeter(){
+  clearInterval(meterTimer);
+  meterTimer=null;
+  vL.style.height="0%";
+  vR.style.height="0%";
+}
+
+/* RADIO */
+const audio=document.getElementById("audio");
+const now=document.getElementById("now");
 
 window.playRadio=(u,n)=>{
   audio.src=u;
   audio.play();
   now.textContent="In riproduzione: "+n;
-
-  if(!ctx){
-    ctx=new (window.AudioContext||window.webkitAudioContext)();
-    src=ctx.createMediaElementSource(audio);
-    analyser=ctx.createAnalyser();
-    analyser.fftSize=256;
-    data=new Uint8Array(analyser.fftSize);
-    src.connect(analyser);
-    analyser.connect(ctx.destination);
-    meterLoop();
-  }
-  ctx.resume();
+  startMeter();
 };
+
+audio.addEventListener("pause",stopMeter);
+audio.addEventListener("ended",stopMeter);
 </script>
 
 </body>
