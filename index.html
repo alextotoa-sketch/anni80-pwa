@@ -68,6 +68,12 @@ audio{width:95%}
   justify-content:space-between;
   align-items:center;
 }
+#replyBox span{
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:85%;
+}
 
 /* INPUT */
 #chatForm{display:flex;padding:10px;gap:8px;background:#161616;border-top:1px solid #222}
@@ -202,7 +208,7 @@ onChildAdded(chatRef,s=>{
 
   label.addEventListener("click",()=>{
     replyTo=`${m.nick}: ${m.text}`;
-    replyText.textContent=replyTo;
+    replyText.textContent=`Rispondi a ${replyTo}`;
     replyBox.style.display="flex";
   });
 
@@ -214,7 +220,7 @@ window.cancelReply=()=>{replyTo=null;replyBox.style.display="none"};
 window.closeChat=()=>chat.style.display="none";
 document.getElementById("chatToggle").onclick=()=>chat.style.display="flex";
 
-/* RADIO + UI + VU (immutati) */
+/* RADIO + UI + VU */
 const radio=[
   {n:"Radio 80",u:"https://sphera.fluidstream.eu/radio80.aac"},
   {n:"SomaFM Underground 80s",u:"https://somafm.com/u80s130.pls"},
