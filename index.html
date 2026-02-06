@@ -10,35 +10,45 @@
   --bg:#0f0f0f;
   --card:#1c1c1c;
   --accent:#00e5ff;
-  --text:#fff;
-  --muted:#aaa;
+  --text:#ffffff;
+  --muted:#aaaaaa;
 }
 
 *{
   box-sizing:border-box;
   margin:0;
   padding:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
 }
 
 body{
   background:var(--bg);
   color:var(--text);
   min-height:100vh;
+  display:flex;
+  flex-direction:column;
 }
 
 header{
-  text-align:center;
   padding:20px;
+  text-align:center;
   border-bottom:2px solid var(--accent);
 }
 
-header h1{color:var(--accent)}
-header p{color:var(--muted)}
+header h1{
+  color:var(--accent);
+  font-size:2rem;
+}
+
+header p{
+  color:var(--muted);
+  margin-top:6px;
+}
 
 main{
+  flex:1;
   padding:20px;
-  padding-bottom:220px;
+  padding-bottom:200px;
 }
 
 .categories{
@@ -51,8 +61,8 @@ main{
 .category{
   border:2px solid var(--accent);
   padding:12px;
-  border-radius:12px;
   text-align:center;
+  border-radius:12px;
   cursor:pointer;
   font-weight:600;
 }
@@ -67,7 +77,7 @@ main{
   border:2px solid var(--accent);
   border-radius:14px;
   padding:16px;
-  min-height:260px;
+  min-height:250px;
 }
 
 .grid{
@@ -81,8 +91,6 @@ main{
   border:2px solid var(--accent);
   border-radius:14px;
   padding:14px;
-  text-decoration:none;
-  color:inherit;
   cursor:pointer;
 }
 
@@ -91,8 +99,15 @@ main{
   color:#000;
 }
 
-.card .title{font-weight:700;margin-bottom:6px}
-.card .desc{font-size:.85rem;color:var(--muted)}
+.card .title{
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+.card .desc{
+  font-size:0.85rem;
+  color:var(--muted);
+}
 
 /* PLAYER */
 #player{
@@ -104,7 +119,7 @@ main{
   border-top:2px solid var(--accent);
   padding:10px;
   text-align:center;
-  z-index:300;
+  z-index:500;
 }
 
 #now{
@@ -113,23 +128,25 @@ main{
   margin-bottom:6px;
 }
 
-audio{width:90%}
+audio{
+  width:90%;
+}
 
 /* CHAT */
 #chat{
   position:fixed;
-  bottom:120px;
+  bottom:90px;
   left:50%;
   transform:translateX(-50%);
   width:600px;
   max-width:90%;
   height:260px;
-  background:var(--card);
+  background:#1c1c1c;
   border:2px solid var(--accent);
   border-radius:14px;
   display:flex;
   flex-direction:column;
-  z-index:500;
+  z-index:1000;
 }
 
 #chatHeader{
@@ -141,15 +158,19 @@ audio{width:90%}
   border-bottom:2px solid var(--accent);
 }
 
+#chatHeader button{
+  background:none;
+  border:none;
+  color:var(--accent);
+  font-size:18px;
+  cursor:pointer;
+}
+
 #chatMessages{
   flex:1;
   overflow-y:auto;
   padding:8px;
-  font-size:.85rem;
-}
-
-#chatMessages div{
-  margin-bottom:4px;
+  font-size:0.85rem;
 }
 
 #chatForm{
@@ -159,14 +180,14 @@ audio{width:90%}
 
 #chatInput{
   flex:1;
-  padding:8px;
+  padding:6px;
   border:none;
   background:#222;
   color:#fff;
 }
 
 #chatForm button{
-  padding:8px 14px;
+  padding:6px 12px;
   border:none;
   background:var(--accent);
   cursor:pointer;
@@ -175,7 +196,7 @@ audio{width:90%}
 /* MOBILE */
 #chatToggle{
   position:fixed;
-  bottom:120px;
+  bottom:90px;
   right:20px;
   width:52px;
   height:52px;
@@ -184,13 +205,15 @@ audio{width:90%}
   border:none;
   font-size:22px;
   cursor:pointer;
-  display:none;
-  z-index:600;
+  z-index:1001;
 }
 
-@media(max-width:900px){
-  #chat{display:none;height:60%}
-  #chatToggle{display:block}
+@media (max-width:900px){
+  #chat{
+    display:none;
+    width:90%;
+    height:60%;
+  }
 }
 </style>
 </head>
@@ -209,7 +232,7 @@ audio{width:90%}
 
 <div id="player">
   <div id="now">Nessuna radio in riproduzione</div>
-  <audio id="audio" controls playsinline></audio>
+  <audio id="audio" controls></audio>
 </div>
 
 <button id="chatToggle">💬</button>
@@ -226,12 +249,13 @@ audio{width:90%}
   </form>
 </div>
 
-<!-- 🔥 FIREBASE CHAT -->
+<!-- 🔥 JAVASCRIPT -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
 import { getDatabase, ref, push, onChildAdded }
 from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
 
+/* FIREBASE */
 const firebaseConfig = {
   apiKey: "AIzaSyB8h3fvyPxq_Tjp2R5RzsgEC7jv6FASeWE",
   authDomain: "anni-80-chat-a1192.firebaseapp.com",
@@ -246,59 +270,54 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const chatRef = ref(db, "chat");
 
+/* NICKNAME */
+let nickname = localStorage.getItem("anni80_nick");
+if (!nickname) {
+  nickname = prompt("Scegli il tuo nickname anni ’80:");
+  if (!nickname) nickname = "Anonimo80";
+  localStorage.setItem("anni80_nick", nickname);
+}
+
+/* CHAT */
 const chatForm = document.getElementById("chatForm");
 const chatInput = document.getElementById("chatInput");
 const chatMessages = document.getElementById("chatMessages");
 
-chatForm.addEventListener("submit", e=>{
+chatForm.addEventListener("submit", e => {
   e.preventDefault();
   const text = chatInput.value.trim();
-  if(text){
-    push(chatRef, { text });
-    chatInput.value="";
+  if (text) {
+    push(chatRef, { nick: nickname, text, time: Date.now() });
+    chatInput.value = "";
   }
 });
 
-onChildAdded(chatRef, snap=>{
-  const data = snap.val();
-  if(!data || !data.text) return;
+onChildAdded(chatRef, snap => {
+  const m = snap.val();
+  if (!m || !m.text) return;
   const div = document.createElement("div");
-  div.textContent = data.text;
+  div.innerHTML = `<strong>[${m.nick}]</strong>: ${m.text}`;
   chatMessages.appendChild(div);
   chatMessages.scrollTop = chatMessages.scrollHeight;
 });
-</script>
 
-<script>
-/* CONTENUTI */
-const categories=[
-  {id:"musica",label:"Musica"},
+/* CATEGORIE */
+const categories = [
   {id:"radio",label:"Radio"},
-  {id:"giochi",label:"Giochi"},
   {id:"chat",label:"Chat"}
 ];
 
-const radio=[
+const radio = [
   {name:"Radio 80",url:"https://sphera.fluidstream.eu/radio80.aac",desc:"Pop e rock"},
-  {name:"SomaFM Underground 80s",url:"https://ice2.somafm.com/u80s-128-aac",desc:"New wave"},
-  {name:"80s80s Italo Disco",url:"https://regiocast.streamabc.net/regc-80s80sitalodisco-mp3-192-9093510",desc:"Italo disco"},
+  {name:"SomaFM Underground 80s",url:"https://somafm.com/u80s130.pls",desc:"Alternative"},
+  {name:"80s80s Italo Disco",url:"https://streams.80s80s.de/italodisco/mp3-192",desc:"Italo Disco"},
   {name:"Italia 80",url:"https://stream.laut.fm/italia80",desc:"Musica italiana"}
 ];
 
-const musica=[
-  {name:"Spotify – Anni 80",url:"https://open.spotify.com/search/anni%2080"},
-  {name:"YouTube – Hits 80",url:"https://www.youtube.com/results?search_query=hit+anni+80"}
-];
-
-const giochi=[
-  {name:"Pac-Man",url:"https://www.retrogames.cz/play_001-NES.php"},
-  {name:"Tetris",url:"https://tetris.com/play-tetris"}
-];
-
-const categoriesEl=document.getElementById("categories");
-const contentEl=document.getElementById("content");
-const audio=document.getElementById("audio");
-const now=document.getElementById("now");
+const categoriesEl = document.getElementById("categories");
+const contentEl = document.getElementById("content");
+const audio = document.getElementById("audio");
+const now = document.getElementById("now");
 
 categories.forEach(c=>{
   const d=document.createElement("div");
@@ -313,47 +332,30 @@ function openCategory(id,el){
   el.classList.add("active");
 
   if(id==="radio"){
-    contentEl.innerHTML=`<div class="grid">${radio.map(r=>`
-      <div class="card" onclick="playRadio('${r.url}','${r.name}')">
-        <div class="title">${r.name}</div>
-        <div class="desc">${r.desc}</div>
-      </div>`).join("")}</div>`;
-  }
-
-  if(id==="musica"){
-    contentEl.innerHTML=`<div class="grid">${musica.map(m=>`
-      <a class="card" href="${m.url}" target="_blank">
-        <div class="title">${m.name}</div>
-        <div class="desc">Apri</div>
-      </a>`).join("")}</div>`;
-  }
-
-  if(id==="giochi"){
-    contentEl.innerHTML=`<div class="grid">${giochi.map(g=>`
-      <a class="card" href="${g.url}" target="_blank">
-        <div class="title">${g.name}</div>
-        <div class="desc">Gioca</div>
-      </a>`).join("")}</div>`;
+    contentEl.innerHTML=`<div class="grid">${
+      radio.map(r=>`
+        <div class="card" onclick="playRadio('${r.url}','${r.name}')">
+          <div class="title">${r.name}</div>
+          <div class="desc">${r.desc}</div>
+        </div>`).join("")
+    }</div>`;
   }
 
   if(id==="chat"){
-    contentEl.innerHTML="<p>Usa la chat in basso 👇</p>";
+    contentEl.innerHTML="<p>Usa la chat in basso.</p>";
   }
 }
 
-function playRadio(url,name){
+window.playRadio=(url,name)=>{
   audio.src=url;
   audio.play();
   now.textContent="In riproduzione: "+name;
-}
+};
 
 /* CHAT MOBILE */
 const chat=document.getElementById("chat");
 const toggle=document.getElementById("chatToggle");
 const closeBtn=document.getElementById("chatClose");
-
-toggle.onclick=()=>chat.style.display="flex";
-closeBtn.onclick=()=>chat.style.display="none";
 
 function layoutChat(){
   if(window.innerWidth>900){
@@ -364,6 +366,9 @@ function layoutChat(){
     toggle.style.display="block";
   }
 }
+
+toggle.onclick=()=>chat.style.display="flex";
+closeBtn.onclick=()=>chat.style.display="none";
 layoutChat();
 window.addEventListener("resize",layoutChat);
 </script>
