@@ -209,11 +209,7 @@ audio{
 }
 
 @media (max-width:900px){
-  #chat{
-    display:none;
-    width:90%;
-    height:60%;
-  }
+  #chat{ display:none; width:90%; height:60%; }
 }
 </style>
 </head>
@@ -222,7 +218,7 @@ audio{
 
 <header>
   <h1>Io negli anni ’80 c’ero</h1>
-  <p>Musica, radio e chat in tempo reale</p>
+  <p>Musica, radio, giochi e chat in tempo reale</p>
 </header>
 
 <main>
@@ -249,7 +245,7 @@ audio{
   </form>
 </div>
 
-<!-- 🔥 JAVASCRIPT -->
+<!-- JAVASCRIPT -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
 import { getDatabase, ref, push, onChildAdded }
@@ -268,56 +264,69 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-const chatRef = ref(db, "chat");
+const chatRef = ref(db,"chat");
 
 /* NICKNAME */
 let nickname = localStorage.getItem("anni80_nick");
-if (!nickname) {
+if(!nickname){
   nickname = prompt("Scegli il tuo nickname anni ’80:");
-  if (!nickname) nickname = "Anonimo80";
+  if(!nickname) nickname = "Anonimo80";
   localStorage.setItem("anni80_nick", nickname);
 }
 
 /* CHAT */
-const chatForm = document.getElementById("chatForm");
-const chatInput = document.getElementById("chatInput");
-const chatMessages = document.getElementById("chatMessages");
+const chatForm=document.getElementById("chatForm");
+const chatInput=document.getElementById("chatInput");
+const chatMessages=document.getElementById("chatMessages");
 
-chatForm.addEventListener("submit", e => {
+chatForm.addEventListener("submit",e=>{
   e.preventDefault();
-  const text = chatInput.value.trim();
-  if (text) {
-    push(chatRef, { nick: nickname, text, time: Date.now() });
-    chatInput.value = "";
+  const text=chatInput.value.trim();
+  if(text){
+    push(chatRef,{nick:nickname,text,time:Date.now()});
+    chatInput.value="";
   }
 });
 
-onChildAdded(chatRef, snap => {
-  const m = snap.val();
-  if (!m || !m.text) return;
-  const div = document.createElement("div");
-  div.innerHTML = `<strong>[${m.nick}]</strong>: ${m.text}`;
+onChildAdded(chatRef,snap=>{
+  const m=snap.val();
+  if(!m||!m.text) return;
+  const div=document.createElement("div");
+  div.innerHTML=`<strong>[${m.nick}]</strong>: ${m.text}`;
   chatMessages.appendChild(div);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
+  chatMessages.scrollTop=chatMessages.scrollHeight;
 });
 
-/* CATEGORIE */
-const categories = [
+/* CONTENUTI */
+const categories=[
+  {id:"musica",label:"Musica"},
   {id:"radio",label:"Radio"},
+  {id:"giochi",label:"Giochi"},
   {id:"chat",label:"Chat"}
 ];
 
-const radio = [
-  {name:"Radio 80",url:"https://sphera.fluidstream.eu/radio80.aac",desc:"Pop e rock"},
+const musica=[
+  {name:"Spotify Anni 80",url:"https://open.spotify.com/search/anni%2080",desc:"Playlist anni ’80"},
+  {name:"YouTube Anni 80",url:"https://www.youtube.com/results?search_query=anni+80+music",desc:"Video musicali"}
+];
+
+const radio=[
+  {name:"Radio 80",url:"https://sphera.fluidstream.eu/radio80.aac",desc:"Pop e Rock"},
   {name:"SomaFM Underground 80s",url:"https://somafm.com/u80s130.pls",desc:"Alternative"},
   {name:"80s80s Italo Disco",url:"https://streams.80s80s.de/italodisco/mp3-192",desc:"Italo Disco"},
   {name:"Italia 80",url:"https://stream.laut.fm/italia80",desc:"Musica italiana"}
 ];
 
-const categoriesEl = document.getElementById("categories");
-const contentEl = document.getElementById("content");
-const audio = document.getElementById("audio");
-const now = document.getElementById("now");
+const giochi=[
+  {name:"Pac-Man",url:"https://www.retrogames.cz/play_004-NES.php",desc:"Arcade"},
+  {name:"Space Invaders",url:"https://www.retrogames.cz/play_031-NES.php",desc:"Classico"},
+  {name:"Tetris",url:"https://www.retrogames.cz/play_060-NES.php",desc:"Puzzle"}
+];
+
+const categoriesEl=document.getElementById("categories");
+const contentEl=document.getElementById("content");
+const audio=document.getElementById("audio");
+const now=document.getElementById("now");
 
 categories.forEach(c=>{
   const d=document.createElement("div");
@@ -331,19 +340,25 @@ function openCategory(id,el){
   document.querySelectorAll(".category").forEach(c=>c.classList.remove("active"));
   el.classList.add("active");
 
-  if(id==="radio"){
-    contentEl.innerHTML=`<div class="grid">${
-      radio.map(r=>`
-        <div class="card" onclick="playRadio('${r.url}','${r.name}')">
-          <div class="title">${r.name}</div>
-          <div class="desc">${r.desc}</div>
-        </div>`).join("")
-    }</div>`;
-  }
+  let data=[];
+  if(id==="musica") data=musica;
+  if(id==="radio") data=radio;
+  if(id==="giochi") data=giochi;
 
   if(id==="chat"){
     contentEl.innerHTML="<p>Usa la chat in basso.</p>";
+    return;
   }
+
+  contentEl.innerHTML=`<div class="grid">${
+    data.map(x=>`
+      <div class="card" onclick="${id==='radio'
+        ?`playRadio('${x.url}','${x.name}')`
+        :`window.open('${x.url}','_blank')`}">
+        <div class="title">${x.name}</div>
+        <div class="desc">${x.desc}</div>
+      </div>`).join("")
+  }</div>`;
 }
 
 window.playRadio=(url,name)=>{
