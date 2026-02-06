@@ -85,14 +85,12 @@ a.card{color:inherit;text-decoration:none}
   justify-content:center;
   margin-bottom:6px;
 }
-
 #vumeter{
   display:flex;
   gap:2px;
   align-items:flex-end;
   height:50px;
 }
-
 .vu{
   width:6px;
   height:6px;
@@ -252,7 +250,6 @@ audio{width:95%}
   </div>
 
   <div id="chatMessages"></div>
-
   <div id="replyBox"></div>
 
   <form id="chatForm">
@@ -266,6 +263,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebas
 import { getDatabase, ref, push, onChildAdded }
 from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
 
+/* FIREBASE */
 const app = initializeApp({
   apiKey:"AIzaSyB8h3fvyPxq_Tjp2R5RzsgEC7jv6FASeWE",
   authDomain:"anni-80-chat-a1192.firebaseapp.com",
@@ -275,12 +273,14 @@ const app = initializeApp({
 const db = getDatabase(app);
 const chatRef = ref(db,"chat");
 
+/* NICK */
 let nickname = localStorage.getItem("anni80_nick");
 while(!nickname){
   nickname = prompt("Inserisci il tuo nickname anni ’80:");
   if(nickname) localStorage.setItem("anni80_nick", nickname);
 }
 
+/* CHAT */
 const chat=document.getElementById("chat");
 const chatMessages=document.getElementById("chatMessages");
 const chatForm=document.getElementById("chatForm");
@@ -337,6 +337,50 @@ const categoriesEl=document.getElementById("categories");
 const contentEl=document.getElementById("content");
 const audio=document.getElementById("audio");
 const now=document.getElementById("now");
+
+/* ===== VU METER LOGIC (RIPRISTINATO) ===== */
+const vumeter=document.getElementById("vumeter");
+let bars=[];
+let vuTimer=null;
+
+function buildVu(){
+  vumeter.innerHTML="";
+  bars=[];
+  for(let i=0;i<40;i++){
+    const b=document.createElement("div");
+    b.className="vu";
+    vumeter.appendChild(b);
+    bars.push(b);
+  }
+}
+buildVu();
+
+function startVu(){
+  stopVu();
+  vuTimer=setInterval(()=>{
+    const center=bars.length/2;
+    const level=Math.random()*center;
+    bars.forEach((b,i)=>{
+      const dist=Math.abs(i-center);
+      if(dist<level){
+        const h=10+(level-dist)*2;
+        b.style.height=h+"px";
+        b.className="vu "+(h>40?"r":h>28?"y":"g");
+      }else{
+        b.style.height="6px";
+        b.className="vu";
+      }
+    });
+  },120);
+}
+
+function stopVu(){
+  clearInterval(vuTimer);
+  bars.forEach(b=>b.style.height="6px");
+}
+
+audio.onplay=startVu;
+audio.onpause=stopVu;
 
 /* UI */
 ["Musica","Radio","Giochi","Chat"].forEach((c,i)=>{
