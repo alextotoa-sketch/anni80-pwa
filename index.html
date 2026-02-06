@@ -14,12 +14,7 @@
   --muted:#aaaaaa;
 }
 
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-}
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
 
 body{
   background:var(--bg);
@@ -35,27 +30,21 @@ header{
   border-bottom:2px solid var(--accent);
 }
 
-header h1{
-  color:var(--accent);
-  font-size:2rem;
-}
-
-header p{
-  color:var(--muted);
-  margin-top:6px;
-}
+header h1{color:var(--accent);font-size:2rem;}
+header p{color:var(--muted);margin-top:6px;}
 
 main{
   flex:1;
-  padding:20px;
-  padding-bottom:200px;
+  padding:16px;
+  padding-bottom:220px;
 }
 
+/* CATEGORIE */
 .categories{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(110px,1fr));
   gap:10px;
-  margin-bottom:20px;
+  margin-bottom:16px;
 }
 
 .category{
@@ -73,17 +62,18 @@ main{
   color:#000;
 }
 
+/* CONTENUTO */
 #content{
   border:2px solid var(--accent);
   border-radius:14px;
-  padding:16px;
-  min-height:250px;
+  padding:14px;
+  min-height:220px;
 }
 
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:14px;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:12px;
 }
 
 .card{
@@ -99,15 +89,8 @@ main{
   color:#000;
 }
 
-.card .title{
-  font-weight:700;
-  margin-bottom:6px;
-}
-
-.card .desc{
-  font-size:0.85rem;
-  color:var(--muted);
-}
+.card .title{font-weight:700;margin-bottom:6px;}
+.card .desc{font-size:0.8rem;color:var(--muted);}
 
 /* PLAYER */
 #player{
@@ -122,15 +105,8 @@ main{
   z-index:500;
 }
 
-#now{
-  color:var(--accent);
-  font-weight:700;
-  margin-bottom:6px;
-}
-
-audio{
-  width:90%;
-}
+#now{color:var(--accent);font-weight:700;margin-bottom:6px;}
+audio{width:92%;}
 
 /* CHAT */
 #chat{
@@ -139,7 +115,7 @@ audio{
   left:50%;
   transform:translateX(-50%);
   width:600px;
-  max-width:90%;
+  max-width:95%;
   height:260px;
   background:#1c1c1c;
   border:2px solid var(--accent);
@@ -180,36 +156,39 @@ audio{
 
 #chatInput{
   flex:1;
-  padding:6px;
+  padding:8px;
   border:none;
   background:#222;
   color:#fff;
 }
 
 #chatForm button{
-  padding:6px 12px;
+  padding:8px 14px;
   border:none;
   background:var(--accent);
   cursor:pointer;
 }
 
-/* MOBILE */
+/* CHAT MOBILE BUTTON */
 #chatToggle{
   position:fixed;
-  bottom:90px;
-  right:20px;
-  width:52px;
-  height:52px;
+  bottom:95px;
+  right:16px;
+  width:54px;
+  height:54px;
   border-radius:50%;
   background:var(--accent);
   border:none;
-  font-size:22px;
+  font-size:24px;
   cursor:pointer;
-  z-index:1001;
+  z-index:1100;
+  display:none;
 }
 
+/* MOBILE */
 @media (max-width:900px){
-  #chat{ display:none; width:90%; height:60%; }
+  #chat{display:none;height:60%;}
+  #chatToggle{display:block;}
 }
 </style>
 </head>
@@ -245,33 +224,30 @@ audio{
   </form>
 </div>
 
-<!-- JAVASCRIPT -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-import { getDatabase, ref, push, onChildAdded }
-from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
+import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
 
 /* FIREBASE */
-const firebaseConfig = {
-  apiKey: "AIzaSyB8h3fvyPxq_Tjp2R5RzsgEC7jv6FASeWE",
-  authDomain: "anni-80-chat-a1192.firebaseapp.com",
-  databaseURL: "https://anni-80-chat-a1192-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "anni-80-chat-a1192",
-  storageBucket: "anni-80-chat-a1192.firebasestorage.app",
-  messagingSenderId: "578541128805",
-  appId: "1:578541128805:web:854a987bf16439cb758a8c"
+const firebaseConfig={
+  apiKey:"AIzaSyB8h3fvyPxq_Tjp2R5RzsgEC7jv6FASeWE",
+  authDomain:"anni-80-chat-a1192.firebaseapp.com",
+  databaseURL:"https://anni-80-chat-a1192-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId:"anni-80-chat-a1192",
+  storageBucket:"anni-80-chat-a1192.firebasestorage.app",
+  messagingSenderId:"578541128805",
+  appId:"1:578541128805:web:854a987bf16439cb758a8c"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-const chatRef = ref(db,"chat");
+const app=initializeApp(firebaseConfig);
+const db=getDatabase(app);
+const chatRef=ref(db,"chat");
 
 /* NICKNAME */
-let nickname = localStorage.getItem("anni80_nick");
+let nickname=localStorage.getItem("anni80_nick");
 if(!nickname){
-  nickname = prompt("Scegli il tuo nickname anni ’80:");
-  if(!nickname) nickname = "Anonimo80";
-  localStorage.setItem("anni80_nick", nickname);
+  nickname=prompt("Scegli il tuo nickname anni ’80:")||"Anonimo80";
+  localStorage.setItem("anni80_nick",nickname);
 }
 
 /* CHAT */
@@ -290,7 +266,7 @@ chatForm.addEventListener("submit",e=>{
 
 onChildAdded(chatRef,snap=>{
   const m=snap.val();
-  if(!m||!m.text) return;
+  if(!m) return;
   const div=document.createElement("div");
   div.innerHTML=`<strong>[${m.nick}]</strong>: ${m.text}`;
   chatMessages.appendChild(div);
@@ -340,19 +316,16 @@ function openCategory(id,el){
   document.querySelectorAll(".category").forEach(c=>c.classList.remove("active"));
   el.classList.add("active");
 
-  let data=[];
-  if(id==="musica") data=musica;
-  if(id==="radio") data=radio;
-  if(id==="giochi") data=giochi;
-
   if(id==="chat"){
     contentEl.innerHTML="<p>Usa la chat in basso.</p>";
     return;
   }
 
+  const data=id==="musica"?musica:id==="radio"?radio:giochi;
+
   contentEl.innerHTML=`<div class="grid">${
     data.map(x=>`
-      <div class="card" onclick="${id==='radio'
+      <div class="card" onclick="${id==="radio"
         ?`playRadio('${x.url}','${x.name}')`
         :`window.open('${x.url}','_blank')`}">
         <div class="title">${x.name}</div>
@@ -372,20 +345,8 @@ const chat=document.getElementById("chat");
 const toggle=document.getElementById("chatToggle");
 const closeBtn=document.getElementById("chatClose");
 
-function layoutChat(){
-  if(window.innerWidth>900){
-    chat.style.display="flex";
-    toggle.style.display="none";
-  }else{
-    chat.style.display="none";
-    toggle.style.display="block";
-  }
-}
-
 toggle.onclick=()=>chat.style.display="flex";
 closeBtn.onclick=()=>chat.style.display="none";
-layoutChat();
-window.addEventListener("resize",layoutChat);
 </script>
 
 </body>
