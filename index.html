@@ -2,7 +2,6 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
@@ -55,32 +54,51 @@ main{
   color:#000;
 }
 
-/* V-METER */
-#vmeter{
+/* ==== VU METER ==== */
+#vumeter{
   margin:14px 0;
-  padding:10px;
+  padding:12px;
   border:2px solid #00e5ff;
   border-radius:12px;
   background:#000;
 }
 
-.meter{
+.vu-label{
+  text-align:center;
+  color:#00e5ff;
+  font-weight:bold;
+  margin-bottom:6px;
+  letter-spacing:2px;
+}
+
+.vu-wrap{
   display:flex;
-  gap:4px;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+}
+
+.vu-side{
+  display:flex;
+  gap:3px;
+}
+
+.vu-center{
+  width:4px;
+  height:14px;
+  background:#555;
 }
 
 .led{
-  flex:1;
-  height:12px;
-  background:#033;
-  opacity:.3;
-  border-radius:2px;
+  width:10px;
+  height:14px;
+  opacity:.2;
+  background:#030;
 }
 
-.led.on{
-  background:#00e5ff;
-  opacity:1;
-}
+.led.green.on{background:#00ff66;opacity:1}
+.led.yellow.on{background:#ffee00;opacity:1}
+.led.red.on{background:#ff3333;opacity:1}
 
 /* CONTENUTO */
 #content{
@@ -194,9 +212,14 @@ audio{width:95%}
 <main>
   <div class="categories" id="categories"></div>
 
-  <!-- V-METER -->
-  <div id="vmeter">
-    <div class="meter" id="meter"></div>
+  <!-- VU METER -->
+  <div id="vumeter">
+    <div class="vu-label">VU METER</div>
+    <div class="vu-wrap">
+      <div class="vu-side" id="vuLeft"></div>
+      <div class="vu-center"></div>
+      <div class="vu-side" id="vuRight"></div>
+    </div>
   </div>
 
   <div id="content">Seleziona una sezione.</div>
@@ -318,34 +341,42 @@ function open(i,el){
   }
 
   if(i===3){
-    contentEl.innerHTML=`💬 Premi il pulsante chat per aprire la chat a schermo intero`;
+    contentEl.innerHTML=`💬 Premi il pulsante chat per aprire la chat`;
   }
 }
 
-/* V-METER LOGIC */
-const meter=document.getElementById("meter");
-for(let i=0;i<20;i++){
-  const l=document.createElement("div");
-  l.className="led";
-  meter.appendChild(l);
+/* ==== VU METER LOGIC ==== */
+const left=document.getElementById("vuLeft");
+const right=document.getElementById("vuRight");
+
+const colors=["green","green","green","green","yellow","yellow","red"];
+
+function build(side){
+  for(let i=0;i<7;i++){
+    const l=document.createElement("div");
+    l.className="led "+colors[i];
+    side.appendChild(l);
+  }
 }
+build(left); build(right);
 
-let meterTimer=null;
+let vuTimer=null;
 
-function startMeter(){
-  stopMeter();
-  meterTimer=setInterval(()=>{
-    document.querySelectorAll(".led").forEach(l=>l.classList.remove("on"));
-    const n=Math.floor(Math.random()*20);
-    document.querySelectorAll(".led").forEach((l,i)=>{
-      if(i<=n) l.classList.add("on");
+function startVU(){
+  stopVU();
+  vuTimer=setInterval(()=>{
+    const level=Math.floor(Math.random()*7);
+    [left,right].forEach(side=>{
+      [...side.children].forEach((l,i)=>{
+        l.classList.toggle("on",i<=level);
+      });
     });
   },120);
 }
 
-function stopMeter(){
-  clearInterval(meterTimer);
-  document.querySelectorAll(".led").forEach(l=>l.classList.remove("on"));
+function stopVU(){
+  clearInterval(vuTimer);
+  [...left.children,...right.children].forEach(l=>l.classList.remove("on"));
 }
 
 /* PLAY */
@@ -353,11 +384,11 @@ window.play=(u,n)=>{
   audio.src=u;
   audio.play();
   now.textContent="In riproduzione: "+n;
-  startMeter();
+  startVU();
 };
 
-audio.onpause=stopMeter;
-audio.onended=stopMeter;
+audio.onpause=stopVU;
+audio.onended=stopVU;
 </script>
 
 </body>
