@@ -29,7 +29,6 @@ body{
   flex-direction:column;
 }
 
-/* HEADER */
 header{
   padding:20px;
   text-align:center;
@@ -46,17 +45,16 @@ header p{
   margin-top:6px;
 }
 
-/* MAIN */
 main{
   flex:1;
   padding:16px;
   padding-bottom:220px;
 }
 
-/* CATEGORIE DESKTOP */
+/* CATEGORIE */
 .categories{
   display:grid;
-  grid-template-columns:repeat(4, 1fr);
+  grid-template-columns:repeat(4,1fr);
   gap:12px;
   margin-bottom:16px;
 }
@@ -76,7 +74,6 @@ main{
   color:#000;
 }
 
-/* CONTENUTO */
 #content{
   border:2px solid var(--accent);
   border-radius:14px;
@@ -132,9 +129,7 @@ main{
   margin-bottom:6px;
 }
 
-audio{
-  width:92%;
-}
+audio{width:92%;}
 
 /* CHAT */
 #chat{
@@ -197,7 +192,6 @@ audio{
   cursor:pointer;
 }
 
-/* BOTTONE CHAT MOBILE */
 #chatToggle{
   position:fixed;
   bottom:95px;
@@ -213,19 +207,15 @@ audio{
   display:none;
 }
 
-/* ===== MOBILE ===== */
+/* MOBILE */
 @media (max-width:900px){
-
-  /* FORZATO 2x2 */
   .categories{
     grid-template-columns:1fr 1fr;
   }
-
   #chat{
     display:none;
     height:60%;
   }
-
   #chatToggle{
     display:block;
   }
@@ -328,11 +318,14 @@ const musica=[
 
 const radio=[
   {name:"Radio 80",url:"https://sphera.fluidstream.eu/radio80.aac",desc:"Pop & Rock"},
+  {name:"SomaFM Underground 80s",url:"https://somafm.com/u80s130.pls",desc:"Alternative"},
+  {name:"80s80s Italo Disco",url:"https://streams.80s80s.de/italodisco/mp3-192",desc:"Italo Disco"},
   {name:"Italia 80",url:"https://stream.laut.fm/italia80",desc:"Italiani"}
 ];
 
 const giochi=[
   {name:"Pac-Man",url:"https://www.retrogames.cz/play_004-NES.php",desc:"Arcade"},
+  {name:"Space Invaders",url:"https://www.retrogames.cz/play_031-NES.php",desc:"Classico"},
   {name:"Tetris",url:"https://www.retrogames.cz/play_060-NES.php",desc:"Puzzle"}
 ];
 
