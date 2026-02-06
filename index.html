@@ -95,7 +95,7 @@ a.card{color:inherit;text-decoration:none}
 #now{color:#00e5ff;font-weight:bold;margin-bottom:6px}
 audio{width:95%}
 
-/* CHAT FULLSCREEN (DESKTOP + MOBILE) */
+/* CHAT BASE */
 #chat{
   position:fixed;
   inset:0;
@@ -115,6 +115,7 @@ audio{width:95%}
   justify-content:space-between;
   align-items:center;
   background:#1c1c1c;
+  flex-shrink:0;
 }
 
 /* CHAT MESSAGES */
@@ -130,6 +131,7 @@ audio{width:95%}
   display:flex;
   border-top:2px solid #00e5ff;
   background:#1c1c1c;
+  flex-shrink:0;
 }
 
 #chatInput{
@@ -138,7 +140,7 @@ audio{width:95%}
   border:none;
   background:#222;
   color:#fff;
-  font-size:16px; /* FIX ZOOM */
+  font-size:16px; /* NO ZOOM */
 }
 
 #chatForm button{
@@ -163,9 +165,26 @@ audio{width:95%}
   z-index:1100;
 }
 
-/* MOBILE */
+/* 🔥 MOBILE FIX DEFINITIVO */
 @media (max-width:900px){
-  .categories{grid-template-columns:1fr 1fr}
+
+  .categories{
+    grid-template-columns:1fr 1fr;
+  }
+
+  /* FORZA CHAT FULLSCREEN SU MOBILE */
+  #chat{
+    display:none;
+    position:fixed;
+    inset:0;
+    width:100vw;
+    height:100vh;
+    max-height:100vh;
+  }
+
+  #chatMessages{
+    padding-bottom:20px;
+  }
 }
 </style>
 </head>
