@@ -2,12 +2,14 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
+
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <title>Io negli anni ’80 c’ero</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif}
 
 body{
   background:#0f0f0f;
@@ -30,7 +32,7 @@ header p{color:#aaa;font-size:.9rem}
 main{
   flex:1;
   padding:12px;
-  padding-bottom:160px;
+  padding-bottom:110px;
 }
 
 /* CATEGORIE */
@@ -42,7 +44,7 @@ main{
 }
 .category{
   border:2px solid #00e5ff;
-  border-radius:12px;
+  border-radius:14px;
   padding:12px;
   text-align:center;
   font-weight:bold;
@@ -56,7 +58,7 @@ main{
 /* CONTENUTO */
 #content{
   border:2px solid #00e5ff;
-  border-radius:12px;
+  border-radius:14px;
   padding:14px;
   min-height:200px;
 }
@@ -69,8 +71,8 @@ main{
 
 .card{
   border:2px solid #00e5ff;
-  border-radius:12px;
-  padding:12px;
+  border-radius:14px;
+  padding:14px;
   background:#1c1c1c;
   cursor:pointer;
   text-align:center;
@@ -93,75 +95,92 @@ a.card{color:inherit;text-decoration:none}
 #now{color:#00e5ff;font-weight:bold;margin-bottom:6px}
 audio{width:95%}
 
-/* ===== VU METER ===== */
-#vumeter{
-  display:flex;
-  justify-content:center;
-  align-items:flex-end;
-  gap:2px;
-  margin:10px auto;
-  height:40px;
-}
+/* ================= CHAT MODERNA ================= */
 
-.vu{
-  width:6px;
-  height:10%;
-  background:#0f0;
-  transition:height .08s;
-}
-.vu.yellow{background:#ff0}
-.vu.red{background:#f00}
-
-/* CHAT */
 #chat{
   position:fixed;
   inset:0;
-  background:#0f0f0f;
+  background:#111;
   display:none;
   flex-direction:column;
   z-index:2000;
 }
 
+/* HEADER CHAT */
 #chatHeader{
-  padding:14px;
-  border-bottom:2px solid #00e5ff;
+  padding:14px 16px;
+  border-bottom:1px solid #222;
   display:flex;
   justify-content:space-between;
-  background:#1c1c1c;
+  align-items:center;
+  background:#161616;
+}
+#chatHeader strong{
+  color:#00e5ff;
+  font-size:1.1rem;
 }
 
+/* MESSAGGI */
 #chatMessages{
   flex:1;
   overflow-y:auto;
-  padding:14px;
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
 }
 
+/* BOLLA */
+.message{
+  background:#1f1f1f;
+  border-radius:14px;
+  padding:10px 12px;
+  max-width:85%;
+  box-shadow:0 0 6px rgba(0,0,0,.6);
+}
+.message strong{
+  color:#00e5ff;
+  font-size:.85rem;
+  display:block;
+  margin-bottom:2px;
+}
+.message span{
+  font-size:.95rem;
+  line-height:1.4;
+}
+
+/* INPUT CHAT */
 #chatForm{
   display:flex;
-  border-top:2px solid #00e5ff;
-  background:#1c1c1c;
+  padding:10px;
+  gap:8px;
+  background:#161616;
+  border-top:1px solid #222;
 }
 
 #chatInput{
   flex:1;
-  padding:14px;
+  padding:12px 14px;
+  border-radius:20px;
   border:none;
-  background:#222;
+  background:#2a2a2a;
   color:#fff;
   font-size:16px;
 }
 
 #chatForm button{
-  padding:14px 18px;
+  padding:12px 18px;
+  border-radius:20px;
   border:none;
   background:#00e5ff;
   font-weight:bold;
+  cursor:pointer;
 }
 
-/* CHAT TOGGLE */
+/* TOGGLE CHAT */
 #chatToggle{
   position:fixed;
-  bottom:120px;
+  bottom:130px;
   right:14px;
   width:56px;
   height:56px;
@@ -193,7 +212,6 @@ audio{width:95%}
 
 <div id="player">
   <div id="now">Nessuna radio in riproduzione</div>
-  <div id="vumeter"></div>
   <audio id="audio" controls></audio>
 </div>
 
@@ -203,12 +221,14 @@ audio{width:95%}
 <div id="chat">
   <div id="chatHeader">
     <strong>💬 Chat anni ’80</strong>
-    <button onclick="chat.style.display='none'"
+    <button onclick="closeChat()"
       style="background:none;border:none;color:#00e5ff;font-size:22px">✕</button>
   </div>
+
   <div id="chatMessages"></div>
+
   <form id="chatForm">
-    <input id="chatInput" placeholder="Scrivi…">
+    <input id="chatInput" placeholder="Scrivi un messaggio…" autocomplete="off">
     <button>Invia</button>
   </form>
 </div>
@@ -219,36 +239,29 @@ import { getDatabase, ref, push, onChildAdded }
 from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
 
 /* FIREBASE */
-const app=initializeApp({
+const app = initializeApp({
   apiKey:"AIzaSyB8h3fvyPxq_Tjp2R5RzsgEC7jv6FASeWE",
   authDomain:"anni-80-chat-a1192.firebaseapp.com",
   databaseURL:"https://anni-80-chat-a1192-default-rtdb.europe-west1.firebasedatabase.app",
   projectId:"anni-80-chat-a1192"
 });
-const db=getDatabase(app);
-const chatRef=ref(db,"chat");
+const db = getDatabase(app);
+const chatRef = ref(db,"chat");
 
-/* ===== NICK OBBLIGATORIO (ANCHE SE GIÀ ANONIMO) ===== */
+/* NICK OBBLIGATORIO */
 let nickname = localStorage.getItem("anni80_nick");
-
-const invalidNicks = ["", "anonimo", "anonimo80", null];
-
-while(
-  !nickname ||
-  invalidNicks.includes(nickname.toLowerCase().trim())
-){
-  nickname = prompt(
-    "Inserisci un NICKNAME anni ’80 OBBLIGATORIO:\n\n" +
-    "Serve per partecipare alla chat."
-  );
+while(!nickname){
+  nickname = prompt("Inserisci il tuo nickname anni ’80:");
+  if(nickname){
+    localStorage.setItem("anni80_nick", nickname);
+  }
 }
-
-nickname = nickname.trim();
-localStorage.setItem("anni80_nick", nickname);
 
 /* CHAT */
 const chat=document.getElementById("chat");
-chatToggle.onclick=()=>chat.style.display="flex";
+const chatForm=document.getElementById("chatForm");
+const chatInput=document.getElementById("chatInput");
+const chatMessages=document.getElementById("chatMessages");
 
 chatForm.addEventListener("submit",e=>{
   e.preventDefault();
@@ -260,96 +273,77 @@ chatForm.addEventListener("submit",e=>{
 
 onChildAdded(chatRef,s=>{
   const m=s.val();
-  chatMessages.innerHTML+=`<div><strong>[${m.nick}]</strong> ${m.text}</div>`;
+  const d=document.createElement("div");
+  d.className="message";
+  d.innerHTML=`<strong>${m.nick}</strong><span>${m.text}</span>`;
+  chatMessages.appendChild(d);
   chatMessages.scrollTop=chatMessages.scrollHeight;
 });
 
+window.closeChat=()=>chat.style.display="none";
+document.getElementById("chatToggle").onclick=()=>chat.style.display="flex";
+
 /* RADIO */
 const radio=[
- {n:"Radio 80",u:"https://sphera.fluidstream.eu/radio80.aac"},
- {n:"SomaFM Underground 80s",u:"https://somafm.com/u80s130.pls"},
- {n:"80s80s Italo Disco",u:"https://streams.80s80s.de/italodisco/mp3-192"},
- {n:"Italia 80",u:"https://stream.laut.fm/italia80"}
+  {n:"Radio 80",u:"https://sphera.fluidstream.eu/radio80.aac"},
+  {n:"SomaFM Underground 80s",u:"https://somafm.com/u80s130.pls"},
+  {n:"80s80s Italo Disco",u:"https://streams.80s80s.de/italodisco/mp3-192"},
+  {n:"Italia 80",u:"https://stream.laut.fm/italia80"}
 ];
 
+const categoriesEl=document.getElementById("categories");
+const contentEl=document.getElementById("content");
 const audio=document.getElementById("audio");
 const now=document.getElementById("now");
 
-/* CATEGORIE */
 ["Musica","Radio","Giochi","Chat"].forEach((c,i)=>{
- const d=document.createElement("div");
- d.className="category";
- d.textContent=c;
- d.onclick=()=>open(i,d);
- categories.appendChild(d);
+  const d=document.createElement("div");
+  d.className="category";
+  d.textContent=c;
+  d.onclick=()=>open(i,d);
+  categoriesEl.appendChild(d);
 });
 
 function open(i,el){
- document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
- el.classList.add("active");
+  document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
+  el.classList.add("active");
 
- if(i===0)
-  content.innerHTML=`<div class="grid">
-   <a class="card" href="https://www.youtube.com/results?search_query=anni+80" target="_blank">🎵 YouTube</a>
-   <a class="card" href="https://open.spotify.com/search/anni%2080" target="_blank">🎧 Spotify</a>
-  </div>`;
+  if(i===0){
+    contentEl.innerHTML=`
+      <div class="grid">
+        <a class="card" href="https://www.youtube.com/results?search_query=anni+80+italiani" target="_blank">🎵 YouTube Anni 80</a>
+        <a class="card" href="https://open.spotify.com/search/anni%2080" target="_blank">🎧 Spotify Anni 80</a>
+      </div>`;
+  }
 
- if(i===1)
-  content.innerHTML=`<div class="grid">${
-   radio.map(r=>`<div class="card" onclick="play('${r.u}','${r.n}')">${r.n}</div>`).join("")
-  }</div>`;
+  if(i===1){
+    contentEl.innerHTML=`<div class="grid">${
+      radio.map(r=>`<div class="card" onclick="play('${r.u}','${r.n}')">${r.n}</div>`).join("")
+    }</div>`;
+  }
 
- if(i===2)
-  content.innerHTML=`<div class="grid">
-   <a class="card" href="https://archive.org/details/internetarcade" target="_blank">🕹️ Arcade</a>
-   <a class="card" href="https://www.retrogames.cc/" target="_blank">🎮 Retro</a>
-  </div>`;
+  if(i===2){
+    contentEl.innerHTML=`
+      <div class="grid">
+        <a class="card" href="https://archive.org/details/internetarcade" target="_blank">🕹️ Internet Arcade</a>
+        <a class="card" href="https://www.retrogames.cc/" target="_blank">🎮 RetroGames</a>
+      </div>`;
+  }
 
- if(i===3)
-  content.innerHTML=`💬 Premi il pulsante chat per entrare`;
+  if(i===3){
+    contentEl.innerHTML=`
+      <div style="text-align:center;line-height:1.6">
+        💬 <strong>Chat anni ’80</strong><br><br>
+        Premi il pulsante 💬 per aprire la chat
+      </div>`;
+  }
 }
 
-/* PLAY RADIO */
 window.play=(u,n)=>{
- audio.src=u;
- audio.play();
- now.textContent="In riproduzione: "+n;
- startVU();
+  audio.src=u;
+  audio.play();
+  now.textContent="In riproduzione: "+n;
 };
-
-/* ===== VU METER ===== */
-const vu=document.getElementById("vumeter");
-const bars=[];
-const TOTAL=24;
-let vuTimer=null;
-
-for(let i=0;i<TOTAL;i++){
- const b=document.createElement("div");
- b.className="vu"+(i>15?" red":i>10?" yellow":"");
- vu.appendChild(b);
- bars.push(b);
-}
-
-function startVU(){
- stopVU();
- vuTimer=setInterval(()=>{
-  let peak=Math.random()*0.9+0.1;
-  bars.forEach((b,i)=>{
-   const center=Math.abs(i-(TOTAL/2));
-   const power=Math.max(0,peak-center/12);
-   b.style.height=(power*100)+"%";
-  });
- },80);
-}
-
-function stopVU(){
- clearInterval(vuTimer);
- bars.forEach(b=>b.style.height="10%");
-}
-
-audio.addEventListener("play",startVU);
-audio.addEventListener("pause",stopVU);
-audio.addEventListener("ended",stopVU);
 </script>
 
 </body>
