@@ -56,7 +56,7 @@ main{
 /* CATEGORIE DESKTOP */
 .categories{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(4, 1fr);
   gap:12px;
   margin-bottom:16px;
 }
@@ -113,7 +113,7 @@ main{
   color:var(--muted);
 }
 
-/* PLAYER RADIO */
+/* PLAYER */
 #player{
   position:fixed;
   bottom:0;
@@ -132,7 +132,9 @@ main{
   margin-bottom:6px;
 }
 
-audio{width:92%;}
+audio{
+  width:92%;
+}
 
 /* CHAT */
 #chat{
@@ -214,9 +216,9 @@ audio{width:92%;}
 /* ===== MOBILE ===== */
 @media (max-width:900px){
 
-  /* CATEGORIE 2x2 FISSE */
+  /* FORZATO 2x2 */
   .categories{
-    grid-template-columns:repeat(2,1fr);
+    grid-template-columns:1fr 1fr;
   }
 
   #chat{
@@ -281,7 +283,7 @@ const app=initializeApp(firebaseConfig);
 const db=getDatabase(app);
 const chatRef=ref(db,"chat");
 
-/* NICKNAME */
+/* NICK */
 let nickname=localStorage.getItem("anni80_nick");
 if(!nickname){
   nickname=prompt("Scegli il tuo nickname anni ’80:")||"Anonimo80";
@@ -297,7 +299,7 @@ chatForm.addEventListener("submit",e=>{
   e.preventDefault();
   const text=chatInput.value.trim();
   if(text){
-    push(chatRef,{nick:nickname,text,time:Date.now()});
+    push(chatRef,{nick:nickname,text});
     chatInput.value="";
   }
 });
@@ -326,14 +328,11 @@ const musica=[
 
 const radio=[
   {name:"Radio 80",url:"https://sphera.fluidstream.eu/radio80.aac",desc:"Pop & Rock"},
-  {name:"SomaFM Underground 80s",url:"https://somafm.com/u80s130.pls",desc:"Alternative"},
-  {name:"80s80s Italo Disco",url:"https://streams.80s80s.de/italodisco/mp3-192",desc:"Italo Disco"},
   {name:"Italia 80",url:"https://stream.laut.fm/italia80",desc:"Italiani"}
 ];
 
 const giochi=[
   {name:"Pac-Man",url:"https://www.retrogames.cz/play_004-NES.php",desc:"Arcade"},
-  {name:"Space Invaders",url:"https://www.retrogames.cz/play_031-NES.php",desc:"Classico"},
   {name:"Tetris",url:"https://www.retrogames.cz/play_060-NES.php",desc:"Puzzle"}
 ];
 
