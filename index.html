@@ -9,29 +9,15 @@ content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-body{
-  background:#0b0b0b;
-  color:#fff;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-}
+body{background:#0b0b0b;color:#fff;min-height:100vh;display:flex;flex-direction:column}
 
 /* HEADER */
-header{
-  padding:16px;
-  text-align:center;
-  border-bottom:2px solid #00e5ff;
-}
+header{padding:16px;text-align:center;border-bottom:2px solid #00e5ff}
 header h1{color:#00e5ff}
 header p{color:#aaa}
 
 /* MAIN */
-main{
-  flex:1;
-  padding:12px;
-  padding-bottom:110px;
-}
+main{flex:1;padding:12px;padding-bottom:120px}
 
 /* SEZIONI */
 .categories{
@@ -48,12 +34,7 @@ main{
   font-weight:bold;
   cursor:pointer;
 }
-.category.active{
-  background:#00e5ff;
-  color:#000;
-}
-
-/* MOBILE: 2 sopra + 2 sotto */
+.category.active{background:#00e5ff;color:#000}
 @media(max-width:900px){
   .categories{grid-template-columns:1fr 1fr}
 }
@@ -61,30 +42,28 @@ main{
 /* V-METER */
 #vmeterBox{
   margin-bottom:12px;
-  padding:10px;
+  padding:12px;
   border:2px solid #00e5ff;
   border-radius:12px;
   background:#000;
 }
 #vmeter{
   display:flex;
-  gap:12px;
-  height:60px;
+  gap:14px;
+  height:70px;
 }
 .vbar{
   flex:1;
   background:#111;
-  border-radius:6px;
+  border-radius:8px;
   overflow:hidden;
-  position:relative;
 }
 .vfill{
-  position:absolute;
-  bottom:0;
-  width:100%;
   height:0%;
+  width:100%;
   background:linear-gradient(to top,#00ff66,#ccffcc);
   box-shadow:0 0 12px #00ff66;
+  transition:height 0.05s linear;
 }
 
 /* CONTENT */
@@ -94,11 +73,7 @@ main{
   padding:14px;
   min-height:220px;
 }
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .card{
   border:2px solid #00e5ff;
   border-radius:12px;
@@ -120,7 +95,6 @@ a.card{color:inherit;text-decoration:none}
   border-top:2px solid #00e5ff;
   padding:10px;
   text-align:center;
-  z-index:500;
 }
 #now{color:#00e5ff;font-weight:bold;margin-bottom:6px}
 audio{width:95%}
@@ -129,14 +103,13 @@ audio{width:95%}
 #chatToggle{
   position:fixed;
   right:14px;
-  bottom:130px;
+  bottom:140px;
   width:56px;
   height:56px;
   border-radius:50%;
   background:#00e5ff;
   border:none;
   font-size:26px;
-  z-index:800;
 }
 #chat{
   position:fixed;
@@ -153,15 +126,8 @@ audio{width:95%}
   display:flex;
   justify-content:space-between;
 }
-#chatMessages{
-  flex:1;
-  overflow-y:auto;
-  padding:14px;
-}
-#chatForm{
-  display:flex;
-  border-top:2px solid #00e5ff;
-}
+#chatMessages{flex:1;overflow-y:auto;padding:14px}
+#chatForm{display:flex;border-top:2px solid #00e5ff}
 #chatInput{
   flex:1;
   padding:14px;
@@ -201,7 +167,7 @@ audio{width:95%}
 
 <div id="player">
   <div id="now">Nessuna radio attiva</div>
-  <audio id="audio" controls></audio>
+  <audio id="audio" controls playsinline></audio>
 </div>
 
 <button id="chatToggle">💬</button>
@@ -259,14 +225,9 @@ onChildAdded(chatRef,s=>{
 });
 
 /* SEZIONI */
-const categoriesEl=document.getElementById("categories");
-const contentEl=document.getElementById("content");
-const audio=document.getElementById("audio");
-const now=document.getElementById("now");
-
 const radios=[
   {n:"Radio 80",u:"https://sphera.fluidstream.eu/radio80.aac"},
-  {n:"SomaFM Underground 80s",u:"https://somafm.com/u80s130.pls"},
+  {n:"SomaFM Underground 80s",u:"https://somafm.com/u80s130.mp3"},
   {n:"80s80s Italo Disco",u:"https://streams.80s80s.de/italodisco/mp3-192"},
   {n:"Italia 80",u:"https://stream.laut.fm/italia80"}
 ];
@@ -276,7 +237,7 @@ const radios=[
   d.className="category";
   d.textContent=c;
   d.onclick=()=>open(i,d);
-  categoriesEl.appendChild(d);
+  categories.appendChild(d);
 });
 
 function open(i,el){
@@ -284,58 +245,62 @@ function open(i,el){
   el.classList.add("active");
 
   if(i===0){
-    contentEl.innerHTML=`<div class="grid">
+    content.innerHTML=`<div class="grid">
       <a class="card" href="https://www.youtube.com/results?search_query=italo+disco+80s" target="_blank">Italo Disco</a>
       <a class="card" href="https://www.youtube.com/results?search_query=synth+pop+80s" target="_blank">Synth Pop</a>
     </div>`;
   }
   if(i===1){
-    contentEl.innerHTML=`<div class="grid">${
+    content.innerHTML=`<div class="grid">${
       radios.map(r=>`<div class="card" onclick="playRadio('${r.u}','${r.n}')">${r.n}</div>`).join("")
     }</div>`;
   }
   if(i===2){
-    contentEl.innerHTML=`<div class="grid">
-      <a class="card" href="https://archive.org/details/msdos_Oregon_Trail_The_1990" target="_blank">Oregon Trail</a>
+    content.innerHTML=`<div class="grid">
       <a class="card" href="https://archive.org/details/msdos_Pac-Man_1983" target="_blank">Pac-Man</a>
+      <a class="card" href="https://archive.org/details/msdos_Oregon_Trail_1990" target="_blank">Oregon Trail</a>
     </div>`;
   }
-  if(i===3){
-    chat.style.display="flex";
-  }
+  if(i===3){chat.style.display="flex";}
 }
 
-/* V-METER FUNZIONANTE */
-let audioCtx, analyser, source;
+/* V-METER CORRETTO */
+const audio=document.getElementById("audio");
+const now=document.getElementById("now");
 const vL=document.getElementById("vL");
 const vR=document.getElementById("vR");
 
-function startMeter(){
-  analyser.getByteFrequencyData(data);
-  let avg=data.reduce((a,b)=>a+b)/data.length;
-  let lvl=Math.min(100,avg/1.4);
-  vL.style.height=lvl+"%";
-  vR.style.height=(lvl*0.9)+"%";
-  requestAnimationFrame(startMeter);
+let ctx, analyser, src, data;
+
+function meterLoop(){
+  analyser.getByteTimeDomainData(data);
+  let sum=0;
+  for(let i=0;i<data.length;i++){
+    let v=(data[i]-128)/128;
+    sum+=v*v;
+  }
+  let level=Math.min(100,Math.sqrt(sum/data.length)*160);
+  vL.style.height=level+"%";
+  vR.style.height=(level*0.9)+"%";
+  requestAnimationFrame(meterLoop);
 }
 
-let data;
 window.playRadio=(u,n)=>{
   audio.src=u;
   audio.play();
   now.textContent="In riproduzione: "+n;
 
-  if(!audioCtx){
-    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-    source=audioCtx.createMediaElementSource(audio);
-    analyser=audioCtx.createAnalyser();
+  if(!ctx){
+    ctx=new (window.AudioContext||window.webkitAudioContext)();
+    src=ctx.createMediaElementSource(audio);
+    analyser=ctx.createAnalyser();
     analyser.fftSize=256;
-    data=new Uint8Array(analyser.frequencyBinCount);
-    source.connect(analyser);
-    analyser.connect(audioCtx.destination);
-    startMeter();
+    data=new Uint8Array(analyser.fftSize);
+    src.connect(analyser);
+    analyser.connect(ctx.destination);
+    meterLoop();
   }
-  audioCtx.resume();
+  ctx.resume();
 };
 </script>
 
