@@ -3,59 +3,162 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <title>Io negli anni ’80 c’ero</title>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif}
-body{background:#0f0f0f;color:#fff;min-height:100vh;display:flex;flex-direction:column}
+
+body{
+  background:#0f0f0f;
+  color:#fff;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
 
 /* HEADER */
-header{text-align:center;padding:16px;border-bottom:2px solid #00e5ff}
+header{
+  text-align:center;
+  padding:16px;
+  border-bottom:2px solid #00e5ff;
+}
 header h1{color:#00e5ff}
 header p{color:#aaa;font-size:.9rem}
 
 /* MAIN */
-main{flex:1;padding:12px;padding-bottom:190px}
+main{
+  flex:1;
+  padding:12px;
+  padding-bottom:180px;
+}
 
 /* CATEGORIE */
-.categories{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
-.category{border:2px solid #00e5ff;border-radius:14px;padding:12px;text-align:center;font-weight:bold;cursor:pointer}
-.category.active{background:#00e5ff;color:#000}
+.categories{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-bottom:12px;
+}
+.category{
+  border:2px solid #00e5ff;
+  border-radius:14px;
+  padding:12px;
+  text-align:center;
+  font-weight:bold;
+  cursor:pointer;
+}
+.category.active{
+  background:#00e5ff;
+  color:#000;
+}
 
 /* CONTENUTO */
-#content{border:2px solid #00e5ff;border-radius:14px;padding:14px;min-height:200px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.card{border:2px solid #00e5ff;border-radius:14px;padding:14px;background:#1c1c1c;text-align:center}
+#content{
+  border:2px solid #00e5ff;
+  border-radius:14px;
+  padding:14px;
+  min-height:200px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.card{
+  border:2px solid #00e5ff;
+  border-radius:14px;
+  padding:14px;
+  background:#1c1c1c;
+  cursor:pointer;
+  text-align:center;
+}
 .card:hover{background:#00e5ff;color:#000}
-a.card{text-decoration:none;color:inherit}
+a.card{color:inherit;text-decoration:none}
 
-/* PLAYER */
-#player{position:fixed;bottom:0;left:0;width:100%;background:#1c1c1c;border-top:2px solid #00e5ff;padding:10px;text-align:center;z-index:500}
-#now{color:#00e5ff;font-weight:bold;margin-bottom:6px}
-audio{width:95%}
+/* ===== VU METER ===== */
+#vumeter-wrapper{
+  display:flex;
+  justify-content:center;
+  margin-bottom:6px;
+}
 
-/* VU METER */
-#vumeter-wrapper{display:flex;justify-content:center;margin-bottom:6px}
-#vumeter{display:flex;gap:2px;align-items:flex-end;height:50px}
-.vu{width:6px;height:6px;background:#222;border-radius:2px;transition:height .12s}
+#vumeter{
+  display:flex;
+  gap:2px;
+  align-items:flex-end;
+  height:50px;
+}
+
+.vu{
+  width:6px;
+  height:6px;
+  background:#222;
+  border-radius:2px;
+  transition:height .12s;
+}
 .vu.g{background:#00ff66}
 .vu.y{background:#ffee00}
 .vu.r{background:#ff0033}
 
-/* CHAT */
-#chat{position:fixed;inset:0;background:#111;display:none;flex-direction:column;z-index:2000}
-#chatHeader{padding:14px;background:#161616;border-bottom:1px solid #222;display:flex;justify-content:space-between}
-#chatHeader strong{color:#00e5ff}
-#chatMessages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+/* PLAYER */
+#player{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  background:#1c1c1c;
+  border-top:2px solid #00e5ff;
+  padding:10px;
+  text-align:center;
+  z-index:500;
+}
+#now{color:#00e5ff;font-weight:bold;margin-bottom:6px}
+audio{width:95%}
 
-/* MESSAGGI */
+/* CHAT */
+#chat{
+  position:fixed;
+  inset:0;
+  background:#111;
+  display:none;
+  flex-direction:column;
+  z-index:2000;
+}
+
+#chatHeader{
+  padding:14px;
+  background:#161616;
+  border-bottom:1px solid #222;
+  display:flex;
+  justify-content:space-between;
+}
+#chatHeader strong{color:#00e5ff}
+
+#chatMessages{
+  flex:1;
+  overflow-y:auto;
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
 .message{
   background:#1f1f1f;
   border-radius:14px;
   padding:10px 12px;
   max-width:85%;
+  cursor:pointer;
 }
-.message strong{color:#00e5ff;font-size:.85rem;display:block}
+.message strong{
+  color:#00e5ff;
+  font-size:.85rem;
+  display:block;
+}
+.message span{font-size:.95rem}
 
 /* REPLY BOX */
 #replyBox{
@@ -68,15 +171,17 @@ audio{width:95%}
   justify-content:space-between;
   align-items:center;
 }
-#replyBox span{
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  max-width:85%;
+#replyText{opacity:.85}
+
+/* CHAT FORM */
+#chatForm{
+  display:flex;
+  padding:10px;
+  gap:8px;
+  background:#161616;
+  border-top:1px solid #222;
 }
 
-/* INPUT */
-#chatForm{display:flex;padding:10px;gap:8px;background:#161616;border-top:1px solid #222}
 #chatInput{
   flex:1;
   padding:12px 14px;
@@ -86,6 +191,7 @@ audio{width:95%}
   color:#fff;
   font-size:16px;
 }
+
 #chatForm button{
   padding:12px 18px;
   border-radius:20px;
@@ -97,7 +203,7 @@ audio{width:95%}
 /* CHAT TOGGLE */
 #chatToggle{
   position:fixed;
-  bottom:200px;
+  bottom:190px;
   right:14px;
   width:56px;
   height:56px;
@@ -129,7 +235,9 @@ audio{width:95%}
 </main>
 
 <div id="player">
-  <div id="vumeter-wrapper"><div id="vumeter"></div></div>
+  <div id="vumeter-wrapper">
+    <div id="vumeter"></div>
+  </div>
   <div id="now">Nessuna radio in riproduzione</div>
   <audio id="audio" controls></audio>
 </div>
@@ -160,35 +268,40 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebas
 import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
 
 /* FIREBASE */
-const app=initializeApp({
+const app = initializeApp({
   apiKey:"AIzaSyB8h3fvyPxq_Tjp2R5RzsgEC7jv6FASeWE",
   authDomain:"anni-80-chat-a1192.firebaseapp.com",
   databaseURL:"https://anni-80-chat-a1192-default-rtdb.europe-west1.firebasedatabase.app",
   projectId:"anni-80-chat-a1192"
 });
-const db=getDatabase(app);
-const chatRef=ref(db,"chat");
+const db = getDatabase(app);
+const chatRef = ref(db,"chat");
 
 /* NICK */
-let nickname=localStorage.getItem("anni80_nick");
+let nickname = localStorage.getItem("anni80_nick");
 while(!nickname){
-  nickname=prompt("Inserisci il tuo nickname anni ’80:");
-  if(nickname) localStorage.setItem("anni80_nick",nickname);
+  nickname = prompt("Inserisci il tuo nickname anni ’80:");
+  if(nickname) localStorage.setItem("anni80_nick", nickname);
 }
 
 /* CHAT */
 const chat=document.getElementById("chat");
-const chatMessages=document.getElementById("chatMessages");
-const chatInput=document.getElementById("chatInput");
 const chatForm=document.getElementById("chatForm");
+const chatInput=document.getElementById("chatInput");
+const chatMessages=document.getElementById("chatMessages");
 const replyBox=document.getElementById("replyBox");
 const replyText=document.getElementById("replyText");
+
 let replyTo=null;
 
 chatForm.addEventListener("submit",e=>{
   e.preventDefault();
   if(chatInput.value.trim()){
-    push(chatRef,{nick:nickname,text:chatInput.value,reply:replyTo});
+    push(chatRef,{
+      nick:nickname,
+      text:chatInput.value,
+      reply:replyTo
+    });
     chatInput.value="";
     replyTo=null;
     replyBox.style.display="none";
@@ -197,30 +310,38 @@ chatForm.addEventListener("submit",e=>{
 
 onChildAdded(chatRef,s=>{
   const m=s.val();
-
-  const label=document.createElement("label");
-  label.setAttribute("for","chatInput");
-  label.className="message";
-  label.innerHTML=`
+  const d=document.createElement("div");
+  d.className="message";
+  d.innerHTML=`
     ${m.reply?`<div style="font-size:.8rem;opacity:.7;border-left:3px solid #00e5ff;padding-left:6px;margin-bottom:4px">${m.reply}</div>`:""}
-    <strong>${m.nick}</strong>${m.text}
+    <strong>${m.nick}</strong>
+    <span>${m.text}</span>
   `;
+  d.onclick=()=>{
+    replyTo = "Rispondi a " + m.nick + ": " + m.text;
+    replyText.textContent = replyTo;
 
-  label.addEventListener("click",()=>{
-    replyTo=`${m.nick}: ${m.text}`;
-    replyText.textContent=`Rispondi a ${replyTo}`;
+    const nickEl = d.querySelector("strong");
+    if(nickEl){
+      replyText.style.color = getComputedStyle(nickEl).color;
+    }
+
     replyBox.style.display="flex";
-  });
-
-  chatMessages.appendChild(label);
+    setTimeout(()=>chatInput.focus(),100);
+  };
+  chatMessages.appendChild(d);
   chatMessages.scrollTop=chatMessages.scrollHeight;
 });
 
-window.cancelReply=()=>{replyTo=null;replyBox.style.display="none"};
+window.cancelReply=()=>{
+  replyTo=null;
+  replyBox.style.display="none";
+};
+
 window.closeChat=()=>chat.style.display="none";
 document.getElementById("chatToggle").onclick=()=>chat.style.display="flex";
 
-/* RADIO + UI + VU */
+/* RADIO */
 const radio=[
   {n:"Radio 80",u:"https://sphera.fluidstream.eu/radio80.aac"},
   {n:"SomaFM Underground 80s",u:"https://somafm.com/u80s130.pls"},
@@ -233,19 +354,27 @@ const contentEl=document.getElementById("content");
 const audio=document.getElementById("audio");
 const now=document.getElementById("now");
 
-/* VU */
+/* VU METER */
 const vumeter=document.getElementById("vumeter");
 let bars=[],vuTimer=null;
-for(let i=0;i<40;i++){
-  const b=document.createElement("div");
-  b.className="vu";
-  vumeter.appendChild(b);
-  bars.push(b);
+
+function buildVu(){
+  vumeter.innerHTML="";
+  bars=[];
+  for(let i=0;i<40;i++){
+    const b=document.createElement("div");
+    b.className="vu";
+    vumeter.appendChild(b);
+    bars.push(b);
+  }
 }
+buildVu();
+
 function startVu(){
   stopVu();
   vuTimer=setInterval(()=>{
-    const c=bars.length/2,l=Math.random()*c;
+    const c=bars.length/2;
+    const l=Math.random()*c;
     bars.forEach((b,i)=>{
       const d=Math.abs(i-c);
       if(d<l){
@@ -259,7 +388,10 @@ function startVu(){
     });
   },120);
 }
-function stopVu(){clearInterval(vuTimer)}
+function stopVu(){
+  clearInterval(vuTimer);
+  bars.forEach(b=>b.style.height="6px");
+}
 audio.onplay=startVu;
 audio.onpause=stopVu;
 
@@ -275,17 +407,39 @@ audio.onpause=stopVu;
 function open(i,el){
   document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
   el.classList.add("active");
-  if(i===0)contentEl.innerHTML=`<div class="grid">
-    <a class="card" href="https://www.youtube.com/results?search_query=anni+80+italiani" target="_blank">🎵 YouTube</a>
-    <a class="card" href="https://open.spotify.com/search/anni%2080" target="_blank">🎧 Spotify</a></div>`;
-  if(i===1)contentEl.innerHTML=`<div class="grid">${radio.map(r=>`<div class="card" onclick="play('${r.u}','${r.n}')">${r.n}</div>`).join("")}</div>`;
-  if(i===2)contentEl.innerHTML=`<div class="grid">
-    <a class="card" href="https://archive.org/details/internetarcade" target="_blank">🕹️ Arcade</a>
-    <a class="card" href="https://www.retrogames.cc/" target="_blank">🎮 RetroGames</a></div>`;
-  if(i===3)contentEl.innerHTML=`💬 Premi il pulsante chat`;
+
+  if(i===0){
+    contentEl.innerHTML=`
+      <div class="grid">
+        <a class="card" href="https://www.youtube.com/results?search_query=anni+80+italiani" target="_blank">🎵 YouTube Anni 80</a>
+        <a class="card" href="https://open.spotify.com/search/anni%2080" target="_blank">🎧 Spotify Anni 80</a>
+      </div>`;
+  }
+
+  if(i===1){
+    contentEl.innerHTML=`<div class="grid">${
+      radio.map(r=>`<div class="card" onclick="play('${r.u}','${r.n}')">${r.n}</div>`).join("")
+    }</div>`;
+  }
+
+  if(i===2){
+    contentEl.innerHTML=`
+      <div class="grid">
+        <a class="card" href="https://archive.org/details/internetarcade" target="_blank">🕹️ Internet Arcade</a>
+        <a class="card" href="https://www.retrogames.cc/" target="_blank">🎮 RetroGames</a>
+      </div>`;
+  }
+
+  if(i===3){
+    contentEl.innerHTML=`💬 Premi il pulsante chat per parlare`;
+  }
 }
 
-window.play=(u,n)=>{audio.src=u;audio.play();now.textContent="In riproduzione: "+n};
+window.play=(u,n)=>{
+  audio.src=u;
+  audio.play();
+  now.textContent="In riproduzione: "+n;
+};
 </script>
 
 </body>
