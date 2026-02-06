@@ -6,24 +6,16 @@
 <title>Io negli anni ’80 c’ero</title>
 
 <style>
-:root{
-  --bg:#0f0f0f;
-  --card:#1c1c1c;
-  --accent:#00e5ff;
-  --text:#ffffff;
-  --muted:#aaaaaa;
-}
-
 *{
   box-sizing:border-box;
   margin:0;
   padding:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-family:Arial,Helvetica,sans-serif;
 }
 
 body{
-  background:var(--bg);
-  color:var(--text);
+  background:#0f0f0f;
+  color:#fff;
   min-height:100vh;
   display:flex;
   flex-direction:column;
@@ -31,87 +23,85 @@ body{
 
 /* HEADER */
 header{
-  padding:20px;
   text-align:center;
-  border-bottom:2px solid var(--accent);
+  padding:16px;
+  border-bottom:2px solid #00e5ff;
 }
 
 header h1{
-  color:var(--accent);
-  font-size:2rem;
+  color:#00e5ff;
 }
 
 header p{
-  color:var(--muted);
-  margin-top:6px;
+  color:#aaa;
+  font-size:0.9rem;
 }
 
 /* MAIN */
 main{
   flex:1;
-  padding:16px;
-  padding-bottom:260px; /* SPAZIO PLAYER */
+  padding:12px;
+  padding-bottom:260px; /* spazio player */
 }
 
 /* CATEGORIE */
 .categories{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  gap:12px;
-  margin-bottom:16px;
+  gap:10px;
+  margin-bottom:12px;
 }
 
 .category{
-  border:2px solid var(--accent);
-  padding:14px;
+  border:2px solid #00e5ff;
+  border-radius:12px;
+  padding:12px;
   text-align:center;
-  border-radius:14px;
+  font-weight:bold;
   cursor:pointer;
-  font-weight:700;
 }
 
-.category.active,
-.category:hover{
-  background:var(--accent);
+.category.active{
+  background:#00e5ff;
   color:#000;
 }
 
 /* CONTENUTO */
 #content{
-  border:2px solid var(--accent);
-  border-radius:14px;
-  padding:14px;
-  min-height:220px;
+  border:2px solid #00e5ff;
+  border-radius:12px;
+  padding:10px;
+  min-height:200px;
 }
 
 /* GRIGLIA CARD */
 .grid{
   display:grid;
-  grid-template-columns:repeat(2,1fr); /* 2x2 */
-  gap:12px;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
 }
 
 .card{
-  background:var(--card);
-  border:2px solid var(--accent);
-  border-radius:14px;
-  padding:14px;
+  border:2px solid #00e5ff;
+  border-radius:12px;
+  padding:12px;
+  background:#1c1c1c;
   cursor:pointer;
 }
 
 .card:hover{
-  background:var(--accent);
+  background:#00e5ff;
   color:#000;
 }
 
-.card .title{
-  font-weight:700;
-  margin-bottom:6px;
+.title{
+  font-weight:bold;
+  margin-bottom:4px;
 }
 
-.card .desc{
+.desc{
   font-size:0.8rem;
-  color:var(--muted);
+  color:#aaa;
 }
 
 /* PLAYER */
@@ -120,20 +110,22 @@ main{
   bottom:0;
   left:0;
   width:100%;
-  background:var(--card);
-  border-top:2px solid var(--accent);
+  background:#1c1c1c;
+  border-top:2px solid #00e5ff;
   padding:10px;
   text-align:center;
   z-index:500;
 }
 
 #now{
-  color:var(--accent);
-  font-weight:700;
+  color:#00e5ff;
+  font-weight:bold;
   margin-bottom:6px;
 }
 
-audio{width:92%;}
+audio{
+  width:95%;
+}
 
 /* CHAT */
 #chat{
@@ -145,28 +137,18 @@ audio{width:92%;}
   max-width:95%;
   height:260px;
   background:#1c1c1c;
-  border:2px solid var(--accent);
-  border-radius:14px;
+  border:2px solid #00e5ff;
+  border-radius:12px;
   display:flex;
   flex-direction:column;
   z-index:1000;
 }
 
 #chatHeader{
-  height:40px;
+  padding:6px 10px;
+  border-bottom:2px solid #00e5ff;
   display:flex;
   justify-content:space-between;
-  align-items:center;
-  padding:0 10px;
-  border-bottom:2px solid var(--accent);
-}
-
-#chatHeader button{
-  background:none;
-  border:none;
-  color:var(--accent);
-  font-size:18px;
-  cursor:pointer;
 }
 
 #chatMessages{
@@ -178,7 +160,7 @@ audio{width:92%;}
 
 #chatForm{
   display:flex;
-  border-top:2px solid var(--accent);
+  border-top:2px solid #00e5ff;
 }
 
 #chatInput{
@@ -190,36 +172,42 @@ audio{width:92%;}
 }
 
 #chatForm button{
-  padding:8px 14px;
+  padding:8px 12px;
   border:none;
-  background:var(--accent);
+  background:#00e5ff;
   cursor:pointer;
 }
 
-/* CHAT TOGGLE MOBILE */
+/* CHAT BUTTON MOBILE */
 #chatToggle{
   position:fixed;
   bottom:110px;
-  right:16px;
+  right:14px;
   width:54px;
   height:54px;
   border-radius:50%;
-  background:var(--accent);
+  background:#00e5ff;
   border:none;
   font-size:24px;
-  cursor:pointer;
-  z-index:1100;
   display:none;
+  z-index:1100;
 }
 
-/* MOBILE */
+/* MOBILE FIX */
 @media (max-width:900px){
+
   .categories{
     grid-template-columns:1fr 1fr; /* 2 + 2 */
   }
 
+  /* 🔴 FIX CHIAVE */
+  #content{
+    max-height:45vh;
+    overflow-y:auto;
+  }
+
   main{
-    padding-bottom:320px; /* FIX RADIO NASCOSTE */
+    padding-bottom:320px;
   }
 
   #chat{
@@ -238,12 +226,12 @@ audio{width:92%;}
 
 <header>
   <h1>Io negli anni ’80 c’ero</h1>
-  <p>Musica, radio, giochi e chat</p>
+  <p>Musica · Radio · Giochi · Chat</p>
 </header>
 
 <main>
   <div class="categories" id="categories"></div>
-  <div id="content">Seleziona una categoria.</div>
+  <div id="content">Seleziona una sezione.</div>
 </main>
 
 <div id="player">
@@ -256,12 +244,12 @@ audio{width:92%;}
 <div id="chat">
   <div id="chatHeader">
     <strong>Chat</strong>
-    <button id="chatClose">✕</button>
+    <button onclick="chat.style.display='none'">✕</button>
   </div>
   <div id="chatMessages"></div>
   <form id="chatForm">
-    <input id="chatInput" placeholder="Scrivi un messaggio…" autocomplete="off">
-    <button type="submit">Invia</button>
+    <input id="chatInput" placeholder="Scrivi…" autocomplete="off">
+    <button>Invia</button>
   </form>
 </div>
 
@@ -270,74 +258,49 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebas
 import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
 
 /* FIREBASE */
-const firebaseConfig={
+const app = initializeApp({
   apiKey:"AIzaSyB8h3fvyPxq_Tjp2R5RzsgEC7jv6FASeWE",
   authDomain:"anni-80-chat-a1192.firebaseapp.com",
   databaseURL:"https://anni-80-chat-a1192-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId:"anni-80-chat-a1192",
-  storageBucket:"anni-80-chat-a1192.firebasestorage.app",
-  messagingSenderId:"578541128805",
-  appId:"1:578541128805:web:854a987bf16439cb758a8c"
-};
-
-const app=initializeApp(firebaseConfig);
-const db=getDatabase(app);
-const chatRef=ref(db,"chat");
+  projectId:"anni-80-chat-a1192"
+});
+const db = getDatabase(app);
+const chatRef = ref(db,"chat");
 
 /* NICK */
-let nickname=localStorage.getItem("anni80_nick");
+let nickname = localStorage.getItem("anni80_nick");
 if(!nickname){
-  nickname=prompt("Scegli il tuo nickname anni ’80:")||"Anonimo80";
-  localStorage.setItem("anni80_nick",nickname);
+  nickname = prompt("Scegli il tuo nickname anni ’80:") || "Anonimo80";
+  localStorage.setItem("anni80_nick", nickname);
 }
 
 /* CHAT */
-const chatForm=document.getElementById("chatForm");
-const chatInput=document.getElementById("chatInput");
-const chatMessages=document.getElementById("chatMessages");
+const chatForm = document.getElementById("chatForm");
+const chatInput = document.getElementById("chatInput");
+const chatMessages = document.getElementById("chatMessages");
 
 chatForm.addEventListener("submit",e=>{
   e.preventDefault();
-  const text=chatInput.value.trim();
-  if(text){
-    push(chatRef,{nick:nickname,text});
+  if(chatInput.value.trim()){
+    push(chatRef,{nick:nickname,text:chatInput.value});
     chatInput.value="";
   }
 });
 
-onChildAdded(chatRef,snap=>{
-  const m=snap.val();
-  if(!m) return;
-  const div=document.createElement("div");
-  div.innerHTML=`<strong>[${m.nick}]</strong>: ${m.text}`;
-  chatMessages.appendChild(div);
+onChildAdded(chatRef,s=>{
+  const m=s.val();
+  const d=document.createElement("div");
+  d.innerHTML=`<strong>[${m.nick}]</strong>: ${m.text}`;
+  chatMessages.appendChild(d);
   chatMessages.scrollTop=chatMessages.scrollHeight;
 });
 
 /* DATI */
-const categories=[
-  {id:"musica",label:"Musica"},
-  {id:"radio",label:"Radio"},
-  {id:"giochi",label:"Giochi"},
-  {id:"chat",label:"Chat"}
-];
-
-const musica=[
-  {name:"Spotify Anni 80",url:"https://open.spotify.com/search/anni%2080",desc:"Playlist"},
-  {name:"YouTube Anni 80",url:"https://www.youtube.com/results?search_query=anni+80+music",desc:"Video"}
-];
-
 const radio=[
-  {name:"Radio 80",url:"https://sphera.fluidstream.eu/radio80.aac",desc:"Pop & Rock"},
-  {name:"SomaFM Underground 80s",url:"https://somafm.com/u80s130.pls",desc:"Alternative"},
-  {name:"80s80s Italo Disco",url:"https://streams.80s80s.de/italodisco/mp3-192",desc:"Italo Disco"},
-  {name:"Italia 80",url:"https://stream.laut.fm/italia80",desc:"Italiani"}
-];
-
-const giochi=[
-  {name:"Pac-Man",url:"https://www.retrogames.cz/play_004-NES.php",desc:"Arcade"},
-  {name:"Space Invaders",url:"https://www.retrogames.cz/play_031-NES.php",desc:"Classico"},
-  {name:"Tetris",url:"https://www.retrogames.cz/play_060-NES.php",desc:"Puzzle"}
+  {n:"Radio 80",u:"https://sphera.fluidstream.eu/radio80.aac"},
+  {n:"SomaFM Underground 80s",u:"https://somafm.com/u80s130.pls"},
+  {n:"80s80s Italo Disco",u:"https://streams.80s80s.de/italodisco/mp3-192"},
+  {n:"Italia 80",u:"https://stream.laut.fm/italia80"}
 ];
 
 /* UI */
@@ -346,46 +309,37 @@ const contentEl=document.getElementById("content");
 const audio=document.getElementById("audio");
 const now=document.getElementById("now");
 
-categories.forEach(c=>{
+["Musica","Radio","Giochi","Chat"].forEach((c,i)=>{
   const d=document.createElement("div");
   d.className="category";
-  d.textContent=c.label;
-  d.onclick=()=>openCategory(c.id,d);
+  d.textContent=c;
+  d.onclick=()=>open(i,d);
   categoriesEl.appendChild(d);
 });
 
-function openCategory(id,el){
-  document.querySelectorAll(".category").forEach(c=>c.classList.remove("active"));
+function open(i,el){
+  document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
   el.classList.add("active");
 
-  if(id==="chat"){
-    contentEl.innerHTML="<p>Usa la chat in basso.</p>";
-    return;
+  if(i===1){
+    contentEl.innerHTML=`<div class="grid">${
+      radio.map(r=>`
+        <div class="card" onclick="play('${r.u}','${r.n}')">
+          <div class="title">${r.n}</div>
+        </div>`).join("")
+    }</div>`;
+  } else {
+    contentEl.innerHTML="<p>Sezione in arrivo.</p>";
   }
-
-  const data=id==="musica"?musica:id==="radio"?radio:giochi;
-
-  contentEl.innerHTML=`<div class="grid">${
-    data.map(x=>`
-      <div class="card" onclick="${id==="radio"
-        ?`playRadio('${x.url}','${x.name}')`
-        :`window.open('${x.url}','_blank')`}">
-        <div class="title">${x.name}</div>
-        <div class="desc">${x.desc}</div>
-      </div>`).join("")
-  }</div>`;
 }
 
-window.playRadio=(url,name)=>{
-  audio.src=url;
+window.play=(u,n)=>{
+  audio.src=u;
   audio.play();
-  now.textContent="In riproduzione: "+name;
+  now.textContent="In riproduzione: "+n;
 };
 
-/* CHAT MOBILE */
-const chat=document.getElementById("chat");
 document.getElementById("chatToggle").onclick=()=>chat.style.display="flex";
-document.getElementById("chatClose").onclick=()=>chat.style.display="none";
 </script>
 
 </body>
