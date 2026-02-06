@@ -2,7 +2,10 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- 🔒 FIX ZOOM MOBILE -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <title>Io negli anni ’80 c’ero</title>
 
 <style>
@@ -29,7 +32,7 @@ header p{color:#aaa;font-size:.9rem}
 main{
   flex:1;
   padding:12px;
-  padding-bottom:300px;
+  padding-bottom:320px;
 }
 
 /* CATEGORIE */
@@ -39,7 +42,6 @@ main{
   gap:10px;
   margin-bottom:12px;
 }
-
 .category{
   border:2px solid #00e5ff;
   border-radius:12px;
@@ -93,15 +95,15 @@ a.card{color:inherit;text-decoration:none}
 #now{color:#00e5ff;font-weight:bold;margin-bottom:6px}
 audio{width:95%}
 
-/* CHAT DESKTOP (INGRANDITA) */
+/* CHAT DESKTOP */
 #chat{
   position:fixed;
   bottom:110px;
   left:50%;
   transform:translateX(-50%);
-  width:760px;          /* ⬅️ più larga */
+  width:760px;
   max-width:95%;
-  height:360px;         /* ⬅️ più alta */
+  height:360px;
   background:#1c1c1c;
   border:2px solid #00e5ff;
   border-radius:14px;
@@ -132,22 +134,24 @@ audio{width:95%}
 
 #chatInput{
   flex:1;
-  padding:12px;
+  padding:14px;
   border:none;
   background:#222;
   color:#fff;
-  font-size:1rem;
+
+  /* 🔥 FIX ZOOM */
+  font-size:16px;
 }
 
 #chatForm button{
-  padding:12px 16px;
+  padding:14px 18px;
   border:none;
   background:#00e5ff;
   cursor:pointer;
   font-weight:bold;
 }
 
-/* CHAT TOGGLE MOBILE */
+/* CHAT TOGGLE */
 #chatToggle{
   position:fixed;
   bottom:120px;
@@ -306,9 +310,7 @@ function open(i,el){
 
   if(i===1){
     contentEl.innerHTML=`<div class="grid">${
-      radio.map(r=>`
-        <div class="card" onclick="play('${r.u}','${r.n}')">${r.n}</div>`
-      ).join("")
+      radio.map(r=>`<div class="card" onclick="play('${r.u}','${r.n}')">${r.n}</div>`).join("")
     }</div>`;
   }
 
@@ -324,8 +326,8 @@ function open(i,el){
     contentEl.innerHTML=`
       <div style="text-align:center;line-height:1.6">
         💬 <strong>Chat anni ’80</strong><br><br>
-        Su desktop la chat è visibile qui sotto ⬇️<br>
-        Su mobile usa il pulsante rotondo 💬
+        Su desktop la chat è visibile sotto ⬇️<br>
+        Su mobile usa il pulsante 💬
       </div>`;
   }
 }
