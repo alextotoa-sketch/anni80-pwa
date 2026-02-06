@@ -109,7 +109,6 @@ audio{width:95%}
   background:#0f0;
   transition:height .08s;
 }
-
 .vu.yellow{background:#ff0}
 .vu.red{background:#f00}
 
@@ -194,10 +193,7 @@ audio{width:95%}
 
 <div id="player">
   <div id="now">Nessuna radio in riproduzione</div>
-
-  <!-- VU METER -->
   <div id="vumeter"></div>
-
   <audio id="audio" controls></audio>
 </div>
 
@@ -232,12 +228,23 @@ const app=initializeApp({
 const db=getDatabase(app);
 const chatRef=ref(db,"chat");
 
-/* NICK */
-let nickname=localStorage.getItem("anni80_nick");
-if(!nickname){
-  nickname=prompt("Nickname anni ’80:")||"Anonimo80";
-  localStorage.setItem("anni80_nick",nickname);
+/* ===== NICK OBBLIGATORIO (ANCHE SE GIÀ ANONIMO) ===== */
+let nickname = localStorage.getItem("anni80_nick");
+
+const invalidNicks = ["", "anonimo", "anonimo80", null];
+
+while(
+  !nickname ||
+  invalidNicks.includes(nickname.toLowerCase().trim())
+){
+  nickname = prompt(
+    "Inserisci un NICKNAME anni ’80 OBBLIGATORIO:\n\n" +
+    "Serve per partecipare alla chat."
+  );
 }
+
+nickname = nickname.trim();
+localStorage.setItem("anni80_nick", nickname);
 
 /* CHAT */
 const chat=document.getElementById("chat");
@@ -310,7 +317,7 @@ window.play=(u,n)=>{
  startVU();
 };
 
-/* ===== VU METER ANNI 80 ===== */
+/* ===== VU METER ===== */
 const vu=document.getElementById("vumeter");
 const bars=[];
 const TOTAL=24;
@@ -323,7 +330,6 @@ for(let i=0;i<TOTAL;i++){
  bars.push(b);
 }
 
-/* ANIMAZIONE */
 function startVU(){
  stopVU();
  vuTimer=setInterval(()=>{
@@ -341,11 +347,10 @@ function stopVU(){
  bars.forEach(b=>b.style.height="10%");
 }
 
-/* RIPARTE CON PLAY */
 audio.addEventListener("play",startVU);
 audio.addEventListener("pause",stopVU);
 audio.addEventListener("ended",stopVU);
-
 </script>
+
 </body>
 </html>
