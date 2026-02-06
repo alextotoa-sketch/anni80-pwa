@@ -2,14 +2,14 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Io negli anni ’80 c’ero</title>
 
+<!-- PWA / ICONS -->
 <link rel="manifest" href="./manifest.json">
 <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
-<link rel="icon" sizes="32x32" href="./icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16.png">
 <meta name="theme-color" content="#00e5ff">
 
 <style>
@@ -177,7 +177,7 @@ onChildAdded(chatRef,s=>{
   if(m.replyTo){
     const r=document.createElement("div");
     r.className="reply";
-    r.innerHTML=`<strong>${m.replyTo.nick}</strong>: ${m.replyTo.text}`;
+    r.textContent=`${m.replyTo.nick}: ${m.replyTo.text}`;
     d.appendChild(r);
   }
 
@@ -208,9 +208,10 @@ onChildAdded(chatRef,s=>{
 window.closeChat=()=>chat.style.display="none";
 document.getElementById("chatToggle").onclick=()=>chat.style.display="flex";
 
-/* RADIO + VU */
+/* RADIO */
 const radio=[
   {n:"Radio 80",u:"https://sphera.fluidstream.eu/radio80.aac"},
+  {n:"SomaFM Underground 80s",u:"https://ice2.somafm.com/u80s-128-mp3"},
   {n:"80s80s Italo Disco",u:"https://streams.80s80s.de/italodisco/mp3-192"},
   {n:"Italia 80",u:"https://stream.laut.fm/italia80"}
 ];
@@ -220,18 +221,15 @@ const contentEl=document.getElementById("content");
 const audio=document.getElementById("audio");
 const now=document.getElementById("now");
 
+/* VU METER */
 const vumeter=document.getElementById("vumeter");
 let bars=[],vuTimer=null;
-
-(function(){
-  for(let i=0;i<40;i++){
-    const b=document.createElement("div");
-    b.className="vu";
-    vumeter.appendChild(b);
-    bars.push(b);
-  }
-})();
-
+for(let i=0;i<40;i++){
+  const b=document.createElement("div");
+  b.className="vu";
+  vumeter.appendChild(b);
+  bars.push(b);
+}
 function startVu(){
   vuTimer=setInterval(()=>{
     const level=Math.random()*20;
@@ -242,11 +240,14 @@ function startVu(){
     });
   },120);
 }
-function stopVu(){clearInterval(vuTimer);bars.forEach(b=>b.style.height="6px")}
-
+function stopVu(){
+  clearInterval(vuTimer);
+  bars.forEach(b=>b.style.height="6px");
+}
 audio.onplay=startVu;
 audio.onpause=stopVu;
 
+/* UI */
 ["Musica","Radio","Giochi","Chat"].forEach((c,i)=>{
   const d=document.createElement("div");
   d.className="category";
@@ -259,12 +260,30 @@ function open(i,el){
   document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
   el.classList.add("active");
 
+  if(i===0){
+    contentEl.innerHTML=`
+      <div class="grid">
+        <a class="card" href="https://www.youtube.com/results?search_query=anni+80+italiani" target="_blank">🎵 YouTube Anni 80</a>
+        <a class="card" href="https://open.spotify.com/search/anni%2080" target="_blank">🎧 Spotify Anni 80</a>
+      </div>`;
+  }
+
   if(i===1){
     contentEl.innerHTML=`<div class="grid">${
       radio.map(r=>`<div class="card" onclick="play('${r.u}','${r.n}')">${r.n}</div>`).join("")
     }</div>`;
-  } else {
-    contentEl.textContent="Selezione in arrivo…";
+  }
+
+  if(i===2){
+    contentEl.innerHTML=`
+      <div class="grid">
+        <a class="card" href="https://archive.org/details/internetarcade" target="_blank">🕹️ Internet Arcade</a>
+        <a class="card" href="https://www.retrogames.cc/" target="_blank">🎮 RetroGames</a>
+      </div>`;
+  }
+
+  if(i===3){
+    contentEl.innerHTML=`💬 Premi il pulsante chat per parlare`;
   }
 }
 
@@ -274,5 +293,6 @@ window.play=(u,n)=>{
   now.textContent="In riproduzione: "+n;
 };
 </script>
+
 </body>
 </html>
