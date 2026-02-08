@@ -122,23 +122,31 @@ const app = initializeApp({
 const db = getDatabase(app);
 const chatRef = ref(db,"chat");
 
-/* NICK */
-let nickname = localStorage.getItem("anni80_nick");
-while(!nickname){
-  nickname = prompt("Inserisci il tuo nickname anni ’80:");
-  if(nickname) localStorage.setItem("anni80_nick",nickname);
-}
-
-/* CHAT STATE */
+/* STATE */
 const chat = document.getElementById("chat");
 const chatMessages = document.getElementById("chatMessages");
 const chatInput = document.getElementById("chatInput");
 const replyBox = document.getElementById("replyBox");
 const replyNick = document.getElementById("replyNick");
+
 let replyTo = null;
+let nickname = localStorage.getItem("anni80_nick");
+
+/* ASK NICK (mobile safe) */
+function askNickIfNeeded(){
+  if(!nickname){
+    nickname = prompt("Inserisci il tuo nickname anni ’80:");
+    if(nickname){
+      localStorage.setItem("anni80_nick", nickname);
+    }
+  }
+}
 
 /* OPEN CHAT */
 document.getElementById("chatToggle").onclick = () => {
+  askNickIfNeeded();
+  if(!nickname) return;
+
   replyTo = null;
   replyBox.style.display = "none";
   chatInput.value = "";
@@ -160,6 +168,9 @@ window.cancelReply = () => {
 
 document.getElementById("chatForm").addEventListener("submit", e => {
   e.preventDefault();
+  askNickIfNeeded();
+  if(!nickname) return;
+
   if(chatInput.value.trim()){
     push(chatRef,{
       nick: nickname,
