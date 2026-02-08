@@ -37,7 +37,7 @@ a.card{text-decoration:none;color:inherit}
 #now{color:#00e5ff;font-weight:bold;margin-bottom:6px}
 audio{width:95%}
 
-/* VU */
+/* VU METER */
 #vumeter{display:flex;gap:2px;justify-content:center;align-items:flex-end;height:40px;margin-bottom:6px}
 .vu{width:6px;height:6px;background:#222;border-radius:2px;transition:height .12s}
 .vu.g{background:#00ff66}
@@ -54,15 +54,7 @@ audio{width:95%}
 .message strong{color:#00e5ff;font-size:.85rem;display:block}
 
 /* REPLY */
-#replyBox{
-  display:none;
-  background:#222;
-  padding:8px 12px;
-  font-size:.85rem;
-  border-left:4px solid #00e5ff;
-  justify-content:space-between;
-  align-items:center;
-}
+#replyBox{display:none;background:#222;padding:8px 12px;font-size:.85rem;border-left:4px solid #00e5ff;display:flex;justify-content:space-between}
 #replyNick{color:#00e5ff;font-weight:bold}
 
 #chatForm{display:flex;padding:10px;gap:8px;background:#161616}
@@ -160,6 +152,7 @@ window.closeChat=()=>{
   resetReply();
   chat.style.display="none";
 };
+
 window.cancelReply=resetReply;
 
 document.getElementById("chatForm").addEventListener("submit",e=>{
@@ -180,7 +173,7 @@ onChildAdded(chatRef,s=>{
     <strong>${m.nick}</strong>${m.text}
   `;
   d.onclick=()=>{
-    replyTo=`${m.nick}: ${m.text}`;
+    replyTo=\`\${m.nick}: \${m.text}\`;
     replyNick.textContent=m.nick;
     replyBox.style.display="flex";
     chatInput.focus();
@@ -202,6 +195,29 @@ const categoriesEl=document.getElementById("categories");
 const content=document.getElementById("content");
 const audio=document.getElementById("audio");
 const now=document.getElementById("now");
+
+/* VU */
+const vumeter=document.getElementById("vumeter");
+let bars=[],vuTimer=null;
+for(let i=0;i<40;i++){
+  const b=document.createElement("div");
+  b.className="vu";
+  vumeter.appendChild(b);
+  bars.push(b);
+}
+function startVu(){
+  stopVu();
+  vuTimer=setInterval(()=>{
+    bars.forEach(b=>{
+      const h=Math.random()*40;
+      b.style.height=h+"px";
+      b.className="vu "+(h>30?"r":h>18?"y":"g");
+    });
+  },120);
+}
+function stopVu(){clearInterval(vuTimer)}
+audio.onplay=startVu;
+audio.onpause=stopVu;
 
 /* UI */
 categories.forEach((c,i)=>{
@@ -231,32 +247,39 @@ function open(i,el){
   </div>`;
 
   if(i===3) content.innerHTML=`
-    <h3>📲 Chat-Info</h3>
+<h3>📲 Chat-Info</h3>
 
-    <p><strong>Installazione dell’app (tutti i dispositivi):</strong></p>
-    <ul>
-      <li><strong>iPhone / iPad:</strong> Condividi → Aggiungi a Home</li>
-      <li><strong>Android:</strong> Menu → Installa app</li>
-      <li><strong>Windows / macOS:</strong> Chrome o Edge → Installa</li>
-    </ul>
+<p><strong>Installazione dell’app:</strong></p>
+<ul>
+  <li>iOS: Condividi → Aggiungi a Home</li>
+  <li>Android: Menu → Installa app</li>
+  <li>Windows / macOS: Chrome o Edge → Installa</li>
+</ul>
 
-    <p style="margin-top:10px"><strong>🔄 Aggiornamenti:</strong><br>
-    L’app si aggiorna automaticamente su tutti i dispositivi.
-    Se installata, basta chiuderla e riaprirla.</p>
+<p style="margin-top:10px"><strong>🔄 Aggiornamenti:</strong><br>
+L’app viene aggiornata periodicamente in modo automatico.
+Se la utilizzi come app installata, gli aggiornamenti vengono applicati
+senza bisogno di reinstallare nulla.<br>
+In caso di novità importanti, potrebbe essere sufficiente chiudere e
+riaprire l’app oppure aggiornare la pagina.</p>
 
-    <p style="margin-top:10px"><strong>⚠️ Regole:</strong>
-    rispetto reciproco e niente spam.</p>
+<p style="margin-top:10px"><strong>⚠️ Regole di condotta:</strong><br>
+Rispetto reciproco, linguaggio appropriato e niente spam.</p>
 
-    <div style="text-align:center;margin-top:14px">
-      <button onclick="chat.style.display='flex'"
-        style="padding:12px 20px;border-radius:20px;border:none;background:#00e5ff;font-weight:bold">
-        💬 Entra in chat
-      </button>
-    </div>
-  `;
+<div style="text-align:center;margin-top:14px">
+  <button onclick="chat.style.display='flex'"
+    style="padding:12px 20px;border-radius:20px;border:none;background:#00e5ff;font-weight:bold">
+    💬 Entra in chat
+  </button>
+</div>
+`;
 }
 
-window.play=(u,n)=>{audio.src=u;audio.play();now.textContent="In riproduzione: "+n};
+window.play=(u,n)=>{
+  audio.src=u;
+  audio.play();
+  now.textContent="In riproduzione: "+n;
+};
 </script>
 
 </body>
