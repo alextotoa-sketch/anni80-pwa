@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -230,15 +231,29 @@ function open(i,el){
 
   if(i===3) content.innerHTML=`
     <h3>📲 Chat-Info</h3>
-    <p><strong>Installazione:</strong></p>
+
+    <p><strong>Installazione dell’app:</strong></p>
     <ul>
       <li>iOS: Condividi → Aggiungi a Home</li>
       <li>Android: Menu → Installa app</li>
       <li>Windows / macOS: Chrome o Edge → Installa</li>
     </ul>
-    <p style="margin-top:10px"><strong>⚠️ Regole:</strong> rispetto reciproco, niente spam.</p>
+
+    <p style="margin-top:10px"><strong>🔄 Aggiornamenti:</strong><br>
+    L’app viene aggiornata periodicamente in modo automatico.
+    Se la utilizzi come app installata, gli aggiornamenti vengono applicati
+    senza bisogno di reinstallare nulla.  
+    In caso di novità importanti, potrebbe essere sufficiente chiudere e
+    riaprire l’app oppure aggiornare la pagina.</p>
+
+    <p style="margin-top:10px"><strong>⚠️ Regole di condotta:</strong>
+    rispetto reciproco, linguaggio appropriato e niente spam.</p>
+
     <div style="text-align:center;margin-top:14px">
-      <button onclick="chat.style.display='flex'" style="padding:12px 20px;border-radius:20px;border:none;background:#00e5ff;font-weight:bold">💬 Entra in chat</button>
+      <button onclick="chat.style.display='flex'"
+        style="padding:12px 20px;border-radius:20px;border:none;background:#00e5ff;font-weight:bold">
+        💬 Entra in chat
+      </button>
     </div>
   `;
 }
