@@ -129,7 +129,7 @@ while(!nickname){
   if(nickname) localStorage.setItem("anni80_nick",nickname);
 }
 
-/* CHAT */
+/* CHAT STATE */
 const chat=document.getElementById("chat");
 const chatMessages=document.getElementById("chatMessages");
 const chatInput=document.getElementById("chatInput");
@@ -175,7 +175,7 @@ onChildAdded(chatRef,s=>{
     <strong>${m.nick}</strong>${m.text}
   `;
   d.onclick=()=>{
-    replyTo=`${m.nick}: ${m.text}`;
+    replyTo=\`\${m.nick}: \${m.text}\`;
     replyNick.textContent=m.nick;
     replyBox.style.display="flex";
     chatInput.focus();
@@ -234,22 +234,23 @@ function open(i,el){
   document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
   el.classList.add("active");
 
-  if(i===0) content.innerHTML=`<div class="grid">
+  if(i===0) content.innerHTML=\`<div class="grid">
     <a class="card" href="https://www.youtube.com/results?search_query=anni+80+italiani" target="_blank">🎵 YouTube</a>
     <a class="card" href="https://open.spotify.com/search/anni%2080" target="_blank">🎧 Spotify</a>
-  </div>`;
+  </div>\`;
 
-  if(i===1) content.innerHTML=`<div class="grid">
-    ${radio.map(r=>`<div class="card" onclick="play('${r.u}','${r.n}')">${r.n}</div>`).join("")}
-  </div>`;
+  if(i===1) content.innerHTML=\`<div class="grid">
+    \${radio.map(r=>\`<div class="card" onclick="play('\${r.u}','\${r.n}')">\${r.n}</div>\`).join("")}
+  </div>\`;
 
-  if(i===2) content.innerHTML=`<div class="grid">
+  if(i===2) content.innerHTML=\`<div class="grid">
     <a class="card" href="https://archive.org/details/internetarcade" target="_blank">🕹️ Arcade</a>
     <a class="card" href="https://www.retrogames.cc/" target="_blank">🎮 RetroGames</a>
-  </div>`;
+  </div>\`;
 
-  if(i===3) content.innerHTML=`
+  if(i===3) content.innerHTML=\`
     <h3>📲 Chat-Info</h3>
+
     <p><strong>Installazione dell’app:</strong></p>
     <ul>
       <li>iOS: Condividi → Aggiungi a Home</li>
@@ -258,10 +259,14 @@ function open(i,el){
     </ul>
 
     <p style="margin-top:10px"><strong>🔄 Aggiornamenti:</strong><br>
-    L’app viene aggiornata automaticamente.</p>
+    L’app viene aggiornata periodicamente in modo automatico.
+    Se la utilizzi come app installata, gli aggiornamenti vengono applicati
+    senza bisogno di reinstallare nulla.
+    In caso di novità importanti, potrebbe essere sufficiente chiudere e
+    riaprire l’app oppure aggiornare la pagina.</p>
 
-    <p style="margin-top:10px"><strong>⚠️ Regole:</strong>
-    rispetto reciproco e niente spam.</p>
+    <p style="margin-top:10px"><strong>⚠️ Regole di condotta:</strong><br>
+    rispetto reciproco, linguaggio appropriato e niente spam.</p>
 
     <div style="text-align:center;margin-top:14px">
       <button onclick="chat.style.display='flex'"
@@ -269,7 +274,7 @@ function open(i,el){
         💬 Entra in chat
       </button>
     </div>
-  `;
+  \`;
 }
 
 window.play=(u,n)=>{audio.src=u;audio.play();now.textContent="In riproduzione: "+n};
