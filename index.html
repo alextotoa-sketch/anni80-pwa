@@ -55,7 +55,7 @@ audio{width:95%}
 .message{background:#1f1f1f;border-radius:14px;padding:10px 12px;max-width:85%;cursor:pointer}
 .message strong{color:#00e5ff;font-size:.85rem;display:block}
 
-/* REPLY — FIX DEFINITIVO (DESKTOP + MOBILE) */
+/* REPLY FIX */
 #replyBox{
   display:none;
   background:#222;
@@ -72,8 +72,7 @@ audio{width:95%}
 
 #chatToggle{position:fixed;bottom:200px;right:14px;width:56px;height:56px;border-radius:50%;background:#00e5ff;border:none;font-size:26px;z-index:1100}
 
-/* MOBILE – TUTTI I DISPOSITIVI */
-@media (max-width:900px){
+@media(max-width:900px){
   .categories{grid-template-columns:1fr 1fr}
 }
 </style>
@@ -170,7 +169,7 @@ onChildAdded(chatRef,s=>{
     <strong>${m.nick}</strong>${m.text}
   `;
   d.onclick=()=>{
-    replyTo=`${m.nick}: ${m.text}`;
+    replyTo=\`\${m.nick}: \${m.text}\`;
     replyNick.textContent=m.nick;
     replyBox.style.display="flex";
     chatInput.focus();
@@ -193,22 +192,30 @@ const content=document.getElementById("content");
 const audio=document.getElementById("audio");
 const now=document.getElementById("now");
 
-/* UI */
-categories.forEach((c,i)=>{
-  const d=document.createElement("div");
-  d.className="category";
-  d.textContent=c;
-  d.onclick=()=>open(i,d);
-  categoriesEl.appendChild(d);
-});
-
-function open(i,el){
+/* FUNZIONI GLOBALI (FIX MOBILE) */
+window.openCategory = function(i,el){
   document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
   el.classList.add("active");
 
+  if(i===0) content.innerHTML=`
+    <div class="grid">
+      <a class="card" href="https://www.youtube.com/results?search_query=anni+80+italiani" target="_blank">🎵 YouTube</a>
+      <a class="card" href="https://open.spotify.com/search/anni%2080" target="_blank">🎧 Spotify</a>
+    </div>`;
+
+  if(i===1) content.innerHTML=`
+    <div class="grid">
+      ${radio.map(r=>`<div class="card" onclick="play('${r.u}','${r.n}')">${r.n}</div>`).join("")}
+    </div>`;
+
+  if(i===2) content.innerHTML=`
+    <div class="grid">
+      <a class="card" href="https://archive.org/details/internetarcade" target="_blank">🕹️ Arcade</a>
+      <a class="card" href="https://www.retrogames.cc/" target="_blank">🎮 RetroGames</a>
+    </div>`;
+
   if(i===3) content.innerHTML=`
     <h3>📲 Chat-Info</h3>
-
     <p><strong>Installazione dell’app:</strong></p>
     <ul>
       <li>iOS: Condividi → Aggiungi a Home</li>
@@ -231,11 +238,24 @@ function open(i,el){
         style="padding:12px 20px;border-radius:20px;border:none;background:#00e5ff;font-weight:bold">
         💬 Entra in chat
       </button>
-    </div>
-  `;
-}
+    </div>`;
+};
 
-window.play=(u,n)=>{audio.src=u;audio.play();now.textContent="In riproduzione: "+n};
+/* PLAY GLOBALE */
+window.play = function(u,n){
+  audio.src=u;
+  audio.play();
+  now.textContent="In riproduzione: "+n;
+};
+
+/* CREA CATEGORIE */
+categories.forEach((c,i)=>{
+  const d=document.createElement("div");
+  d.className="category";
+  d.textContent=c;
+  d.onclick=()=>openCategory(i,d);
+  categoriesEl.appendChild(d);
+});
 </script>
 
 </body>
