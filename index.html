@@ -33,7 +33,6 @@ main{flex:1;padding:12px;padding-bottom:190px}
 .card:hover{background:#00e5ff;color:#000}
 a.card{text-decoration:none;color:inherit}
 
-/* PLAYER */
 #player{position:fixed;bottom:0;left:0;width:100%;background:#1c1c1c;border-top:2px solid #00e5ff;padding:10px;text-align:center;z-index:500}
 #now{color:#00e5ff;font-weight:bold;margin-bottom:6px}
 audio{width:95%}
@@ -49,21 +48,13 @@ audio{width:95%}
 #chat{position:fixed;inset:0;background:#111;display:none;flex-direction:column;z-index:2000}
 #chatHeader{padding:14px;background:#161616;border-bottom:1px solid #222;display:flex;justify-content:space-between}
 #chatHeader strong{color:#00e5ff}
-
 #chatMessages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
 
-.message{background:#1f1f1f;border-radius:14px;padding:10px 12px;max-width:85%;cursor:pointer}
+.message{background:#1f1f1f;border-radius:14px;padding:10px 12px;max-width:85%}
 .message strong{color:#00e5ff;font-size:.85rem;display:block}
 
-/* REPLY FIX */
-#replyBox{
-  display:none;
-  background:#222;
-  padding:8px 12px;
-  font-size:.85rem;
-  border-left:4px solid #00e5ff;
-  justify-content:space-between;
-}
+/* REPLY */
+#replyBox{display:none;background:#222;padding:8px 12px;font-size:.85rem;border-left:4px solid #00e5ff;display:flex;justify-content:space-between}
 #replyNick{color:#00e5ff;font-weight:bold}
 
 #chatForm{display:flex;padding:10px;gap:8px;background:#161616}
@@ -146,17 +137,31 @@ const replyBox=document.getElementById("replyBox");
 const replyNick=document.getElementById("replyNick");
 let replyTo=null;
 
-document.getElementById("chatToggle").onclick=()=>chat.style.display="flex";
-window.closeChat=()=>chat.style.display="none";
-window.cancelReply=()=>{replyTo=null;replyBox.style.display="none"};
+/* RESET REPLY */
+function resetReply(){
+  replyTo=null;
+  replyBox.style.display="none";
+  replyNick.textContent="";
+}
+
+document.getElementById("chatToggle").onclick=()=>{
+  resetReply();
+  chat.style.display="flex";
+};
+
+window.closeChat=()=>{
+  resetReply();
+  chat.style.display="none";
+};
+
+window.cancelReply=resetReply;
 
 document.getElementById("chatForm").addEventListener("submit",e=>{
   e.preventDefault();
   if(chatInput.value.trim()){
     push(chatRef,{nick:nickname,text:chatInput.value,reply:replyTo});
     chatInput.value="";
-    replyTo=null;
-    replyBox.style.display="none";
+    resetReply();
   }
 });
 
@@ -192,27 +197,50 @@ const content=document.getElementById("content");
 const audio=document.getElementById("audio");
 const now=document.getElementById("now");
 
-/* FUNZIONI GLOBALI (FIX MOBILE) */
-window.openCategory = function(i,el){
+/* VU */
+const vumeter=document.getElementById("vumeter");
+let bars=[],vuTimer=null;
+for(let i=0;i<40;i++){const b=document.createElement("div");b.className="vu";vumeter.appendChild(b);bars.push(b);}
+function startVu(){
+  stopVu();
+  vuTimer=setInterval(()=>{
+    bars.forEach(b=>{
+      const h=Math.random()*40;
+      b.style.height=h+"px";
+      b.className="vu "+(h>30?"r":h>18?"y":"g");
+    });
+  },120);
+}
+function stopVu(){clearInterval(vuTimer)}
+audio.onplay=startVu;
+audio.onpause=stopVu;
+
+/* UI */
+categories.forEach((c,i)=>{
+  const d=document.createElement("div");
+  d.className="category";
+  d.textContent=c;
+  d.onclick=()=>open(i,d);
+  categoriesEl.appendChild(d);
+});
+
+function open(i,el){
   document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
   el.classList.add("active");
 
-  if(i===0) content.innerHTML=`
-    <div class="grid">
-      <a class="card" href="https://www.youtube.com/results?search_query=anni+80+italiani" target="_blank">🎵 YouTube</a>
-      <a class="card" href="https://open.spotify.com/search/anni%2080" target="_blank">🎧 Spotify</a>
-    </div>`;
+  if(i===0) content.innerHTML=`<div class="grid">
+    <a class="card" href="https://www.youtube.com/results?search_query=anni+80+italiani" target="_blank">🎵 YouTube</a>
+    <a class="card" href="https://open.spotify.com/search/anni%2080" target="_blank">🎧 Spotify</a>
+  </div>`;
 
-  if(i===1) content.innerHTML=`
-    <div class="grid">
-      ${radio.map(r=>`<div class="card" onclick="play('${r.u}','${r.n}')">${r.n}</div>`).join("")}
-    </div>`;
+  if(i===1) content.innerHTML=`<div class="grid">
+    ${radio.map(r=>`<div class="card" onclick="play('${r.u}','${r.n}')">${r.n}</div>`).join("")}
+  </div>`;
 
-  if(i===2) content.innerHTML=`
-    <div class="grid">
-      <a class="card" href="https://archive.org/details/internetarcade" target="_blank">🕹️ Arcade</a>
-      <a class="card" href="https://www.retrogames.cc/" target="_blank">🎮 RetroGames</a>
-    </div>`;
+  if(i===2) content.innerHTML=`<div class="grid">
+    <a class="card" href="https://archive.org/details/internetarcade" target="_blank">🕹️ Arcade</a>
+    <a class="card" href="https://www.retrogames.cc/" target="_blank">🎮 RetroGames</a>
+  </div>`;
 
   if(i===3) content.innerHTML=`
     <h3>📲 Chat-Info</h3>
@@ -222,40 +250,19 @@ window.openCategory = function(i,el){
       <li>Android: Menu → Installa app</li>
       <li>Windows / macOS: Chrome o Edge → Installa</li>
     </ul>
-
     <p style="margin-top:10px"><strong>🔄 Aggiornamenti:</strong><br>
-    L’app viene aggiornata periodicamente in modo automatico.
-    Se la utilizzi come app installata, gli aggiornamenti vengono applicati
-    senza bisogno di reinstallare nulla.<br>
-    In caso di novità importanti, potrebbe essere sufficiente chiudere e
-    riaprire l’app oppure aggiornare la pagina.</p>
-
+    L’app viene aggiornata periodicamente in modo automatico.</p>
     <p style="margin-top:10px"><strong>⚠️ Regole di condotta:</strong>
     rispetto reciproco, linguaggio appropriato e niente spam.</p>
-
     <div style="text-align:center;margin-top:14px">
       <button onclick="chat.style.display='flex'"
         style="padding:12px 20px;border-radius:20px;border:none;background:#00e5ff;font-weight:bold">
         💬 Entra in chat
       </button>
     </div>`;
-};
+}
 
-/* PLAY GLOBALE */
-window.play = function(u,n){
-  audio.src=u;
-  audio.play();
-  now.textContent="In riproduzione: "+n;
-};
-
-/* CREA CATEGORIE */
-categories.forEach((c,i)=>{
-  const d=document.createElement("div");
-  d.className="category";
-  d.textContent=c;
-  d.onclick=()=>openCategory(i,d);
-  categoriesEl.appendChild(d);
-});
+window.play=(u,n)=>{audio.src=u;audio.play();now.textContent="In riproduzione: "+n};
 </script>
 
 </body>
