@@ -298,22 +298,14 @@ function open(i,el){
   el.classList.add("active");
 
   /* INSTALLA APP */
-  if(i===0)contentEl.innerHTML=`
+if (i === 0) {
+  contentEl.innerHTML = `
     <div class="card" style="max-width:520px;margin:auto">
-
-      <button onclick="closeInstall()"
-        style="
-          background:none;
-          border:none;
-          color:#00e5ff;
-          font-size:15px;
-          margin-bottom:10px;
-          cursor:pointer;
-        ">
+      <button onclick="closeInstall()" style="background:none;border:none;color:#00e5ff;font-size:15px;margin-bottom:10px;cursor:pointer">
         ← Torna alle sezioni
       </button>
 
-      <h3 style="color:#00e5ff;margin-bottom:10px">📲 Installa l’app</h3>
+      <h3 style="color:#00e5ff;margin-bottom:10px">📲 Installa l'app</h3>
 
       <p style="font-size:.9rem;line-height:1.6">
         <strong>📱 Android (Chrome):</strong><br>
@@ -324,11 +316,11 @@ function open(i,el){
 
         <strong>💻 Desktop (Mac · Windows · Linux):</strong><br>
         Apri il sito con <strong>Chrome, Edge o Brave</strong><br>
-        Clicca sull’icona <em>Installa app</em> nella barra degli indirizzi<br>
-        oppure menu ⋮ → <em>Installa “Io negli anni ’80 c’ero”</em>
+        Menu ⋮ → <em>Installa app</em>
       </p>
     </div>
   `;
+}
 
   /* RADIO */
   if(i===1)contentEl.innerHTML=`<div class="grid">
