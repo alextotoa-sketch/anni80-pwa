@@ -296,34 +296,55 @@ audio.onpause=stopVu;
 function open(i,el){
   document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
   el.classList.add("active");
-/* INSTALLA APP */
-if(i===0)contentEl.innerHTML=`
-  <div class="card">
-    <h3 style="color:#00e5ff;margin-bottom:10px">📲 Installa l’app</h3>
 
-    <p style="font-size:.9rem;line-height:1.6">
+  /* INSTALLA APP */
+  if(i===0)contentEl.innerHTML=`
+    <div class="card" style="max-width:520px;margin:auto">
 
-      <strong>📱 Android (Chrome):</strong><br>
-      Tocca ⋮ in alto → <em>Aggiungi a schermata Home</em>
-      <br><br>
+      <button onclick="closeInstall()"
+        style="
+          background:none;
+          border:none;
+          color:#00e5ff;
+          font-size:15px;
+          margin-bottom:10px;
+          cursor:pointer;
+        ">
+        ← Torna alle sezioni
+      </button>
 
-      <strong>🍎 iPhone / iPad (Safari):</strong><br>
-      Tocca <em>Condividi</em> → <em>Aggiungi alla schermata Home</em>
-      <br><br>
+      <h3 style="color:#00e5ff;margin-bottom:10px">📲 Installa l’app</h3>
 
-      <strong>💻 Desktop (Mac · Windows · Linux):</strong><br>
-      Apri il sito con <strong>Chrome, Edge o Brave</strong><br>
-      Clicca sull’icona <em>Installa app</em> nella barra degli indirizzi<br>
-      oppure menu ⋮ → <em>Installa “Io negli anni ’80 c’ero”</em>
+      <p style="font-size:.9rem;line-height:1.6">
+        <strong>📱 Android (Chrome):</strong><br>
+        Tocca ⋮ in alto → <em>Aggiungi a schermata Home</em><br><br>
 
-    </p>
-  </div>
-`;
+        <strong>🍎 iPhone / iPad (Safari):</strong><br>
+        Tocca <em>Condividi</em> → <em>Aggiungi alla schermata Home</em><br><br>
 
+        <strong>💻 Desktop (Mac · Windows · Linux):</strong><br>
+        Apri il sito con <strong>Chrome, Edge o Brave</strong><br>
+        Clicca sull’icona <em>Installa app</em> nella barra degli indirizzi<br>
+        oppure menu ⋮ → <em>Installa “Io negli anni ’80 c’ero”</em>
+      </p>
+    </div>
+  `;
+
+  /* RADIO */
+  if(i===1)contentEl.innerHTML=`<div class="grid">
+    ${radio.map(r=>`<div class="card" onclick="play('${r.u}','${r.n}')">${r.n}</div>`).join("")}
+  </div>`;
+
+  /* GIOCHI */
+  if(i===2)contentEl.innerHTML=`<div class="grid">
+    <a class="card" href="https://archive.org/details/internetarcade" target="_blank">🕹️ Arcade</a>
+    <a class="card" href="https://www.retrogames.cc/" target="_blank">🎮 RetroGames</a>
+  </div>`;
+
+  /* CHAT */
+  if(i===3)contentEl.innerHTML=`💬 Premi il pulsante chat`;
 }
-
-window.play=(u,n)=>{audio.src=u;audio.play();now.textContent="In riproduzione: "+n};
-</script>
-
-</body>
-</html>
+window.closeInstall = () => {
+  document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
+  contentEl.innerHTML = "Seleziona una sezione.";
+};
