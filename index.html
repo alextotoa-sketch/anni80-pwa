@@ -113,81 +113,85 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebas
 import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
 
 /* FIREBASE */
-const app=initializeApp({
+const app = initializeApp({
   apiKey:"AIzaSyB8h3fvyPxq_Tjp2R5RzsgEC7jv6FASeWE",
   authDomain:"anni-80-chat-a1192.firebaseapp.com",
   databaseURL:"https://anni-80-chat-a1192-default-rtdb.europe-west1.firebasedatabase.app",
   projectId:"anni-80-chat-a1192"
 });
-const db=getDatabase(app);
-const chatRef=ref(db,"chat");
+const db = getDatabase(app);
+const chatRef = ref(db,"chat");
 
 /* NICK */
-let nickname=localStorage.getItem("anni80_nick");
+let nickname = localStorage.getItem("anni80_nick");
 while(!nickname){
-  nickname=prompt("Inserisci il tuo nickname anni ’80:");
+  nickname = prompt("Inserisci il tuo nickname anni ’80:");
   if(nickname) localStorage.setItem("anni80_nick",nickname);
 }
 
-/* CHAT */
-const chat=document.getElementById("chat");
-const chatMessages=document.getElementById("chatMessages");
-const chatInput=document.getElementById("chatInput");
-const replyBox=document.getElementById("replyBox");
-const replyNick=document.getElementById("replyNick");
-let replyTo=null;
+/* CHAT STATE */
+const chat = document.getElementById("chat");
+const chatMessages = document.getElementById("chatMessages");
+const chatInput = document.getElementById("chatInput");
+const replyBox = document.getElementById("replyBox");
+const replyNick = document.getElementById("replyNick");
+let replyTo = null;
 
-/* OPEN CHAT — reset reply */
-document.getElementById("chatToggle").onclick=()=>{
-  replyTo=null;
-  replyBox.style.display="none";
-  chatInput.value="";
-  chat.style.display="flex";
+/* OPEN CHAT */
+document.getElementById("chatToggle").onclick = () => {
+  replyTo = null;
+  replyBox.style.display = "none";
+  chatInput.value = "";
+  chat.style.display = "flex";
 };
 
-/* CLOSE CHAT — reset reply */
-window.closeChat=()=>{
-  replyTo=null;
-  replyBox.style.display="none";
-  chatInput.value="";
-  chat.style.display="none";
+/* CLOSE CHAT */
+window.closeChat = () => {
+  replyTo = null;
+  replyBox.style.display = "none";
+  chatInput.value = "";
+  chat.style.display = "none";
 };
 
-window.cancelReply=()=>{
-  replyTo=null;
-  replyBox.style.display="none";
+window.cancelReply = () => {
+  replyTo = null;
+  replyBox.style.display = "none";
 };
 
-document.getElementById("chatForm").addEventListener("submit",e=>{
+document.getElementById("chatForm").addEventListener("submit", e => {
   e.preventDefault();
   if(chatInput.value.trim()){
-    push(chatRef,{nick:nickname,text:chatInput.value,reply:replyTo});
-    chatInput.value="";
-    replyTo=null;
-    replyBox.style.display="none";
+    push(chatRef,{
+      nick: nickname,
+      text: chatInput.value,
+      reply: replyTo
+    });
+    chatInput.value = "";
+    replyTo = null;
+    replyBox.style.display = "none";
   }
 });
 
-onChildAdded(chatRef,s=>{
-  const m=s.val();
-  const d=document.createElement("div");
-  d.className="message";
-  d.innerHTML=`
-    ${m.reply?`<div style="font-size:.8rem;opacity:.7;border-left:3px solid #00e5ff;padding-left:6px;margin-bottom:4px">${m.reply}</div>`:""}
+onChildAdded(chatRef, s => {
+  const m = s.val();
+  const d = document.createElement("div");
+  d.className = "message";
+  d.innerHTML = `
+    ${m.reply ? `<div style="font-size:.8rem;opacity:.7;border-left:3px solid #00e5ff;padding-left:6px;margin-bottom:4px">${m.reply}</div>` : ""}
     <strong>${m.nick}</strong>${m.text}
   `;
-  d.onclick=()=>{
-    replyTo=\`\${m.nick}: \${m.text}\`;
-    replyNick.textContent=m.nick;
-    replyBox.style.display="flex";
+  d.onclick = () => {
+    replyTo = m.nick + ": " + m.text;
+    replyNick.textContent = m.nick;
+    replyBox.style.display = "flex";
     chatInput.focus();
   };
   chatMessages.appendChild(d);
-  chatMessages.scrollTop=chatMessages.scrollHeight;
+  chatMessages.scrollTop = chatMessages.scrollHeight;
 });
 
 /* RADIO */
-const radio=[
+const radio = [
   {n:"Radio 80",u:"https://sphera.fluidstream.eu/radio80.aac"},
   {n:"SomaFM Underground 80s",u:"https://ice1.somafm.com/u80s-128-mp3"},
   {n:"80s80s Italo Disco",u:"https://streams.80s80s.de/italodisco/mp3-192"},
@@ -252,19 +256,8 @@ function open(i,el){
 
   if(i===3) content.innerHTML=`
     <h3>📲 Chat-Info</h3>
-    <p><strong>Installazione dell’app:</strong></p>
-    <ul>
-      <li>iOS: Condividi → Aggiungi a Home</li>
-      <li>Android: Menu → Installa app</li>
-      <li>Windows / macOS: Chrome o Edge → Installa</li>
-    </ul>
-    <p style="margin-top:10px"><strong>⚠️ Regole:</strong> rispetto reciproco, niente spam.</p>
-    <div style="text-align:center;margin-top:14px">
-      <button onclick="chat.style.display='flex'"
-        style="padding:12px 20px;border-radius:20px;border:none;background:#00e5ff;font-weight:bold">
-        💬 Entra in chat
-      </button>
-    </div>
+    <p>Installazione: Aggiungi a Home / Installa app</p>
+    <p style="margin-top:10px">Rispetto reciproco, niente spam.</p>
   `;
 }
 
