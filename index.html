@@ -33,7 +33,7 @@ main{flex:1;padding:12px;padding-bottom:190px}
 .category.active{background:#00e5ff;color:#000}
 
 /* CONTENT */
-#content{border:2px solid #00e5ff;border-radius:14px;padding:14px;min-height:200px}
+#content{border:2px solid #00e5ff;border-radius:14px;padding:14px;min-height:220px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .card{border:2px solid #00e5ff;border-radius:14px;padding:14px;background:#1c1c1c;text-align:center}
 .card:hover{background:#00e5ff;color:#000}
@@ -101,6 +101,7 @@ button:hover{background:#00e5ff;color:#000}
 
 <button id="chatToggle">💬</button>
 
+<!-- CHAT -->
 <div id="chat">
   <div id="chatHeader">
     <strong>💬 Chat anni ’80 – Live</strong>
@@ -175,9 +176,10 @@ onChildAdded(chatRef,s=>{
   chatMessages.scrollTop=chatMessages.scrollHeight;
 });
 
+window.openChat=()=>chat.style.display="flex";
 window.closeChat=()=>chat.style.display="none";
 window.cancelReply=()=>replyBox.style.display="none";
-document.getElementById("chatToggle").onclick=()=>chat.style.display="flex";
+document.getElementById("chatToggle").onclick=openChat;
 
 /* RADIO */
 const radio=[
@@ -263,9 +265,14 @@ function open(i,el){
         <li>Chat pubblica</li>
       </ul>
       <hr style="border:1px solid #00e5ff;margin:12px 0">
-      <p>💬 Premi il pulsante in basso a destra per entrare in chat</p>
-      <div style="text-align:center;margin-top:12px">
-        <button onclick="closeChatInfo()">⏎ Torna alle sezioni</button>
+
+      <div style="text-align:center">
+        <button onclick="openChat()" style="padding:12px 22px;border-radius:22px;border:none;background:#00e5ff;font-weight:bold;margin-bottom:10px">
+          💬 Entra in chat
+        </button><br>
+        <button onclick="closeChatInfo()" style="padding:10px 18px;border-radius:20px;border:2px solid #00e5ff;background:none;color:#00e5ff;font-weight:bold">
+          ⏎ Torna alle sezioni
+        </button>
       </div>
     </div>`;
 }
