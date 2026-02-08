@@ -135,6 +135,7 @@ const chatMessages=document.getElementById("chatMessages");
 const chatInput=document.getElementById("chatInput");
 const replyBox=document.getElementById("replyBox");
 const replyNick=document.getElementById("replyNick");
+
 let replyTo=null;
 
 /* RESET REPLY */
@@ -174,7 +175,7 @@ onChildAdded(chatRef,s=>{
     <strong>${m.nick}</strong>${m.text}
   `;
   d.onclick=()=>{
-    replyTo=\`\${m.nick}: \${m.text}\`;
+    replyTo=`${m.nick}: ${m.text}`;
     replyNick.textContent=m.nick;
     replyBox.style.display="flex";
     chatInput.focus();
@@ -200,7 +201,12 @@ const now=document.getElementById("now");
 /* VU */
 const vumeter=document.getElementById("vumeter");
 let bars=[],vuTimer=null;
-for(let i=0;i<40;i++){const b=document.createElement("div");b.className="vu";vumeter.appendChild(b);bars.push(b);}
+for(let i=0;i<40;i++){
+  const b=document.createElement("div");
+  b.className="vu";
+  vumeter.appendChild(b);
+  bars.push(b);
+}
 function startVu(){
   stopVu();
   vuTimer=setInterval(()=>{
@@ -250,16 +256,20 @@ function open(i,el){
       <li>Android: Menu → Installa app</li>
       <li>Windows / macOS: Chrome o Edge → Installa</li>
     </ul>
+
     <p style="margin-top:10px"><strong>🔄 Aggiornamenti:</strong><br>
-    L’app viene aggiornata periodicamente in modo automatico.</p>
-    <p style="margin-top:10px"><strong>⚠️ Regole di condotta:</strong>
-    rispetto reciproco, linguaggio appropriato e niente spam.</p>
+    L’app viene aggiornata automaticamente.</p>
+
+    <p style="margin-top:10px"><strong>⚠️ Regole:</strong>
+    rispetto reciproco e niente spam.</p>
+
     <div style="text-align:center;margin-top:14px">
       <button onclick="chat.style.display='flex'"
         style="padding:12px 20px;border-radius:20px;border:none;background:#00e5ff;font-weight:bold">
         💬 Entra in chat
       </button>
-    </div>`;
+    </div>
+  `;
 }
 
 window.play=(u,n)=>{audio.src=u;audio.play();now.textContent="In riproduzione: "+n};
