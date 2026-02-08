@@ -285,7 +285,7 @@ audio.onplay=startVu;
 audio.onpause=stopVu;
 
 /* UI */
-["Musica","Radio","Giochi","Chat"].forEach((c,i)=>{
+["Installa App","Radio","Giochi","Chat"].forEach((c,i)=>{
   const d=document.createElement("div");
   d.className="category";
   d.textContent=c;
@@ -296,14 +296,30 @@ audio.onpause=stopVu;
 function open(i,el){
   document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
   el.classList.add("active");
-  if(i===0)contentEl.innerHTML=`<div class="grid">
-    <a class="card" href="https://www.youtube.com/results?search_query=anni+80+italiani" target="_blank">🎵 YouTube</a>
-    <a class="card" href="https://open.spotify.com/search/anni%2080" target="_blank">🎧 Spotify</a></div>`;
-  if(i===1)contentEl.innerHTML=`<div class="grid">${radio.map(r=>`<div class="card" onclick="play('${r.u}','${r.n}')">${r.n}</div>`).join("")}</div>`;
-  if(i===2)contentEl.innerHTML=`<div class="grid">
-    <a class="card" href="https://archive.org/details/internetarcade" target="_blank">🕹️ Arcade</a>
-    <a class="card" href="https://www.retrogames.cc/" target="_blank">🎮 RetroGames</a></div>`;
-  if(i===3)contentEl.innerHTML=`💬 Premi il pulsante chat`;
+/* INSTALLA APP */
+if(i===0)contentEl.innerHTML=`
+  <div class="card">
+    <h3 style="color:#00e5ff;margin-bottom:10px">📲 Installa l’app</h3>
+
+    <p style="font-size:.9rem;line-height:1.6">
+
+      <strong>📱 Android (Chrome):</strong><br>
+      Tocca ⋮ in alto → <em>Aggiungi a schermata Home</em>
+      <br><br>
+
+      <strong>🍎 iPhone / iPad (Safari):</strong><br>
+      Tocca <em>Condividi</em> → <em>Aggiungi alla schermata Home</em>
+      <br><br>
+
+      <strong>💻 Desktop (Mac · Windows · Linux):</strong><br>
+      Apri il sito con <strong>Chrome, Edge o Brave</strong><br>
+      Clicca sull’icona <em>Installa app</em> nella barra degli indirizzi<br>
+      oppure menu ⋮ → <em>Installa “Io negli anni ’80 c’ero”</em>
+
+    </p>
+  </div>
+`;
+
 }
 
 window.play=(u,n)=>{audio.src=u;audio.play();now.textContent="In riproduzione: "+n};
