@@ -6,78 +6,129 @@
 
 <title>Io negli anni ’80 c’ero</title>
 
+<!-- PWA -->
 <link rel="manifest" href="/anni80-pwa/manifest.json">
 <meta name="theme-color" content="#00e5ff">
 
+<!-- Favicon -->
 <link rel="icon" href="/anni80-pwa/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/anni80-pwa/favicon-16.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/anni80-pwa/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/anni80-pwa/icon-512.png">
+
+<!-- iOS -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Anni80App">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<link rel="apple-touch-icon" sizes="152x152" href="/anni80-pwa/apple-icon-152.png">
+<link rel="apple-touch-icon" sizes="167x167" href="/anni80-pwa/apple-icon-167.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/anni80-pwa/apple-icon-180.png">
+
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif}
 body{background:#0f0f0f;color:#fff;min-height:100vh;display:flex;flex-direction:column}
 
+/* HEADER */
 header{text-align:center;padding:16px;border-bottom:2px solid #00e5ff}
 header h1{color:#00e5ff}
 header p{color:#aaa;font-size:.9rem}
 
+/* MAIN */
 main{flex:1;padding:12px;padding-bottom:190px}
 
+/* CATEGORIE */
 .categories{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
 .category{border:2px solid #00e5ff;border-radius:14px;padding:12px;text-align:center;font-weight:bold;cursor:pointer}
 .category.active{background:#00e5ff;color:#000}
 
-#content,#chat-info{
-  border:2px solid #00e5ff;
-  border-radius:14px;
-  padding:14px;
-  min-height:200px;
-}
-
+/* CONTENUTO */
+#content{border:2px solid #00e5ff;border-radius:14px;padding:14px;min-height:200px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .card{border:2px solid #00e5ff;border-radius:14px;padding:14px;background:#1c1c1c;text-align:center}
 .card:hover{background:#00e5ff;color:#000}
 a.card{text-decoration:none;color:inherit}
 
-#chat-info{display:none}
+/* PLAYER */
+#player{position:fixed;bottom:0;left:0;width:100%;background:#1c1c1c;border-top:2px solid #00e5ff;padding:10px;text-align:center;z-index:500}
+#now{color:#00e5ff;font-weight:bold;margin-bottom:6px}
+audio{width:95%}
 
-#player{
-  position:fixed;bottom:0;left:0;width:100%;
-  background:#1c1c1c;border-top:2px solid #00e5ff;
-  padding:10px;text-align:center;z-index:500
-}
+/* VU METER */
+#vumeter-wrapper{display:flex;justify-content:center;margin-bottom:6px}
+#vumeter{display:flex;gap:2px;align-items:flex-end;height:50px}
+.vu{width:6px;height:6px;background:#222;border-radius:2px;transition:height .12s}
+.vu.g{background:#00ff66}
+.vu.y{background:#ffee00}
+.vu.r{background:#ff0033}
 
-#chat{
-  position:fixed;inset:0;background:#111;
-  display:none;flex-direction:column;z-index:2000
-}
-
-#chatHeader{
-  padding:14px;background:#161616;
-  border-bottom:1px solid #222;
-  display:flex;justify-content:space-between
-}
-
+/* CHAT */
+#chat{position:fixed;inset:0;background:#111;display:none;flex-direction:column;z-index:2000}
+#chatHeader{padding:14px;background:#161616;border-bottom:1px solid #222;display:flex;justify-content:space-between}
 #chatHeader strong{color:#00e5ff}
 #chatMessages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
 
-.message{background:#1f1f1f;border-radius:14px;padding:10px 12px;max-width:85%}
+/* MESSAGGI */
+.message{
+  background:#1f1f1f;
+  border-radius:14px;
+  padding:10px 12px;
+  max-width:85%;
+}
 .message strong{color:#00e5ff;font-size:.85rem;display:block}
 
-#chatForm{display:flex;padding:10px;gap:8px;background:#161616}
+/* REPLY BOX */
+#replyBox{
+  display:none;
+  background:#222;
+  padding:8px 12px;
+  font-size:.85rem;
+  border-left:4px solid #00e5ff;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+#replyLabel{color:#fff}
+#replyNick{color:#00e5ff;font-weight:bold}
+
+/* INPUT */
+#chatForm{display:flex;padding:10px;gap:8px;background:#161616;border-top:1px solid #222}
 #chatInput{
-  flex:1;padding:12px 14px;border-radius:20px;
-  border:none;background:#2a2a2a;color:#fff;font-size:16px
+  flex:1;
+  padding:12px 14px;
+  border-radius:20px;
+  border:none;
+  background:#2a2a2a;
+  color:#fff;
+  font-size:16px;
 }
-
 #chatForm button{
-  padding:12px 18px;border-radius:20px;
-  border:none;background:#00e5ff;font-weight:bold
+  padding:12px 18px;
+  border-radius:20px;
+  border:none;
+  background:#00e5ff;
+  font-weight:bold;
 }
 
+/* CHAT TOGGLE */
 #chatToggle{
-  position:fixed;bottom:200px;right:14px;
-  width:56px;height:56px;border-radius:50%;
-  background:#00e5ff;border:none;font-size:26px;z-index:1100
+  position:fixed;
+  bottom:200px;
+  right:14px;
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  background:#00e5ff;
+  border:none;
+  font-size:26px;
+  z-index:1100;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+  .categories{grid-template-columns:1fr 1fr}
+  #vumeter{height:40px}
 }
 </style>
 </head>
@@ -86,37 +137,19 @@ a.card{text-decoration:none;color:inherit}
 
 <header>
   <h1>Io negli anni ’80 c’ero</h1>
-  <p>Musica · Radio · Giochi · Chat-Info</p>
+  <p>Musica · Radio · Giochi · Chat</p>
 </header>
 
 <main>
   <div class="categories" id="categories"></div>
-
   <div id="content">Seleziona una sezione.</div>
-
-  <div id="chat-info">
-    <h2>Chat – Informazioni</h2>
-
-    <p><strong>Installazione app</strong></p>
-    <ul>
-      <li><b>Android:</b> Aggiungi alla schermata Home</li>
-      <li><b>iPhone / iPad:</b> Condividi → Aggiungi a Home</li>
-      <li><b>PC / Mac:</b> Installa dal browser</li>
-    </ul>
-
-    <p><strong>Aggiornamenti</strong></p>
-    <p>L’app si aggiorna automaticamente.</p>
-
-    <p><strong>Regole chat</strong></p>
-    <ul>
-      <li>Rispetto reciproco</li>
-      <li>Niente spam</li>
-      <li>Niente contenuti offensivi</li>
-    </ul>
-
-    <button onclick="entraInChat()">Entra in chat</button>
-  </div>
 </main>
+
+<div id="player">
+  <div id="vumeter-wrapper"><div id="vumeter"></div></div>
+  <div id="now">Nessuna radio in riproduzione</div>
+  <audio id="audio" controls></audio>
+</div>
 
 <button id="chatToggle">💬</button>
 
@@ -125,9 +158,16 @@ a.card{text-decoration:none;color:inherit}
     <strong>💬 Chat anni ’80</strong>
     <button onclick="closeChat()" style="background:none;border:none;color:#00e5ff;font-size:22px">✕</button>
   </div>
+
   <div id="chatMessages"></div>
+
+  <div id="replyBox">
+    <span id="replyLabel">Rispondi a <span id="replyNick"></span></span>
+    <button onclick="cancelReply()" style="background:none;border:none;color:#00e5ff;font-size:18px">✕</button>
+  </div>
+
   <form id="chatForm">
-    <input id="chatInput" placeholder="Scrivi un messaggio…">
+    <input id="chatInput" placeholder="Scrivi un messaggio…" autocomplete="off">
     <button>Invia</button>
   </form>
 </div>
@@ -136,67 +176,137 @@ a.card{text-decoration:none;color:inherit}
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
 import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
 
+/* FIREBASE */
 const app=initializeApp({
   apiKey:"AIzaSyB8h3fvyPxq_Tjp2R5RzsgEC7jv6FASeWE",
-  databaseURL:"https://anni-80-chat-a1192-default-rtdb.europe-west1.firebasedatabase.app"
+  authDomain:"anni-80-chat-a1192.firebaseapp.com",
+  databaseURL:"https://anni-80-chat-a1192-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId:"anni-80-chat-a1192"
 });
 const db=getDatabase(app);
 const chatRef=ref(db,"chat");
 
+/* NICK */
+let nickname=localStorage.getItem("anni80_nick");
+while(!nickname){
+  nickname=prompt("Inserisci il tuo nickname anni ’80:");
+  if(nickname) localStorage.setItem("anni80_nick",nickname);
+}
+
+/* CHAT */
 const chat=document.getElementById("chat");
 const chatMessages=document.getElementById("chatMessages");
 const chatInput=document.getElementById("chatInput");
+const chatForm=document.getElementById("chatForm");
+const replyBox=document.getElementById("replyBox");
+const replyNick=document.getElementById("replyNick");
+let replyTo=null;
 
-document.getElementById("chatForm").onsubmit=e=>{
+chatForm.addEventListener("submit",e=>{
   e.preventDefault();
   if(chatInput.value.trim()){
-    push(chatRef,{nick:"Anonimo",text:chatInput.value});
+    push(chatRef,{nick:nickname,text:chatInput.value,reply:replyTo});
     chatInput.value="";
+    replyTo=null;
+    replyBox.style.display="none";
   }
-};
+});
 
 onChildAdded(chatRef,s=>{
   const m=s.val();
-  const d=document.createElement("div");
-  d.className="message";
-  d.innerHTML=`<strong>${m.nick}</strong>${m.text}`;
-  chatMessages.appendChild(d);
+
+  const msg=document.createElement("div");
+  msg.className="message";
+  msg.innerHTML=`
+    ${m.reply?`<div style="font-size:.8rem;opacity:.7;border-left:3px solid #00e5ff;padding-left:6px;margin-bottom:4px">${m.reply}</div>`:""}
+    <strong>${m.nick}</strong>${m.text}
+  `;
+
+  msg.onclick=()=>{
+    replyTo=`${m.nick}: ${m.text}`;
+    replyNick.textContent=m.nick;
+
+    /* focus reale + tastiera mobile */
+    replyBox.style.display="flex";
+    chatInput.focus();
+    chatInput.click();
+    setTimeout(()=>chatInput.focus(),150);
+  };
+
+  chatMessages.appendChild(msg);
   chatMessages.scrollTop=chatMessages.scrollHeight;
 });
 
+window.cancelReply=()=>{replyTo=null;replyBox.style.display="none"};
 window.closeChat=()=>chat.style.display="none";
-window.entraInChat=()=>{
-  document.getElementById("chat-info").style.display="none";
-  chat.style.display="flex";
-};
-
 document.getElementById("chatToggle").onclick=()=>chat.style.display="flex";
 
-const categories=["Musica","Radio","Giochi","Chat-Info"];
-const categoriesEl=document.getElementById("categories");
-const content=document.getElementById("content");
-const chatInfo=document.getElementById("chat-info");
+/* RADIO + UI + VU */
+const radio=[
+  {n:"Radio 80",u:"https://sphera.fluidstream.eu/radio80.aac"},
+  {n:"SomaFM Underground 80s",u:"https://somafm.com/u80s130.pls"},
+  {n:"80s80s Italo Disco",u:"https://streams.80s80s.de/italodisco/mp3-192"},
+  {n:"Italia 80",u:"https://stream.laut.fm/italia80"}
+];
 
-categories.forEach((c,i)=>{
+const categoriesEl=document.getElementById("categories");
+const contentEl=document.getElementById("content");
+const audio=document.getElementById("audio");
+const now=document.getElementById("now");
+
+/* VU */
+const vumeter=document.getElementById("vumeter");
+let bars=[],vuTimer=null;
+for(let i=0;i<40;i++){
+  const b=document.createElement("div");
+  b.className="vu";
+  vumeter.appendChild(b);
+  bars.push(b);
+}
+function startVu(){
+  stopVu();
+  vuTimer=setInterval(()=>{
+    const c=bars.length/2,l=Math.random()*c;
+    bars.forEach((b,i)=>{
+      const d=Math.abs(i-c);
+      if(d<l){
+        const h=10+(l-d)*2;
+        b.style.height=h+"px";
+        b.className="vu "+(h>40?"r":h>28?"y":"g");
+      }else{
+        b.style.height="6px";
+        b.className="vu";
+      }
+    });
+  },120);
+}
+function stopVu(){clearInterval(vuTimer)}
+audio.onplay=startVu;
+audio.onpause=stopVu;
+
+/* UI */
+["Musica","Radio","Giochi","Chat"].forEach((c,i)=>{
   const d=document.createElement("div");
   d.className="category";
   d.textContent=c;
-  d.onclick=()=>{
-    document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
-    d.classList.add("active");
-    chatInfo.style.display="none";
-    content.style.display="block";
-
-    if(i===0)content.innerHTML="🎵 Musica anni 80";
-    if(i===1)content.innerHTML="📻 Radio anni 80";
-    if(i===2)content.innerHTML="🕹️ Giochi retrò";
-    if(i===3){
-      content.style.display="none";
-      chatInfo.style.display="block";
-    }
-  };
+  d.onclick=()=>open(i,d);
   categoriesEl.appendChild(d);
 });
+
+function open(i,el){
+  document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
+  el.classList.add("active");
+  if(i===0)contentEl.innerHTML=`<div class="grid">
+    <a class="card" href="https://www.youtube.com/results?search_query=anni+80+italiani" target="_blank">🎵 YouTube</a>
+    <a class="card" href="https://open.spotify.com/search/anni%2080" target="_blank">🎧 Spotify</a></div>`;
+  if(i===1)contentEl.innerHTML=`<div class="grid">${radio.map(r=>`<div class="card" onclick="play('${r.u}','${r.n}')">${r.n}</div>`).join("")}</div>`;
+  if(i===2)contentEl.innerHTML=`<div class="grid">
+    <a class="card" href="https://archive.org/details/internetarcade" target="_blank">🕹️ Arcade</a>
+    <a class="card" href="https://www.retrogames.cc/" target="_blank">🎮 RetroGames</a></div>`;
+  if(i===3)contentEl.innerHTML=`💬 Premi il pulsante chat`;
+}
+
+window.play=(u,n)=>{audio.src=u;audio.play();now.textContent="In riproduzione: "+n};
 </script>
 
 </body>
