@@ -110,29 +110,18 @@ audio{width:95%}
   font-weight:bold;
 }
 
-/* CHAT TOGGLE */
-#chatToggle{
-  position:fixed;
-  bottom:200px;
-  right:14px;
-  width:56px;
-  height:56px;
-  border-radius:50%;
-  background:#00e5ff;
-  border:none;
-  font-size:26px;
-  z-index:1100;
-}
-
 /* MOBILE */
 @media(max-width:900px){
   .categories{grid-template-columns:1fr 1fr}
   #vumeter{height:40px}
+
+  #content hr ~ *{
+    padding-left:20px;
+  }
 }
-#content hr ~ *{
-  padding-left:20px;
-}
-  #splash{
+
+/* SPLASH */
+#splash{
   position:fixed;
   inset:0;
   background:#000;
@@ -140,8 +129,12 @@ audio{width:95%}
   justify-content:center;
   align-items:center;
   z-index:9999;
-  animation:fadeOut .6s ease forwards;
-  animation-delay:1.8s;
+}
+
+#splash.hide{
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .6s ease;
 }
 
 #splash img{
@@ -150,18 +143,13 @@ audio{width:95%}
   animation:logoPulse 1.3s ease-in-out infinite;
 }
 
+/* ANIMAZIONE LOGO */
 @keyframes logoPulse{
   0%{transform:scale(1);opacity:.85}
   50%{transform:scale(1.05);opacity:1}
   100%{transform:scale(1);opacity:.85}
 }
 
-@keyframes fadeOut{
-  to{
-    opacity:0;
-    visibility:hidden;
-  }
-}
 </style>
 </head>
 
@@ -438,13 +426,18 @@ function open(i,el){
   `;
 }
 
-window.addEventListener("load", () => {
-  const splash = document.getElementById("splash");
-  if (!splash) return;
-  setTimeout(() => {
-    splash.remove();
-  }, 2000);
-});
+const splash = document.getElementById("splash");
+
+if (splash) {
+  // forza almeno un frame visibile
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      splash.classList.add("hide");
+      setTimeout(() => splash.remove(), 600);
+    }, 1200);
+  });
+}
+
 </script>
 
 </body>
