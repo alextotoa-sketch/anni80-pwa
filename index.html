@@ -137,12 +137,38 @@ audio{width:95%}
 
 <header>
   <h1>Io negli anni ’80 c’ero</h1>
-  <p>Musica · Radio · Giochi · Chat</p>
+ <p>Musica · Radio · Giochi · Chat-Info</p>
+
 </header>
 
 <main>
   <div class="categories" id="categories"></div>
   <div id="content">Seleziona una sezione.</div>
+<div id="chat-info" style="display:none">
+  <h2>Chat – Informazioni</h2>
+
+  <p><strong>Installazione app</strong></p>
+  <ul>
+    <li><b>Android:</b> usa “Aggiungi alla schermata Home”.</li>
+    <li><b>iPhone / iPad:</b> Condividi → Aggiungi a Home.</li>
+    <li><b>PC / Mac:</b> Installa dal browser (icona +).</li>
+  </ul>
+
+  <p><strong>Aggiornamenti</strong></p>
+  <p>L’app si aggiorna automaticamente. Se necessario, chiudila e riaprila.</p>
+
+  <p><strong>Regole chat</strong></p>
+  <ul>
+    <li>Rispetto reciproco</li>
+    <li>Niente spam</li>
+    <li>Niente contenuti offensivi</li>
+  </ul>
+
+  <button onclick="document.getElementById('chat').style.display='flex'">
+    Entra in chat
+  </button>
+</div>
+
 </main>
 
 <div id="player">
@@ -241,6 +267,11 @@ window.cancelReply=()=>{replyTo=null;replyBox.style.display="none"};
 window.closeChat=()=>chat.style.display="none";
 document.getElementById("chatToggle").onclick=()=>chat.style.display="flex";
 
+  function showChatInfo(){
+  document.getElementById("content").innerHTML="";
+  document.getElementById("chat-info").style.display="block";
+}
+
 /* RADIO + UI + VU */
 const radio=[
   {n:"Radio 80",u:"https://sphera.fluidstream.eu/radio80.aac"},
@@ -304,6 +335,10 @@ function open(i,el){
     <a class="card" href="https://archive.org/details/internetarcade" target="_blank">🕹️ Arcade</a>
     <a class="card" href="https://www.retrogames.cc/" target="_blank">🎮 RetroGames</a></div>`;
   if(i===3)contentEl.innerHTML=`💬 Premi il pulsante chat`;
+}
+function entraInChat(){
+  document.getElementById("chat-info").style.display="none";
+  document.getElementById("chat").style.display="flex";
 }
 
 window.play=(u,n)=>{audio.src=u;audio.play();now.textContent="In riproduzione: "+n};
