@@ -24,6 +24,7 @@
 <link rel="apple-touch-icon" sizes="152x152" href="/anni80-pwa/apple-icon-152.png">
 <link rel="apple-touch-icon" sizes="167x167" href="/anni80-pwa/apple-icon-167.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/anni80-pwa/apple-icon-180.png">
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif}
 body{background:#0f0f0f;color:#fff;min-height:100vh;display:flex;flex-direction:column}
@@ -87,7 +88,7 @@ audio{width:95%}
   align-items:center;
 }
 
-
+}
 #replyLabel{color:#fff}
 #replyNick{color:#00e5ff;font-weight:bold}
 
@@ -110,71 +111,32 @@ audio{width:95%}
   font-weight:bold;
 }
 
+/* CHAT TOGGLE */
+#chatToggle{
+  position:fixed;
+  bottom:200px;
+  right:14px;
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  background:#00e5ff;
+  border:none;
+  font-size:26px;
+  z-index:1100;
+}
+
 /* MOBILE */
 @media(max-width:900px){
   .categories{grid-template-columns:1fr 1fr}
   #vumeter{height:40px}
-
-  #content hr ~ *{
-    padding-left:20px;
-  }
 }
-
-/* SPLASH */
-#splash{
-  position:fixed;
-  inset:0;
-  background:#000;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:9999;
+#content hr ~ *{
+  padding-left:20px;
 }
-
-#splash img{
-  width:90vw;
-  max-width:90vw;
-  animation:logoIntro 4s ease-in-out forwards;
-}
-#splash.hide{
-  opacity:0;
-  pointer-events:none;
-}
-/* ANIMAZIONE LOGO */
-@keyframes logoIntro{
-  0%{
-    opacity:0;
-    transform:scale(0.9);
-  }
-  25%{
-    opacity:1;
-    transform:scale(1);
-  }
-  55%{
-    opacity:1;
-    transform:scale(1.05);
-  }
-  75%{
-    opacity:0.7;
-    transform:scale(1.1);
-  }
-  100%{
-    opacity:0;
-    transform:scale(1.15);
-  }
-}
-
-
-
 </style>
 </head>
 
 <body>
-
-<div id="splash">
-  <img src="/anni80-pwa/logo.png" alt="Io negli anni ’80 c’ero">
-</div>
-
 
 <header>
   <h1>Io negli anni ’80 c’ero</h1>
@@ -444,15 +406,7 @@ function open(i,el){
   `;
 }
 
-window.addEventListener("load", () => {
-  const splash = document.getElementById("splash");
-  if (!splash) return;
-
-  setTimeout(() => {
-    splash.classList.add("hide");
-  }, 4000);
-});
-
+window.play=(u,n)=>{audio.src=u;audio.play();now.textContent="In riproduzione: "+n};
 </script>
 
 </body>
