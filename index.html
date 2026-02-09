@@ -430,12 +430,13 @@ const splash = document.getElementById("splash");
 
 if (splash) {
   // forza almeno un frame visibile
-  requestAnimationFrame(() => {
-    setTimeout(() => {
-      splash.classList.add("hide");
-      setTimeout(() => splash.remove(), 600);
-    }, 1200);
-  });
+requestAnimationFrame(() => {
+  setTimeout(() => {
+    splash.classList.add("hide");
+    setTimeout(() => splash.remove(), 800);
+  }, 2500);
+});
+
 }
 
 </script>
