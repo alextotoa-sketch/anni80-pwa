@@ -25,7 +25,6 @@
 <link rel="apple-touch-icon" sizes="167x167" href="/anni80-pwa/apple-icon-167.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/anni80-pwa/apple-icon-180.png">
 
-
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif}
 body{background:#0f0f0f;color:#fff;min-height:100vh;display:flex;flex-direction:column}
@@ -303,7 +302,103 @@ function open(i,el){
   if(i===2)contentEl.innerHTML=`<div class="grid">
     <a class="card" href="https://archive.org/details/internetarcade" target="_blank">🕹️ Arcade</a>
     <a class="card" href="https://www.retrogames.cc/" target="_blank">🎮 RetroGames</a></div>`;
-  if(i===3)contentEl.innerHTML=`💬 Premi il pulsante chat`;
+  if(i===3) contentEl.innerHTML = `
+    <h2>Chat-Info</h2>
+    
+    <h1>App PWA (Progressive Web App)</h1>
+
+    <h2>Cos’è una PWA</h2>
+    <p>Una PWA è un’app web che può essere installata come un’app nativa, funziona offline (in parte), si aggiorna automaticamente e non richiede store obbligatori.</p>
+
+    <hr>
+
+    <h2>Installazione su tutti i dispositivi</h2>
+    
+    <h3>Android (Chrome, Edge, Firefox)</h3>
+    <ol>
+      <li>Apri il sito della PWA dal browser.</li>
+      <li>Tocca <strong>Installa app</strong> oppure <strong>Aggiungi a schermata Home</strong>.</li>
+      <li>Conferma: l’app apparirà tra le app installate.</li>
+    </ol>
+
+    <h3>iOS / iPadOS (Safari)</h3>
+    <ol>
+      <li>Apri il sito con <strong>Safari</strong>.</li>
+      <li>Tocca <strong>Condividi</strong> (icona quadrato con freccia).</li>
+      <li>Seleziona <strong>Aggiungi alla schermata Home</strong>.</li>
+      <li>Conferma il nome dell’app.</li>
+    </ol>
+    <p>⚠️ Nota: su iOS le PWA hanno alcune limitazioni (es. notifiche e processi in background dipendono dalla versione di iOS).</p>
+
+    <h3>Desktop (Windows, macOS, Linux)</h3>
+    <ul>
+      <li><strong>Chrome / Edge</strong>: icona <strong>Installa</strong> nella barra degli indirizzi.</li>
+      <li><strong>Safari macOS</strong>: aggiunta come app web (versioni recenti).</li>
+      <li>Dopo l’installazione, la PWA si apre come un’app indipendente.</li>
+    </ul>
+
+    <hr>
+
+    <h2>Aggiornamenti dell’app PWA</h2>
+    <ul>
+      <li>Gli aggiornamenti sono <strong>automatici</strong>.</li>
+      <li>Alla chiusura e riapertura dell’app, viene caricata l’ultima versione disponibile.</li>
+      <li>In caso di aggiornamenti importanti:
+        <ul>
+          <li>può essere richiesto un <strong>refresh</strong></li>
+          <li>oppure il riavvio dell’app</li>
+        </ul>
+      </li>
+      <p>👉 L’utente <strong>non deve fare nulla manualmente</strong> per aggiornare.</p>
+    </ul>
+
+    <h2>Dati e cache</h2>
+    <ul>
+      <li>I dati possono essere salvati localmente (cache o storage).</li>
+      <li>Cancellando i dati del browser o disinstallando la PWA, i dati locali vengono rimossi.</li>
+    </ul>
+
+    <hr>
+
+    <h1>Regole di comportamento in chat pubblica</h1>
+
+    <h2>Regole generali</h2>
+    <ul>
+      <li>Rispetto reciproco obbligatorio.</li>
+      <li>Vietati insulti, linguaggio offensivo, discriminazioni o incitamento all’odio.</li>
+      <li>Niente spam, flood o messaggi ripetuti.</li>
+    </ul>
+
+    <h2>Contenuti non consentiti</h2>
+    <ul>
+      <li>Violenza, minacce o molestie.</li>
+      <li>Contenuti sessuali espliciti.</li>
+      <li>Condivisione di dati personali propri o di terzi.</li>
+      <li>Link dannosi o tentativi di truffa.</li>
+    </ul>
+
+    <h2>Buone pratiche</h2>
+    <ul>
+      <li>Usa un linguaggio chiaro e civile.</li>
+      <li>Rimani in tema con la discussione.</li>
+      <li>Segnala comportamenti scorretti ai moderatori.</li>
+    </ul>
+
+    <h2>Moderazione</h2>
+    <ul>
+      <li>I messaggi possono essere moderati.</li>
+      <li>Violazioni ripetute possono portare a:
+        <ul>
+          <li>avvisi</li>
+          <li>silenziamento temporaneo</li>
+          <li>esclusione dalla chat</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h2>Accettazione</h2>
+    <p>L’uso della chat e dell’app implica l’accettazione di queste regole.</p>
+  `;
 }
 
 window.play=(u,n)=>{audio.src=u;audio.play();now.textContent="In riproduzione: "+n};
