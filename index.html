@@ -129,44 +129,38 @@ audio{width:95%}
   justify-content:center;
   align-items:center;
   z-index:9999;
-  animation:splashFade 4s ease-in-out forwards;
 }
 
 #splash img{
   width:90vw;
   max-width:90vw;
-  animation:logoIntro 4s ease-in-out;
+  animation:logoIntro 4s ease-in-out forwards;
 }
 
-/* ANIMAZIONI */
+/* ANIMAZIONE LOGO */
 @keyframes logoIntro{
   0%{
     opacity:0;
-    transform:scale(0.85);
+    transform:scale(0.9);
   }
-  35%{
+  25%{
     opacity:1;
     transform:scale(1);
   }
-  65%{
+  55%{
     opacity:1;
-    transform:scale(1.08);
+    transform:scale(1.05);
   }
-  85%{
-    opacity:.4;
-    transform:scale(1.15);
+  75%{
+    opacity:0.7;
+    transform:scale(1.1);
   }
   100%{
     opacity:0;
-    transform:scale(1.25);
+    transform:scale(1.15);
   }
 }
 
-@keyframes splashFade{
-  0%{opacity:1}
-  80%{opacity:1}
-  100%{opacity:0}
-}
 
 
 </style>
@@ -445,20 +439,14 @@ function open(i,el){
   `;
 }
 
-const splash = document.getElementById("splash");
+window.addEventListener("load", () => {
+  const splash = document.getElementById("splash");
+  if (!splash) return;
 
-if (splash) {
-  // forza almeno un frame visibile
-requestAnimationFrame(() => {
   setTimeout(() => {
-    splash.classList.add("hide");
-    setTimeout(() => splash.remove(), 1200);
-  }, 4000);
+    splash.remove();
+  }, 4200);
 });
-
-
-}
-
 </script>
 
 </body>
