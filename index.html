@@ -136,7 +136,10 @@ audio{width:95%}
   max-width:90vw;
   animation:logoIntro 4s ease-in-out forwards;
 }
-
+#splash.hide{
+  opacity:0;
+  pointer-events:none;
+}
 /* ANIMAZIONE LOGO */
 @keyframes logoIntro{
   0%{
@@ -446,9 +449,10 @@ window.addEventListener("load", () => {
   if (!splash) return;
 
   setTimeout(() => {
-    splash.remove();
-  }, 4200);
+    splash.classList.add("hide");
+  }, 4000);
 });
+
 </script>
 
 </body>
