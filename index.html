@@ -133,11 +133,74 @@ audio{width:95%}
 #content hr ~ *{
   padding-left:20px;
 }
+  /* SPLASH INTRO – DISSOLVENZA LENTA */
+#splash{
+  position:fixed;
+  inset:0;
+  background:#000;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  opacity:0;
+  animation:splashAppear 3s ease forwards,
+           splashOut 8s ease forwards;
+}
+
+.splash-inner{
+  text-align:center;
+  opacity:0;
+  animation:innerAppear 4s ease forwards;
+  animation-delay:1s;
+}
+
+.splash-top{
+  color:#00e5ff;
+  font-size:1.4rem;
+  letter-spacing:2px;
+  margin-bottom:18px;
+}
+
+.splash-bottom{
+  color:#aaa;
+  font-size:1.1rem;
+  margin-top:18px;
+}
+
+#splash img{
+  width:70vw;
+  max-width:320px;
+  margin:12px 0;
+}
+
+@keyframes splashAppear{
+  from{opacity:0}
+  to{opacity:1}
+}
+
+@keyframes innerAppear{
+  from{opacity:0; transform:scale(1.08)}
+  to{opacity:1; transform:scale(1)}
+}
+
+@keyframes splashOut{
+  0%{opacity:1}
+  80%{opacity:1}
+  100%{opacity:0; visibility:hidden}
+}
 </style>
 </head>
 
 <body>
+<div id="splash">
+  <div class="splash-inner">
+    <div class="splash-top">BENVENUTI</div>
 
+    <img src="/anni80-pwa/logo.png" alt="Io negli anni ’80 c’ero">
+
+    <div class="splash-bottom">negli anni 80</div>
+  </div>
+</div>
 <header>
   <h1>Io negli anni ’80 c’ero</h1>
   <p>Musica · Radio · Giochi · Chat</p>
@@ -407,6 +470,9 @@ function open(i,el){
 }
 
 window.play=(u,n)=>{audio.src=u;audio.play();now.textContent="In riproduzione: "+n};
+  setTimeout(()=>{
+  document.getElementById("splash")?.remove();
+},8000);
 </script>
 
 </body>
