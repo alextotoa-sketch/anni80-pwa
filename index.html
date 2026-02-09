@@ -142,7 +142,33 @@ audio{width:95%}
 
 <main>
   <div class="categories" id="categories"></div>
-  <div id="content">Seleziona una sezione.</div>
+<div id="content">Seleziona una sezione.</div>
+
+<div id="chat-info" style="display:none">
+  <h2>Chat – Informazioni</h2>
+
+  <p><strong>Installazione app</strong></p>
+  <ul>
+    <li><b>Android:</b> usa “Aggiungi alla schermata Home”.</li>
+    <li><b>iPhone / iPad:</b> Condividi → Aggiungi a Home.</li>
+    <li><b>PC / Mac:</b> Installa dal browser (icona +).</li>
+  </ul>
+
+  <p><strong>Aggiornamenti</strong></p>
+  <p>L’app si aggiorna automaticamente. Se necessario, chiudila e riaprila.</p>
+
+  <p><strong>Regole chat</strong></p>
+  <ul>
+    <li>Rispetto reciproco</li>
+    <li>Niente spam</li>
+    <li>Niente contenuti offensivi</li>
+  </ul>
+
+  <button onclick="entraInChat()">
+    Entra in chat
+  </button>
+</div>
+
 </main>
 
 <div id="player">
@@ -303,10 +329,17 @@ function open(i,el){
   if(i===2)contentEl.innerHTML=`<div class="grid">
     <a class="card" href="https://archive.org/details/internetarcade" target="_blank">🕹️ Arcade</a>
     <a class="card" href="https://www.retrogames.cc/" target="_blank">🎮 RetroGames</a></div>`;
-  if(i===3)contentEl.innerHTML=`💬 Premi il pulsante chat`;
+  if(i===3){
+  contentEl.innerHTML="";
+  document.getElementById("chat-info").style.display="block";
 }
 
+
 window.play=(u,n)=>{audio.src=u;audio.play();now.textContent="In riproduzione: "+n};
+  function entraInChat(){
+  document.getElementById("chat-info").style.display="none";
+  document.getElementById("chat").style.display="flex";
+}
 </script>
 
 </body>
