@@ -24,7 +24,6 @@
 <link rel="apple-touch-icon" sizes="152x152" href="/anni80-pwa/apple-icon-152.png">
 <link rel="apple-touch-icon" sizes="167x167" href="/anni80-pwa/apple-icon-167.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/anni80-pwa/apple-icon-180.png">
-
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif}
 body{background:#0f0f0f;color:#fff;min-height:100vh;display:flex;flex-direction:column}
@@ -133,10 +132,43 @@ audio{width:95%}
 #content hr ~ *{
   padding-left:20px;
 }
+  #splash{
+  position:fixed;
+  inset:0;
+  background:#000;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  animation:fadeOut .6s ease forwards;
+  animation-delay:1.8s;
+}
+
+#splash img{
+  width:180px;
+  max-width:70%;
+  animation:logoPulse 1.3s ease-in-out infinite;
+}
+
+@keyframes logoPulse{
+  0%{transform:scale(1);opacity:.85}
+  50%{transform:scale(1.05);opacity:1}
+  100%{transform:scale(1);opacity:.85}
+}
+
+@keyframes fadeOut{
+  to{
+    opacity:0;
+    visibility:hidden;
+  }
+}
 </style>
 </head>
 
 <body>
+  <div id="splash">
+  <img src="/anni80-pwa/logo.png" alt="Io negli anni ’80 c’ero">
+</div>
 
 <header>
   <h1>Io negli anni ’80 c’ero</h1>
@@ -406,7 +438,13 @@ function open(i,el){
   `;
 }
 
-window.play=(u,n)=>{audio.src=u;audio.play();now.textContent="In riproduzione: "+n};
+window.addEventListener("load", () => {
+  const splash = document.getElementById("splash");
+  if (!splash) return;
+  setTimeout(() => {
+    splash.remove();
+  }, 2000);
+});
 </script>
 
 </body>
