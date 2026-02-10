@@ -310,34 +310,13 @@ onChildAdded(chatRef,s=>{
 
   const msg=document.createElement("div");
   msg.className="message";
- // 🔐 SECURITY FIX – no innerHTML (XSS safe)
-
-// reply
-if(m.reply){
-  const replyDiv = document.createElement("div");
-  replyDiv.style.fontSize = ".8rem";
-  replyDiv.style.opacity = ".7";
-  replyDiv.style.borderLeft = "3px solid #00e5ff";
-  replyDiv.style.paddingLeft = "6px";
-  replyDiv.style.marginBottom = "4px";
-  replyDiv.textContent = m.reply;
-  msg.appendChild(replyDiv);
-}
-
-// nickname
-const nickStrong = document.createElement("strong");
-nickStrong.textContent = m.nick;
-
-// message text
-const textSpan = document.createElement("span");
-textSpan.textContent = m.text;
-
-// append (stesso rendering di prima)
-msg.appendChild(nickStrong);
-msg.appendChild(textSpan);
+  msg.innerHTML=`
+    ${m.reply?`<div style="font-size:.8rem;opacity:.7;border-left:3px solid #00e5ff;padding-left:6px;margin-bottom:4px">${m.reply}</div>`:""}
+    <strong>${m.nick}</strong>${m.text}
+  `;
 
   msg.onclick=()=>{
-    replyTo=`${clean(m.nick)}: ${clean(m.text)}`;
+    replyTo=`${m.nick}: ${m.text}`;
     replyNick.textContent=m.nick;
 
     /* focus reale + tastiera mobile */
