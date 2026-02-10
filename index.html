@@ -390,9 +390,28 @@ audio.onpause=stopVu;
 function open(i,el){
   document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
   el.classList.add("active");
-  if(i===0)contentEl.innerHTML=`<div class="grid">
-    <a class="card" href="https://www.youtube.com/results?search_query=anni+80+italiani" target="_blank">🎵 YouTube</a>
-    <a class="card" href="https://open.spotify.com/search/anni%2080" target="_blank">🎧 Spotify</a></div>`;
+  if(i===0)contentEl.innerHTML=`
+  <h2>🎶 Playlist anni ’80</h2>
+
+  <h3>⭐ Artisti stranieri</h3>
+  <div class="grid">
+    <a class="card" href="https://www.youtube.com/results?search_query=madonna+anni+80" target="_blank">Madonna</a>
+    <a class="card" href="https://www.youtube.com/results?search_query=michael+jackson+anni+80" target="_blank">Michael Jackson</a>
+    <a class="card" href="https://www.youtube.com/results?search_query=depeche+mode+anni+80" target="_blank">Depeche Mode</a>
+    <a class="card" href="https://www.youtube.com/results?search_query=a-ha+anni+80" target="_blank">a-ha</a>
+  </div>
+
+  <hr>
+
+  <h3>🇮🇹 Artisti italiani</h3>
+  <div class="grid">
+    <a class="card" href="https://www.youtube.com/results?search_query=vasco+rossi+anni+80" target="_blank">Vasco Rossi</a>
+    <a class="card" href="https://www.youtube.com/results?search_query=gianna+nannini+anni+80" target="_blank">Gianna Nannini</a>
+    <a class="card" href="https://www.youtube.com/results?search_query=raf+anni+80" target="_blank">Raf</a>
+    <a class="card" href="https://www.youtube.com/results?search_query=claudio+baglioni+anni+80" target="_blank">Claudio Baglioni</a>
+  </div>
+`;
+
   if(i===1)contentEl.innerHTML=`<div class="grid">${radio.map(r=>`<div class="card" onclick="play('${r.u}','${r.n}')">${r.n}</div>`).join("")}</div>`;
   if(i===2)contentEl.innerHTML=`<div class="grid">
     <a class="card" href="https://archive.org/details/internetarcade" target="_blank">🕹️ Arcade</a>
