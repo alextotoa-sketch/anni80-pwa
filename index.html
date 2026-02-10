@@ -387,11 +387,40 @@ audio.onpause=stopVu;
   categoriesEl.appendChild(d);
 });
 
-function open(i,el){
+/* ===== PLAYLIST ===== */
+
+/* 1️⃣ Caso Playlist dentro open() */
+function open(i, el){
   document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
-  el.classList.add("active");
-/* PLAYLIST */
-if(i===0){
+  if(el) el.classList.add("active");
+
+  if(i===0){
+    showPlaylistRoot();
+  }
+
+  if(i===1){
+    contentEl.innerHTML = `<div class="grid">
+      ${radio.map(r=>`
+        <div class="card" onclick="play('${r.u}','${r.n}')">
+          ${r.n}
+        </div>`).join("")}
+    </div>`;
+  }
+
+  if(i===2){
+    contentEl.innerHTML = `<div class="grid">
+      <a class="card" href="https://archive.org/details/internetarcade" target="_blank">🕹️ Arcade</a>
+      <a class="card" href="https://www.retrogames.cc/" target="_blank">🎮 RetroGames</a>
+    </div>`;
+  }
+
+  if(i===3){
+    contentEl.innerHTML = `<h2>Chat-Info</h2>...`;
+  }
+}
+
+/* 2️⃣ Vista principale Playlist */
+function showPlaylistRoot(){
   contentEl.innerHTML = `
     <h2>🎶 Playlist</h2>
 
@@ -406,8 +435,8 @@ if(i===0){
   `;
 }
 
-/* SOTTOCATEGORIE */
-window.openPlaylist = (type) => {
+/* 3️⃣ Sottocategorie */
+function openPlaylist(type){
 
   if(type === "foreign"){
     contentEl.innerHTML = `
@@ -422,7 +451,7 @@ window.openPlaylist = (type) => {
 
       <hr>
 
-      <div class="card" onclick="open(0, document.querySelector('.category.active'))">
+      <div class="card" onclick="showPlaylistRoot()">
         ⬅ Torna alle Playlist
       </div>
     `;
@@ -441,13 +470,12 @@ window.openPlaylist = (type) => {
 
       <hr>
 
-      <div class="card" onclick="open(0, document.querySelector('.category.active'))">
+      <div class="card" onclick="showPlaylistRoot()">
         ⬅ Torna alle Playlist
       </div>
     `;
   }
-};
-
+}
 
   if(i===1)contentEl.innerHTML=`<div class="grid">${radio.map(r=>`<div class="card" onclick="play('${r.u}','${r.n}')">${r.n}</div>`).join("")}</div>`;
   if(i===2)contentEl.innerHTML=`<div class="grid">
