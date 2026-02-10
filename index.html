@@ -390,6 +390,7 @@ audio.onpause=stopVu;
 function open(i,el){
   document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
   el.classList.add("active");
+/* PLAYLIST */
 if(i===0){
   contentEl.innerHTML = `
     <h2>🎶 Playlist</h2>
@@ -404,6 +405,48 @@ if(i===0){
     </div>
   `;
 }
+
+/* SOTTOCATEGORIE */
+window.openPlaylist = (type) => {
+
+  if(type === "foreign"){
+    contentEl.innerHTML = `
+      <h2>⭐ Artisti stranieri</h2>
+
+      <div class="grid">
+        <a class="card" href="https://open.spotify.com/search/madonna%2080s" target="_blank">Madonna</a>
+        <a class="card" href="https://open.spotify.com/search/michael%20jackson%2080s" target="_blank">Michael Jackson</a>
+        <a class="card" href="https://open.spotify.com/search/depeche%20mode%2080s" target="_blank">Depeche Mode</a>
+        <a class="card" href="https://open.spotify.com/search/a-ha%2080s" target="_blank">a-ha</a>
+      </div>
+
+      <hr>
+
+      <div class="card" onclick="open(0, document.querySelector('.category.active'))">
+        ⬅ Torna alle Playlist
+      </div>
+    `;
+  }
+
+  if(type === "italian"){
+    contentEl.innerHTML = `
+      <h2>🇮🇹 Artisti italiani</h2>
+
+      <div class="grid">
+        <a class="card" href="https://open.spotify.com/search/vasco%20rossi%2080s" target="_blank">Vasco Rossi</a>
+        <a class="card" href="https://open.spotify.com/search/gianna%20nannini%2080s" target="_blank">Gianna Nannini</a>
+        <a class="card" href="https://open.spotify.com/search/raf%2080s" target="_blank">Raf</a>
+        <a class="card" href="https://open.spotify.com/search/claudio%20baglioni%2080s" target="_blank">Claudio Baglioni</a>
+      </div>
+
+      <hr>
+
+      <div class="card" onclick="open(0, document.querySelector('.category.active'))">
+        ⬅ Torna alle Playlist
+      </div>
+    `;
+  }
+};
 
 
   if(i===1)contentEl.innerHTML=`<div class="grid">${radio.map(r=>`<div class="card" onclick="play('${r.u}','${r.n}')">${r.n}</div>`).join("")}</div>`;
