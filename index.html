@@ -337,7 +337,7 @@ msg.appendChild(nickStrong);
 msg.appendChild(textSpan);
 
   msg.onclick=()=>{
-    replyTo=`${m.nick}: ${m.text}`;
+    replyTo=`${clean(m.nick)}: ${clean(m.text)}`;
     replyNick.textContent=m.nick;
 
     /* focus reale + tastiera mobile */
