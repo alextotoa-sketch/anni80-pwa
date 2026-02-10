@@ -387,40 +387,10 @@ audio.onpause=stopVu;
   categoriesEl.appendChild(d);
 });
 
-/* ===== PLAYLIST ===== */
-
-/* 1️⃣ Caso Playlist dentro open() */
-function open(i, el){
+function open(i,el){
   document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
-  if(el) el.classList.add("active");
-
-  if(i===0){
-    showPlaylistRoot();
-  }
-
-  if(i===1){
-    contentEl.innerHTML = `<div class="grid">
-      ${radio.map(r=>`
-        <div class="card" onclick="play('${r.u}','${r.n}')">
-          ${r.n}
-        </div>`).join("")}
-    </div>`;
-  }
-
-  if(i===2){
-    contentEl.innerHTML = `<div class="grid">
-      <a class="card" href="https://archive.org/details/internetarcade" target="_blank">🕹️ Arcade</a>
-      <a class="card" href="https://www.retrogames.cc/" target="_blank">🎮 RetroGames</a>
-    </div>`;
-  }
-
-  if(i===3){
-    contentEl.innerHTML = `<h2>Chat-Info</h2>...`;
-  }
-}
-
-/* 2️⃣ Vista principale Playlist */
-function showPlaylistRoot(){
+  el.classList.add("active");
+if(i===0){
   contentEl.innerHTML = `
     <h2>🎶 Playlist</h2>
 
@@ -435,47 +405,6 @@ function showPlaylistRoot(){
   `;
 }
 
-/* 3️⃣ Sottocategorie */
-function openPlaylist(type){
-
-  if(type === "foreign"){
-    contentEl.innerHTML = `
-      <h2>⭐ Artisti stranieri</h2>
-
-      <div class="grid">
-        <a class="card" href="https://open.spotify.com/search/madonna%2080s" target="_blank">Madonna</a>
-        <a class="card" href="https://open.spotify.com/search/michael%20jackson%2080s" target="_blank">Michael Jackson</a>
-        <a class="card" href="https://open.spotify.com/search/depeche%20mode%2080s" target="_blank">Depeche Mode</a>
-        <a class="card" href="https://open.spotify.com/search/a-ha%2080s" target="_blank">a-ha</a>
-      </div>
-
-      <hr>
-
-      <div class="card" onclick="showPlaylistRoot()">
-        ⬅ Torna alle Playlist
-      </div>
-    `;
-  }
-
-  if(type === "italian"){
-    contentEl.innerHTML = `
-      <h2>🇮🇹 Artisti italiani</h2>
-
-      <div class="grid">
-        <a class="card" href="https://open.spotify.com/search/vasco%20rossi%2080s" target="_blank">Vasco Rossi</a>
-        <a class="card" href="https://open.spotify.com/search/gianna%20nannini%2080s" target="_blank">Gianna Nannini</a>
-        <a class="card" href="https://open.spotify.com/search/raf%2080s" target="_blank">Raf</a>
-        <a class="card" href="https://open.spotify.com/search/claudio%20baglioni%2080s" target="_blank">Claudio Baglioni</a>
-      </div>
-
-      <hr>
-
-      <div class="card" onclick="showPlaylistRoot()">
-        ⬅ Torna alle Playlist
-      </div>
-    `;
-  }
-}
 
   if(i===1)contentEl.innerHTML=`<div class="grid">${radio.map(r=>`<div class="card" onclick="play('${r.u}','${r.n}')">${r.n}</div>`).join("")}</div>`;
   if(i===2)contentEl.innerHTML=`<div class="grid">
