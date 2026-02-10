@@ -390,19 +390,49 @@ audio.onpause=stopVu;
 function open(i,el){
   document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
   el.classList.add("active");
-if(i===0){
+
+  if(i === 0){
+    showPlaylistRoot();
+  }
+}
+
+/* 👇 INCOLLATO QUI 👇 */
+
+/* 🎶 PLAYLIST – BLOCCO UNICO DEFINITIVO */
+function showPlaylistRoot(){
   contentEl.innerHTML = `
     <h2>🎶 Playlist</h2>
-
     <div class="grid">
-      <div class="card" onclick="openPlaylist('foreign')">
-        ⭐ Artisti stranieri
-      </div>
-      <div class="card" onclick="openPlaylist('italian')">
-        🇮🇹 Artisti italiani
-      </div>
+      <div class="card" onclick="openPlaylist('foreign')">⭐ Stranieri</div>
+      <div class="card" onclick="openPlaylist('italian')">🇮🇹 Italiani</div>
     </div>
   `;
+}
+
+function openPlaylist(type){
+  if(type === "foreign"){
+    contentEl.innerHTML = `
+      <h2>⭐ Playlist straniere</h2>
+      <div class="grid">
+        <a class="card" href="https://open.spotify.com/playlist/37i9dQZF1DXdLEN7aqioXM" target="_blank">Pop internazionale</a>
+        <a class="card" href="https://open.spotify.com/playlist/37i9dQZF1DX4UtSsGT1Sbe" target="_blank">Rock classico</a>
+      </div>
+      <hr>
+      <div class="card" onclick="showPlaylistRoot()">⬅ Torna alle Playlist</div>
+    `;
+  }
+
+  if(type === "italian"){
+    contentEl.innerHTML = `
+      <h2>🇮🇹 Playlist italiane</h2>
+      <div class="grid">
+        <a class="card" href="https://open.spotify.com/playlist/37i9dQZF1DWVxbb3rvebGy" target="_blank">Classici italiani</a>
+        <a class="card" href="https://open.spotify.com/playlist/37i9dQZF1DX9p3Sjo1oZSs" target="_blank">Pop italiano</a>
+      </div>
+      <hr>
+      <div class="card" onclick="showPlaylistRoot()">⬅ Torna alle Playlist</div>
+    `;
+  }
 }
 
 
