@@ -751,29 +751,33 @@ function openSubFolder(index){
           ${sub.name}
         </strong>
 
- ${sub.links.map(link=>`
-  <div style="margin:6px 0">
-    <button style="
-      width:100%;
-      padding:8px;
-      border-radius:20px;
-      border:2px solid #00e5ff;
-      background:#111;
-      color:#00e5ff;
-      font-weight:bold;
-      cursor:pointer;
-    "
-    onclick="openExternal('${link.u}')">
-      🕹️ ${link.t}
-    </button>
-  </div>
-`).join("")}
+        ${sub.links.map(link=>`
+          <div style="margin:6px 0">
+            <button style="
+              width:100%;
+              padding:8px;
+              border-radius:20px;
+              border:2px solid #00e5ff;
+              background:#111;
+              color:#00e5ff;
+              font-weight:bold;
+              cursor:pointer;
+            "
+            onclick="openExternal('${link.u}')">
+              🕹️ ${link.t}
+            </button>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  });
 
+  html += `</div>`;
 
-  html += "</div>";
- const container = document.getElementById("gamesFolders");
-if(container){
-  container.innerHTML = html;
+  const container = document.getElementById("gamesFolders");
+  if(container){
+    container.innerHTML = html;
+  }
 }
 
 
