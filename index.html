@@ -686,7 +686,9 @@ window.openPlaylist = openPlaylist;
 window.openGames = openGames;
 
 window.openExternal = function(url){
-  window.location.assign(url);
+  window.open(url, "_blank");
+};
+
 };
 
 window.play = (u,n)=>{
