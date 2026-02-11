@@ -543,8 +543,40 @@ function open(i,el){
 } // ← QUESTA CHIUDE open()
 function artist(name, query){
   return `
-    <div class="card" onclick="window.open('https://www.youtube.com/results?search_query=${query}','_blank')">
-      ${name}
+    <div class="card">
+      <strong style="display:block; margin-bottom:10px;">
+        ${name}
+      </strong>
+
+      <div style="display:flex; gap:8px;">
+        <button style="
+          flex:1;
+          padding:8px;
+          border-radius:20px;
+          border:2px solid #ff0033;
+          background:#111;
+          color:#ff0033;
+          font-weight:bold;
+          cursor:pointer;
+        "
+        onclick="window.open('https://www.youtube.com/results?search_query=${query}','_blank')">
+          🎥 YouTube
+        </button>
+
+        <button style="
+          flex:1;
+          padding:8px;
+          border-radius:20px;
+          border:2px solid #00ff66;
+          background:#111;
+          color:#00ff66;
+          font-weight:bold;
+          cursor:pointer;
+        "
+        onclick="window.open('https://open.spotify.com/search/${query}','_blank')">
+          🎧 Spotify
+        </button>
+      </div>
     </div>
   `;
 }
