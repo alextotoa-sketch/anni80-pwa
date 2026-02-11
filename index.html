@@ -634,6 +634,25 @@ window.play=(u,n)=>{audio.src=u;audio.play();now.textContent="In riproduzione: "
   setTimeout(()=>{
   document.getElementById("splash")?.remove();
 },8000);
+/* FORZA LINK ESTERNI FUORI DALLA PWA (MOBILE SAFE) */
+document.addEventListener("click", function(e) {
+  const link = e.target.closest("a");
+  if (!link) return;
+
+  // ignora link senza href reale
+  if (!link.href || link.href.startsWith("javascript:")) return;
+
+  const url = new URL(link.href, window.location.href);
+
+  // Se il link NON appartiene al dominio della PWA
+  if (url.origin !== window.location.origin) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // apertura forzata nel browser di sistema
+    window.open(url.href, "_blank", "noopener,noreferrer");
+  }
+});
 </script>
 
 </body>
