@@ -431,14 +431,14 @@ function open(i,el){
     `;
   }
 
-  if(i===2){
-    contentEl.innerHTML = `
-      <div class="grid">
-        <a class="card" href="https://archive.org/details/internetarcade" target="_blank">🕹️ Arcade</a>
-        <a class="card" href="https://www.retrogames.cc/" target="_blank">🎮 RetroGames</a>
-      </div>
-    `;
-  }
+if(i===2){
+  contentEl.innerHTML = `
+    <h2>🕹️ Archivio Giochi anni ’80</h2>
+    <div id="gamesFolders"></div>
+  `;
+  loadGameFolders();
+}
+
 
   if(i===3){
     contentEl.innerHTML = `
@@ -615,6 +615,155 @@ function openPlaylist(type){
     `;
   }
 
+}
+ const gamesData = [
+{
+  name:"🕹️ Arcade",
+  sub:[
+    {
+      name:"Classici Arcade",
+      links:[
+        {t:"Internet Arcade",u:"https://archive.org/details/internetarcade"},
+        {t:"RetroGames Arcade",u:"https://www.retrogames.cc/arcade-games.html"},
+        {t:"MAME online",u:"https://www.retrogames.cc/mame-games.html"}
+      ]
+    }
+  ]
+},
+{
+  name:"🎮 Nintendo NES",
+  sub:[
+    {
+      name:"Platform",
+      links:[
+        {t:"Super Mario Bros",u:"https://www.retrogames.cc/super-mario-bros.html"},
+        {t:"Mega Man 2",u:"https://www.retrogames.cc/mega-man-2.html"},
+        {t:"Castlevania",u:"https://www.retrogames.cc/castlevania.html"}
+      ]
+    }
+  ]
+},
+{
+  name:"🕹️ Sega Master System",
+  sub:[
+    {
+      name:"Action",
+      links:[
+        {t:"Alex Kidd",u:"https://www.retrogames.cc/alex-kidd.html"},
+        {t:"Wonder Boy",u:"https://www.retrogames.cc/wonder-boy.html"}
+      ]
+    }
+  ]
+},
+{
+  name:"📺 Atari 2600",
+  sub:[
+    {
+      name:"Classici",
+      links:[
+        {t:"Pitfall!",u:"https://www.retrogames.cc/pitfall.html"},
+        {t:"Space Invaders",u:"https://www.retrogames.cc/space-invaders.html"}
+      ]
+    }
+  ]
+},
+{
+  name:"💾 Commodore 64",
+  sub:[
+    {
+      name:"Platform",
+      links:[
+        {t:"Bubble Bobble",u:"https://www.retrogames.cc/bubble-bobble.html"},
+        {t:"Ghosts'n Goblins",u:"https://www.retrogames.cc/ghosts-n-goblins.html"}
+      ]
+    }
+  ]
+},
+{
+  name:"💿 Amiga",
+  sub:[
+    {
+      name:"Cinematic",
+      links:[
+        {t:"Another World",u:"https://www.retrogames.cc/another-world.html"},
+        {t:"Flashback",u:"https://www.retrogames.cc/flashback.html"}
+      ]
+    }
+  ]
+},
+{
+  name:"🖥️ MS-DOS",
+  sub:[
+    {
+      name:"Adventure",
+      links:[
+        {t:"Monkey Island",u:"https://archive.org/details/msdos_Monkey_Island_1990"},
+        {t:"Prince of Persia",u:"https://archive.org/details/msdos_Prince_of_Persia_1990"}
+      ]
+    }
+  ]
+},
+{
+  name:"🧠 ZX Spectrum",
+  sub:[
+    {
+      name:"Arcade",
+      links:[
+        {t:"Manic Miner",u:"https://www.retrogames.cc/manic-miner.html"},
+        {t:"Jet Set Willy",u:"https://www.retrogames.cc/jet-set-willy.html"}
+      ]
+    }
+  ]
+}
+];
+ function loadGameFolders(){
+  const container = document.getElementById("gamesFolders");
+  if(!container) return;
+
+  container.innerHTML = "";
+
+  gamesData.forEach((folder,index)=>{
+    const div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = `<strong>${folder.name}</strong>`;
+    div.onclick = ()=> openSubFolder(index);
+    container.appendChild(div);
+  });
+}
+
+function openSubFolder(index){
+  const folder = gamesData[index];
+
+  let html = `
+    <button onclick="loadGameFolders()" 
+      style="margin-bottom:12px;padding:6px 12px;border-radius:14px;border:2px solid #00e5ff;background:#111;color:#00e5ff;">
+      ← Torna alle cartelle
+    </button>
+
+    <h2>${folder.name}</h2>
+    <div class="grid">
+  `;
+
+  folder.sub.forEach(sub=>{
+    html += `
+      <div class="card">
+        <strong style="display:block;margin-bottom:8px">
+          ${sub.name}
+        </strong>
+
+        ${sub.links.map(link=>`
+          <div style="margin:6px 0">
+            <a href="${link.u}" target="_blank" style="color:#00e5ff;text-decoration:none;">
+              ${link.t}
+            </a>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  });
+
+  html += "</div>";
+  contentEl.innerHTML = html;
 }
 
 window.openPlaylist = openPlaylist;
