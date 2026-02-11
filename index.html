@@ -618,7 +618,7 @@ function openPlaylist(type){
 }
 
 window.openPlaylist = openPlaylist;
- function openExternal(url){
+ window.openExternal = function(url){
   const isStandalone =
     window.matchMedia('(display-mode: standalone)').matches ||
     window.navigator.standalone === true;
@@ -629,6 +629,7 @@ window.openPlaylist = openPlaylist;
     window.open(url, '_blank');
   }
 }
+
 
 
 window.play=(u,n)=>{audio.src=u;audio.play();now.textContent="In riproduzione: "+n};
