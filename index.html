@@ -431,14 +431,19 @@ function open(i,el){
     `;
   }
 
-  if(i===2){
-    contentEl.innerHTML = `
-      <div class="grid">
-        <a class="card" href="https://archive.org/details/internetarcade" target="_blank">🕹️ Arcade</a>
-        <a class="card" href="https://www.retrogames.cc/" target="_blank">🎮 RetroGames</a>
-      </div>
-    `;
-  }
+if(i===2){
+  contentEl.innerHTML = `
+    <h2>🎮 Giochi anni ’80</h2>
+    <div class="grid">
+      <div class="card" onclick="openGames('arcade')">🕹️ Arcade</div>
+      <div class="card" onclick="openGames('computer')">💻 Computer</div>
+      <div class="card" onclick="openGames('console')">🎮 Console</div>
+      <div class="card" onclick="openGames('board')">🎲 Giochi da tavolo</div>
+      <div class="card" onclick="openGames('portable')">📟 Portatili</div>
+    </div>
+  `;
+}
+
 
   if(i===3){
     contentEl.innerHTML = `
@@ -616,9 +621,72 @@ function openPlaylist(type){
   }
 
 }
+ function openGames(type){
+
+  if(type === "arcade"){
+    contentEl.innerHTML = `
+      <h2>🕹️ Arcade anni ’80</h2>
+      <div class="grid">
+        <a class="card" href="https://archive.org/details/internetarcade" target="_blank">Internet Arcade</a>
+        <a class="card" href="https://www.retrogames.cc/arcade-games.html" target="_blank">RetroGames Arcade</a>
+        <a class="card" href="https://www.classicgamesarcade.com/" target="_blank">Classic Games Arcade</a>
+        <a class="card" href="https://playclassic.games/games/arcade-dos-games-online/" target="_blank">PlayClassic Arcade</a>
+      </div>
+    `;
+  }
+
+  if(type === "computer"){
+    contentEl.innerHTML = `
+      <h2>💻 Computer anni ’80</h2>
+      <div class="grid">
+        <a class="card" href="https://c64online.com/" target="_blank">Commodore 64</a>
+        <a class="card" href="https://www.retrogames.cz/" target="_blank">Amiga & DOS</a>
+        <a class="card" href="https://archive.org/details/softwarelibrary_c64_games" target="_blank">C64 Archive</a>
+        <a class="card" href="https://archive.org/details/softwarelibrary_amiga" target="_blank">Amiga Archive</a>
+      </div>
+    `;
+  }
+
+  if(type === "console"){
+    contentEl.innerHTML = `
+      <h2>🎮 Console anni ’80</h2>
+      <div class="grid">
+        <a class="card" href="https://www.retrogames.cc/nes-games.html" target="_blank">NES</a>
+        <a class="card" href="https://www.retrogames.cc/sega-games.html" target="_blank">Sega</a>
+        <a class="card" href="https://archive.org/details/consolelivingroom" target="_blank">Console Living Room</a>
+        <a class="card" href="https://playclassic.games/console-retro-games/" target="_blank">PlayClassic Console</a>
+      </div>
+    `;
+  }
+
+  if(type === "board"){
+    contentEl.innerHTML = `
+      <h2>🎲 Giochi da tavolo vintage</h2>
+      <div class="grid">
+        <a class="card" href="https://www.boardgamearena.com/" target="_blank">BoardGameArena</a>
+        <a class="card" href="https://tabletopia.com/" target="_blank">Tabletopia</a>
+        <a class="card" href="https://papergames.io/" target="_blank">PaperGames (Dama, Forza 4)</a>
+      </div>
+    `;
+  }
+
+  if(type === "portable"){
+    contentEl.innerHTML = `
+      <h2>📟 Game & Watch</h2>
+      <div class="grid">
+        <a class="card" href="https://archive.org/search?query=game+and+watch" target="_blank">Game & Watch Archive</a>
+        <a class="card" href="https://www.retrogames.cc/handheld-games.html" target="_blank">Handheld Retro</a>
+      </div>
+    `;
+  }
+
+}
 
 window.openPlaylist = openPlaylist;
+window.openGames = openGames;   // 👈 AGGIUNGI QUESTA RIGA QUI
+
 window.openExternal = function(url){
+
   const a = document.createElement("a");
   a.href = url;
   a.target = "_blank";
@@ -627,7 +695,7 @@ window.openExternal = function(url){
   a.click();
   document.body.removeChild(a);
 };
-
+ 
 
 
 window.play=(u,n)=>{audio.src=u;audio.play();now.textContent="In riproduzione: "+n};
