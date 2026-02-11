@@ -580,45 +580,6 @@ function artist(name, query){
     </div>
   `;
 }
- function game(name, playUrl, videoQuery){
-  return `
-    <div class="card">
-      <strong style="display:block; margin-bottom:10px;">
-        ${name}
-      </strong>
-
-      <div style="display:flex; gap:8px;">
-        <button style="
-          flex:1;
-          padding:8px;
-          border-radius:20px;
-          border:2px solid #00ffff;
-          background:#111;
-          color:#00ffff;
-          font-weight:bold;
-          cursor:pointer;
-        "
-        onclick="openExternal('${playUrl}')">
-          🎮 Gioca
-        </button>
-
-        <button style="
-          flex:1;
-          padding:8px;
-          border-radius:20px;
-          border:2px solid #ff00ff;
-          background:#111;
-          color:#ff00ff;
-          font-weight:bold;
-          cursor:pointer;
-        "
-        onclick="openExternal('https://www.youtube.com/results?search_query=${videoQuery}')">
-          📺 Gameplay
-        </button>
-      </div>
-    </div>
-  `;
-}
 
 function openPlaylist(type){
 
@@ -654,24 +615,7 @@ function openPlaylist(type){
     `;
   }
 
- if(type === "games"){
-  contentEl.innerHTML = `
-    <h2>🕹 Giochi anni ’80</h2>
-    <div class="grid">
-      ${game("Pac-Man","https://www.retrogames.cc/arcade-games/pac-man.html","pacman arcade gameplay")}
-      ${game("Space Invaders","https://www.retrogames.cc/arcade-games/space-invaders.html","space invaders arcade gameplay")}
-      ${game("Donkey Kong","https://www.retrogames.cc/arcade-games/donkey-kong.html","donkey kong arcade gameplay")}
-      ${game("Galaga","https://www.retrogames.cc/arcade-games/galaga.html","galaga arcade gameplay")}
-      ${game("Tetris","https://tetris.com/play-tetris","tetris 1984 gameplay")}
-      ${game("Frogger","https://www.retrogames.cc/arcade-games/frogger.html","frogger arcade gameplay")}
-      ${game("Bubble Bobble","https://www.retrogames.cc/arcade-games/bubble-bobble.html","bubble bobble arcade gameplay")}
-      ${game("Double Dragon","https://www.retrogames.cc/arcade-games/double-dragon.html","double dragon arcade gameplay")}
-    </div>
-  `;
 }
-
-
-
 
 window.openPlaylist = openPlaylist;
 window.openExternal = function(url){
