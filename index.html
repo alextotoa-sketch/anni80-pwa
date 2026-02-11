@@ -559,7 +559,7 @@ function artist(name, query){
           font-weight:bold;
           cursor:pointer;
         "
-        onclick="window.open('https://www.youtube.com/results?search_query=${query}','_blank')">
+        onclick="openExternal('https://www.youtube.com/results?search_query=${query}')">
           🎥 YouTube
         </button>
 
@@ -573,7 +573,7 @@ function artist(name, query){
           font-weight:bold;
           cursor:pointer;
         "
-        onclick="window.open('https://open.spotify.com/search/${query}','_blank')">
+        onclick="openExternal('https://open.spotify.com/search/${query}')">
           🎧 Spotify
         </button>
       </div>
@@ -618,6 +618,17 @@ function openPlaylist(type){
 }
 
 window.openPlaylist = openPlaylist;
+ function openExternal(url){
+  const isStandalone =
+    window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true;
+
+  if(isStandalone){
+    window.location.href = url;
+  } else {
+    window.open(url, '_blank');
+  }
+}
 
 
 window.play=(u,n)=>{audio.src=u;audio.play();now.textContent="In riproduzione: "+n};
