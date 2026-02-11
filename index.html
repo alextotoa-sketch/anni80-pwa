@@ -618,17 +618,15 @@ function openPlaylist(type){
 }
 
 window.openPlaylist = openPlaylist;
- window.openExternal = function(url){
-  const isStandalone =
-    window.matchMedia('(display-mode: standalone)').matches ||
-    window.navigator.standalone === true;
-
-  if(isStandalone){
-    window.location.href = url;
-  } else {
-    window.open(url, '_blank');
-  }
-}
+window.openExternal = function(url){
+  const a = document.createElement("a");
+  a.href = url;
+  a.target = "_blank";
+  a.rel = "noopener noreferrer";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+};
 
 
 
