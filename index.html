@@ -654,23 +654,22 @@ function openPlaylist(type){
     `;
   }
 
-  if(type === "games"){
-    contentEl.innerHTML = `
-      <h2>🕹 Giochi anni ’80</h2>
-      <div class="grid">
-        ${game("Pac-Man","https://www.retrogames.cc/arcade-games/pac-man.html","pacman arcade gameplay")}
-        ${game("Space Invaders","https://www.retrogames.cc/arcade-games/space-invaders.html","space invaders arcade gameplay")}
-        ${game("Donkey Kong","https://www.retrogames.cc/arcade-games/donkey-kong.html","donkey kong arcade gameplay")}
-        ${game("Tetris","https://tetris.com/play-tetris","tetris 1984 gameplay")}
-        ${game("Frogger","https://www.retrogames.cc/arcade-games/frogger.html","frogger arcade gameplay")}
-        ${game("Galaga","https://www.retrogames.cc/arcade-games/galaga.html","galaga arcade gameplay")}
-        ${game("Double Dragon","https://www.retrogames.cc/arcade-games/double-dragon.html","double dragon arcade gameplay")}
-        ${game("Bubble Bobble","https://www.retrogames.cc/arcade-games/bubble-bobble.html","bubble bobble arcade gameplay")}
-      </div>
-    `;
-  }
-
+ if(type === "games"){
+  contentEl.innerHTML = `
+    <h2>🕹 Giochi anni ’80</h2>
+    <div class="grid">
+      ${game("Pac-Man","https://www.retrogames.cc/arcade-games/pac-man.html","pacman arcade gameplay")}
+      ${game("Space Invaders","https://www.retrogames.cc/arcade-games/space-invaders.html","space invaders arcade gameplay")}
+      ${game("Donkey Kong","https://www.retrogames.cc/arcade-games/donkey-kong.html","donkey kong arcade gameplay")}
+      ${game("Galaga","https://www.retrogames.cc/arcade-games/galaga.html","galaga arcade gameplay")}
+      ${game("Tetris","https://tetris.com/play-tetris","tetris 1984 gameplay")}
+      ${game("Frogger","https://www.retrogames.cc/arcade-games/frogger.html","frogger arcade gameplay")}
+      ${game("Bubble Bobble","https://www.retrogames.cc/arcade-games/bubble-bobble.html","bubble bobble arcade gameplay")}
+      ${game("Double Dragon","https://www.retrogames.cc/arcade-games/double-dragon.html","double dragon arcade gameplay")}
+    </div>
+  `;
 }
+
 
 
 
