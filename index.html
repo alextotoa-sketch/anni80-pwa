@@ -784,14 +784,22 @@ function openSubFolder(index){
 
 window.openPlaylist = openPlaylist;
 window.openExternal = function(url){
+
+  // Se NON siamo in PWA standalone
+  if (!window.matchMedia('(display-mode: standalone)').matches 
+      && !window.navigator.standalone) {
+    window.open(url, '_blank');
+    return;
+  }
+
+  // Se siamo in modalità PWA installata
   const a = document.createElement("a");
   a.href = url;
   a.target = "_blank";
-  a.rel = "noopener noreferrer";
-  document.body.appendChild(a);
+  a.rel = "noopener noreferrer external";
   a.click();
-  document.body.removeChild(a);
 };
+
 
 
 
