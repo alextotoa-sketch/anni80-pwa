@@ -1,4 +1,4 @@
-const CACHE_NAME = "anni80-pwa-v2";
+const CACHE_NAME = "anni80-pwa-v3";
 
 const FILES_TO_CACHE = [
   "/anni80-pwa/",
@@ -32,6 +32,17 @@ self.addEventListener("activate", event => {
 });
 
 self.addEventListener("fetch", event => {
+
+  // 🚫 Non intercettare richieste esterne
+  if (!event.request.url.startsWith(self.location.origin)) {
+    return;
+  }
+
+  // 🚫 Non intercettare navigazioni di pagina
+  if (event.request.mode === "navigate") {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then(response => response || fetch(event.request))
