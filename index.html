@@ -585,7 +585,7 @@ function openPlaylist(type){
 
 }
 
-
+window.openPlaylist = openPlaylist;
 
 
 window.play=(u,n)=>{audio.src=u;audio.play();now.textContent="In riproduzione: "+n};
