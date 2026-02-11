@@ -716,19 +716,24 @@ function openPlaylist(type){
 
 ];
 
- function loadGameFolders(){
-  const container = document.getElementById("gamesFolders");
-  if(!container) return;
+function loadGameFolders(){
 
-  container.innerHTML = "";
+  let html = `
+    <h2>🎮 Giochi anni '80</h2>
+    <div class="grid">
+  `;
 
   gamesData.forEach((folder,index)=>{
-    const div = document.createElement("div");
-    div.className = "card";
-    div.innerHTML = `<strong>${folder.name}</strong>`;
-    div.onclick = ()=> openSubFolder(index);
-    container.appendChild(div);
+    html += `
+      <div class="card" onclick="openSubFolder(${index})">
+        <strong>${folder.name}</strong>
+      </div>
+    `;
   });
+
+  html += `</div>`;
+
+  contentEl.innerHTML = html;
 }
 
 function openSubFolder(index){
