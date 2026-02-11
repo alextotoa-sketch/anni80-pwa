@@ -683,30 +683,22 @@ function openPlaylist(type){
 }
 
 window.openPlaylist = openPlaylist;
-window.openGames = openGames;   // 👈 AGGIUNGI QUESTA RIGA QUI
+window.openGames = openGames;
 
 window.openExternal = function(url){
-
-  const a = document.createElement("a");
-  a.href = url;
-  a.target = "_blank";
-  a.rel = "noopener noreferrer";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+  window.location.assign(url);
 };
- 
 
+window.play = (u,n)=>{
+  audio.src = u;
+  audio.play();
+  now.textContent = "In riproduzione: " + n;
+};
 
-window.play=(u,n)=>{audio.src=u;audio.play();now.textContent="In riproduzione: "+n};
-  setTimeout(()=>{
+setTimeout(()=>{
   document.getElementById("splash")?.remove();
 },8000);
- window.addEventListener("pageshow", function(event){
-  if(event.persisted){
-    location.reload();
-  }
-});
+
 </script>
 
 </body>
