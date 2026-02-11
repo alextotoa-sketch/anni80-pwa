@@ -621,16 +621,16 @@ function openPlaylist(type){
   }
 
 }
- function openGames(type){
+function openGames(type){
 
   if(type === "arcade"){
     contentEl.innerHTML = `
       <h2>🕹️ Arcade anni ’80</h2>
       <div class="grid">
-        <a class="card" href="https://archive.org/details/internetarcade" target="_blank">Internet Arcade</a>
-        <a class="card" href="https://www.retrogames.cc/arcade-games.html" target="_blank">RetroGames Arcade</a>
-        <a class="card" href="https://www.classicgamesarcade.com/" target="_blank">Classic Games Arcade</a>
-        <a class="card" href="https://playclassic.games/games/arcade-dos-games-online/" target="_blank">PlayClassic Arcade</a>
+        <div class="card" onclick="openExternal('https://archive.org/details/internetarcade')">Internet Arcade</div>
+        <div class="card" onclick="openExternal('https://www.retrogames.cc/arcade-games.html')">RetroGames Arcade</div>
+        <div class="card" onclick="openExternal('https://www.classicgamesarcade.com/')">Classic Games Arcade</div>
+        <div class="card" onclick="openExternal('https://playclassic.games/games/arcade-dos-games-online/')">PlayClassic Arcade</div>
       </div>
     `;
   }
@@ -639,10 +639,10 @@ function openPlaylist(type){
     contentEl.innerHTML = `
       <h2>💻 Computer anni ’80</h2>
       <div class="grid">
-        <a class="card" href="https://c64online.com/" target="_blank">Commodore 64</a>
-        <a class="card" href="https://www.retrogames.cz/" target="_blank">Amiga & DOS</a>
-        <a class="card" href="https://archive.org/details/softwarelibrary_c64_games" target="_blank">C64 Archive</a>
-        <a class="card" href="https://archive.org/details/softwarelibrary_amiga" target="_blank">Amiga Archive</a>
+        <div class="card" onclick="openExternal('https://c64online.com/')">Commodore 64</div>
+        <div class="card" onclick="openExternal('https://www.retrogames.cz/')">Amiga & DOS</div>
+        <div class="card" onclick="openExternal('https://archive.org/details/softwarelibrary_c64_games')">C64 Archive</div>
+        <div class="card" onclick="openExternal('https://archive.org/details/softwarelibrary_amiga')">Amiga Archive</div>
       </div>
     `;
   }
@@ -651,10 +651,10 @@ function openPlaylist(type){
     contentEl.innerHTML = `
       <h2>🎮 Console anni ’80</h2>
       <div class="grid">
-        <a class="card" href="https://www.retrogames.cc/nes-games.html" target="_blank">NES</a>
-        <a class="card" href="https://www.retrogames.cc/sega-games.html" target="_blank">Sega</a>
-        <a class="card" href="https://archive.org/details/consolelivingroom" target="_blank">Console Living Room</a>
-        <a class="card" href="https://playclassic.games/console-retro-games/" target="_blank">PlayClassic Console</a>
+        <div class="card" onclick="openExternal('https://www.retrogames.cc/nes-games.html')">NES</div>
+        <div class="card" onclick="openExternal('https://www.retrogames.cc/sega-games.html')">Sega</div>
+        <div class="card" onclick="openExternal('https://archive.org/details/consolelivingroom')">Console Living Room</div>
+        <div class="card" onclick="openExternal('https://playclassic.games/console-retro-games/')">PlayClassic Console</div>
       </div>
     `;
   }
@@ -663,9 +663,9 @@ function openPlaylist(type){
     contentEl.innerHTML = `
       <h2>🎲 Giochi da tavolo vintage</h2>
       <div class="grid">
-        <a class="card" href="https://www.boardgamearena.com/" target="_blank">BoardGameArena</a>
-        <a class="card" href="https://tabletopia.com/" target="_blank">Tabletopia</a>
-        <a class="card" href="https://papergames.io/" target="_blank">PaperGames (Dama, Forza 4)</a>
+        <div class="card" onclick="openExternal('https://www.boardgamearena.com/')">BoardGameArena</div>
+        <div class="card" onclick="openExternal('https://tabletopia.com/')">Tabletopia</div>
+        <div class="card" onclick="openExternal('https://papergames.io/')">PaperGames (Dama, Forza 4)</div>
       </div>
     `;
   }
@@ -674,8 +674,8 @@ function openPlaylist(type){
     contentEl.innerHTML = `
       <h2>📟 Game & Watch</h2>
       <div class="grid">
-        <a class="card" href="https://archive.org/search?query=game+and+watch" target="_blank">Game & Watch Archive</a>
-        <a class="card" href="https://www.retrogames.cc/handheld-games.html" target="_blank">Handheld Retro</a>
+        <div class="card" onclick="openExternal('https://archive.org/search?query=game+and+watch')">Game & Watch Archive</div>
+        <div class="card" onclick="openExternal('https://www.retrogames.cc/handheld-games.html')">Handheld Retro</div>
       </div>
     `;
   }
@@ -689,7 +689,7 @@ window.openExternal = function(url){
   window.open(url, "_blank");
 };
 
-};
+
 
 window.play = (u,n)=>{
   audio.src = u;
