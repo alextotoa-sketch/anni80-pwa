@@ -541,7 +541,13 @@ function open(i,el){
   }
 
 } // ← QUESTA CHIUDE open()
-
+function artist(name, query){
+  return `
+    <div class="card" onclick="window.open('https://www.youtube.com/results?search_query=${query}','_blank')">
+      ${name}
+    </div>
+  `;
+}
 
 function openPlaylist(type){
 
