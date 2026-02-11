@@ -751,16 +751,13 @@ function openSubFolder(index){
           ${sub.name}
         </strong>
 
-        ${sub.links.map(link=>`
-          <div style="margin:6px 0">
-            <a href="${link.u}" target="_blank" style="color:#00e5ff;text-decoration:none;">
-              ${link.t}
-            </a>
-          </div>
-        `).join("")}
-      </div>
-    `;
-  });
+       ${sub.links.map(link=>`
+  <div style="margin:6px 0;cursor:pointer;color:#00e5ff;"
+       onclick="openExternal('${link.u}')">
+    ${link.t}
+  </div>
+`).join("")}
+
 
   html += "</div>";
  const container = document.getElementById("gamesFolders");
