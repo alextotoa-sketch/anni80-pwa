@@ -751,10 +751,21 @@ function openSubFolder(index){
           ${sub.name}
         </strong>
 
-       ${sub.links.map(link=>`
-  <div style="margin:6px 0;cursor:pointer;color:#00e5ff;"
-       onclick="openExternal('${link.u}')">
-    ${link.t}
+ ${sub.links.map(link=>`
+  <div style="margin:6px 0">
+    <button style="
+      width:100%;
+      padding:8px;
+      border-radius:20px;
+      border:2px solid #00e5ff;
+      background:#111;
+      color:#00e5ff;
+      font-weight:bold;
+      cursor:pointer;
+    "
+    onclick="openExternal('${link.u}')">
+      🕹️ ${link.t}
+    </button>
   </div>
 `).join("")}
 
