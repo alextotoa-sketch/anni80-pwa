@@ -61,7 +61,14 @@ header h1{
   text-shadow:
     3px 3px 0 #000,
     6px 6px 0 rgba(0,0,0,0.6);
+ @media (max-width: 600px){
+  header h1{
+    font-size:1.6rem;
+    letter-spacing:1px;
+    white-space:nowrap;
+  }
 }
+
 header p{color:#aaa;font-size:.9rem}
 
 /* MAIN */
@@ -84,16 +91,18 @@ main{flex:1;padding:12px;padding-bottom:190px}
 .categories > *:nth-child(6n+4){background:#00ff66;}
 .categories > *:nth-child(6n+5){background:#ff6600;}
 .categories > *:nth-child(6n+6){background:#cc00ff;}
+
 .category.active{
   transform:scale(1.05);
 }
 
 /* CONTENUTO */
-#content{border:none;border-radius:14px;padding:14px;min-height:200px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.card{border:none;border-radius:14px;padding:14px;text-align:center}
-.card:hover{background:#00e5ff;color:#000}
-a.card{text-decoration:none;color:inherit}
+#content{
+  border:none;
+  border-radius:14px;
+  padding:14px;
+  min-height:200px;
+}
  /* CARD COLORATE 80s */
 /* COLORI CARD CICLICI */
 .card:nth-of-type(6n+1){background:#ff0080;}
