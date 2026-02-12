@@ -271,97 +271,115 @@ import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/fi
 import { getAuth, signInAnonymously } 
 from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
 /* FIREBASE */
-const app=initializeApp({
+/* FIREBASE */
+const app = initializeApp({
   apiKey:"AIzaSyB8h3fvyPxq_Tjp2R5RzsgEC7jv6FASeWE",
   authDomain:"anni-80-chat-a1192.firebaseapp.com",
   databaseURL:"https://anni-80-chat-a1192-default-rtdb.europe-west1.firebasedatabase.app",
   projectId:"anni-80-chat-a1192"
 });
-const db = getDatabase(app);
 
-// 👇 QUI inserisci autenticazione
+const db = getDatabase(app);
 const auth = getAuth(app);
 
+/* NICK */
+let nickname = localStorage.getItem("anni80_nick");
+while(!nickname){
+  nickname = prompt("Inserisci il tuo nickname anni ’80:");
+  if(nickname) localStorage.setItem("anni80_nick",nickname);
+}
+
+/* ELEMENTI CHAT */
+const chat = document.getElementById("chat");
+const chatMessages = document.getElementById("chatMessages");
+const chatInput = document.getElementById("chatInput");
+const chatForm = document.getElementById("chatForm");
+const replyBox = document.getElementById("replyBox");
+const replyNick = document.getElementById("replyNick");
+let replyTo = null;
+
+/* AUTENTICAZIONE + AVVIO CHAT */
 signInAnonymously(auth)
   .then(() => {
     console.log("Autenticazione anonima attiva");
+    startChat(); // 👈 parte SOLO dopo auth
   })
   .catch((error) => {
     console.error("Errore autenticazione:", error);
   });
 
-// 👇 chatRef DOPO auth (non prima)
-const chatRef = ref(db, "chat");
+function startChat(){
 
+  const chatRef = ref(db,"chat");
 
-/* NICK */
-let nickname=localStorage.getItem("anni80_nick");
-while(!nickname){
-  nickname=prompt("Inserisci il tuo nickname anni ’80:");
-  if(nickname) localStorage.setItem("anni80_nick",nickname);
+  chatForm.addEventListener("submit", e=>{
+    e.preventDefault();
+
+    if(chatInput.value.trim()){
+      push(chatRef,{
+        nick:nickname,
+        text:chatInput.value,
+        reply:replyTo || null,
+        timestamp: Date.now()
+      });
+
+      chatInput.value="";
+      replyTo=null;
+      replyBox.style.display="none";
+    }
+  });
+
+  onChildAdded(chatRef, s=>{
+    const m = s.val();
+
+    const msg = document.createElement("div");
+    msg.className="message";
+
+    if(m.reply){
+      const reply=document.createElement("div");
+      reply.style.fontSize=".8rem";
+      reply.style.opacity=".7";
+      reply.style.borderLeft="3px solid #00e5ff";
+      reply.style.paddingLeft="6px";
+      reply.style.marginBottom="4px";
+      reply.textContent=m.reply;
+      msg.appendChild(reply);
+    }
+
+    const nick=document.createElement("strong");
+    nick.textContent=m.nick;
+    msg.appendChild(nick);
+
+    const text=document.createElement("span");
+    text.textContent=m.text;
+    msg.appendChild(text);
+
+    msg.onclick=()=>{
+      replyTo=`${m.nick}: ${m.text}`;
+      replyNick.textContent=m.nick;
+      replyBox.style.display="flex";
+      chatInput.focus();
+    };
+
+    chatMessages.appendChild(msg);
+    chatMessages.scrollTop=chatMessages.scrollHeight;
+  });
+
 }
 
-/* CHAT */
-const chat=document.getElementById("chat");
-const chatMessages=document.getElementById("chatMessages");
-const chatInput=document.getElementById("chatInput");
-const chatForm=document.getElementById("chatForm");
-const replyBox=document.getElementById("replyBox");
-const replyNick=document.getElementById("replyNick");
-let replyTo=null;
+/* UI CHAT */
+window.cancelReply=()=>{
+  replyTo=null;
+  replyBox.style.display="none";
+};
 
-chatForm.addEventListener("submit",e=>{
-  e.preventDefault();
-  if(chatInput.value.trim()){
-    push(chatRef,{nick:nickname,text:chatInput.value,reply:replyTo});
-    chatInput.value="";
-    replyTo=null;
-    replyBox.style.display="none";
-  }
-});
+window.closeChat=()=>{
+  chat.style.display="none";
+};
 
-onChildAdded(chatRef, s => {
-  const m = s.val();
-
-  const msg = document.createElement("div");
-  msg.className = "message";
-
-  if (m.reply) {
-    const reply = document.createElement("div");
-    reply.style.fontSize = ".8rem";
-    reply.style.opacity = ".7";
-    reply.style.borderLeft = "3px solid #00e5ff";
-    reply.style.paddingLeft = "6px";
-    reply.style.marginBottom = "4px";
-    reply.textContent = m.reply;
-    msg.appendChild(reply);
-  }
-
-  const nick = document.createElement("strong");
-  nick.textContent = m.nick;
-  msg.appendChild(nick);
-
-  const text = document.createElement("span");
-  text.textContent = m.text;
-  msg.appendChild(text);
-
-  msg.onclick = () => {
-    replyTo = `${m.nick}: ${m.text}`;
-    replyNick.textContent = m.nick;
-
-    replyBox.style.display = "flex";
-    chatInput.focus();
-    chatInput.click();
-    setTimeout(() => chatInput.focus(), 150);
-  };
-
-  chatMessages.appendChild(msg);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-});
-
-window.cancelReply=()=>{replyTo=null;replyBox.style.display="none"};
-window.closeChat=()=>chat.style.display="none";
-document.getElementById("chatToggle").onclick=()=>chat.style.display="flex";
+document.getElementById("chatToggle").onclick=()=>{
+  chat.style.display="flex";
+};
 
 /* RADIO + UI + VU */
 const radio=[
