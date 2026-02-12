@@ -405,6 +405,7 @@ audio{
 </div>
 
 <script type="module">
+const contentEl = document.getElementById("content");
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
 import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
 import { getAuth, signInAnonymously } 
@@ -927,18 +928,12 @@ function loadGameFolders(){
 
   let html = `
     <h2>🎮 Giochi anni '80</h2>
-
-    <button onclick="loadGameFolders()" 
-      style="margin-bottom:12px;padding:6px 12px;border-radius:14px;border:none;background:#ff0080;color:#000;font-weight:bold;">
-      ← Torna alle cartelle
-    </button>
-
     <div class="grid">
   `;
 
   gamesData.forEach((folder,index)=>{
     html += `
-      <div class="card" onclick="openSubFolder(${index})">
+      <div class="card" data-index="${index}">
         <strong>${folder.name}</strong>
       </div>
     `;
@@ -947,14 +942,22 @@ function loadGameFolders(){
   html += `</div>`;
 
   contentEl.innerHTML = html;
+
+  // 🔥 EVENT LISTENER QUI
+  document.querySelectorAll(".card").forEach(card=>{
+    card.addEventListener("click",()=>{
+      openSubFolder(card.dataset.index);
+    });
+  });
 }
 
 function openSubFolder(index){
+
   const folder = gamesData[index];
 
   let html = `
-    <button onclick="loadGameFolders()" 
-      style="margin-bottom:12px;padding:6px 12px;border-radius:14px;border:2px solid #00e5ff;background:#111;color:#00e5ff;">
+    <button id="backBtn"
+      style="margin-bottom:12px;padding:6px 12px;border-radius:14px;border:2px solid #00e5ff;background:#111;color:#00e5ff;font-weight:bold;cursor:pointer;">
       ← Torna alle cartelle
     </button>
 
@@ -971,17 +974,18 @@ function openSubFolder(index){
 
         ${sub.links.map(link=>`
           <div style="margin:6px 0">
-            <button style="
-              width:100%;
-              padding:8px;
-              border-radius:20px;
-              border:2px solid #00e5ff;
-              background:#111;
-              color:#00e5ff;
-              font-weight:bold;
-              cursor:pointer;
-            "
-            onclick="openExternal('${link.u}')">
+            <button class="externalBtn"
+              data-url="${link.u}"
+              style="
+                width:100%;
+                padding:8px;
+                border-radius:20px;
+                border:2px solid #00e5ff;
+                background:#111;
+                color:#00e5ff;
+                font-weight:bold;
+                cursor:pointer;
+              ">
               🕹️ ${link.t}
             </button>
           </div>
@@ -990,10 +994,22 @@ function openSubFolder(index){
     `;
   });
 
-   html += `</div>`;
+  html += `</div>`;
+
   contentEl.innerHTML = html;
 
-} // ← QUESTA GRAFFA ERA MANCANTE
+  // 🔥 Bottone ritorno
+  document
+    .getElementById("backBtn")
+    .addEventListener("click", loadGameFolders);
+
+  // 🔥 Bottoni giochi
+  document.querySelectorAll(".externalBtn").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      openExternal(btn.dataset.url);
+    });
+  });
+}
 
 window.openSubFolder = openSubFolder;
 window.openPlaylist = openPlaylist;
