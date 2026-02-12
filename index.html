@@ -79,8 +79,12 @@ audio{width:95%}
 #vumeter{display:flex;gap:2px;align-items:flex-end;height:50px}
 .vu{width:6px;height:6px;background:#222;border-radius:2px;transition:height .12s}
 .vu.g{background:#00ff66}
+.vu.l{background:#66ff00}
 .vu.y{background:#ffee00}
-.vu.r{background:#ff0033}
+.vu.o{background:#ff9900}
+.vu.r{background:#ff3300}
+.vu.m{background:#ff00cc}
+
 
 /* CHAT */
 #chat{position:fixed;inset:0;background:#111;display:none;flex-direction:column;z-index:2000}
@@ -431,7 +435,16 @@ function startVu(){
       const h = 6 + levels[i] * 60;
 
       b.style.height = h + "px";
-      b.className = "vu " + (h>45?"r":h>30?"y":"g");
+     let c="";
+if(h>60) c="m";
+else if(h>50) c="r";
+else if(h>40) c="o";
+else if(h>30) c="y";
+else if(h>20) c="l";
+else c="g";
+
+b.className="vu "+c;
+
 
     });
 
