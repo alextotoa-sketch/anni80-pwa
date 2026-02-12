@@ -72,16 +72,17 @@ main{flex:1;padding:12px;padding-bottom:190px}
 /* CONTENUTO */
 #content{border:none;border-radius:14px;padding:14px;min-height:200px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.card{border:none;border-radius:14px;padding:14px;background:#1c1c1c;text-align:center}
+.card{border:none;border-radius:14px;padding:14px;text-align:center}
 .card:hover{background:#00e5ff;color:#000}
 a.card{text-decoration:none;color:inherit}
  /* CARD COLORATE 80s */
-.card:nth-child(1){background:#ff0080;}
-.card:nth-child(2){background:#00e5ff;}
-.card:nth-child(3){background:#ffcc00;}
-.card:nth-child(4){background:#00ff66;}
-.card:nth-child(5){background:#ff6600;}
-.card:nth-child(6){background:#cc00ff;}
+/* COLORI CARD CICLICI */
+.card:nth-of-type(6n+1){background:#ff0080;}
+.card:nth-of-type(6n+2){background:#00e5ff;}
+.card:nth-of-type(6n+3){background:#ffcc00;}
+.card:nth-of-type(6n+4){background:#00ff66;}
+.card:nth-of-type(6n+5){background:#ff6600;}
+.card:nth-of-type(6n+6){background:#cc00ff;}
 
 .card{
   color:#000;
