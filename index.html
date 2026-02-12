@@ -268,7 +268,8 @@ audio{width:95%}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
 import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
-
+import { getAuth, signInAnonymously } 
+from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
 /* FIREBASE */
 const app=initializeApp({
   apiKey:"AIzaSyB8h3fvyPxq_Tjp2R5RzsgEC7jv6FASeWE",
@@ -276,8 +277,22 @@ const app=initializeApp({
   databaseURL:"https://anni-80-chat-a1192-default-rtdb.europe-west1.firebasedatabase.app",
   projectId:"anni-80-chat-a1192"
 });
-const db=getDatabase(app);
-const chatRef=ref(db,"chat");
+const db = getDatabase(app);
+
+// 👇 QUI inserisci autenticazione
+const auth = getAuth(app);
+
+signInAnonymously(auth)
+  .then(() => {
+    console.log("Autenticazione anonima attiva");
+  })
+  .catch((error) => {
+    console.error("Errore autenticazione:", error);
+  });
+
+// 👇 chatRef DOPO auth (non prima)
+const chatRef = ref(db, "chat");
+
 
 /* NICK */
 let nickname=localStorage.getItem("anni80_nick");
