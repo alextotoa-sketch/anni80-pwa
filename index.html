@@ -405,21 +405,39 @@ for(let i=0;i<40;i++){
 }
 function startVu(){
   stopVu();
-  vuTimer=setInterval(()=>{
-    const c=bars.length/2,l=Math.random()*c;
+
+  let levels = new Array(bars.length).fill(0);
+  let peaks  = new Array(bars.length).fill(0);
+
+  vuTimer = setInterval(()=>{
+
     bars.forEach((b,i)=>{
-      const d=Math.abs(i-c);
-      if(d<l){
-        const h=10+(l-d)*2;
-        b.style.height=h+"px";
-        b.className="vu "+(h>40?"r":h>28?"y":"g");
+
+      // valore finto ma più stabile
+      const target = Math.random();
+
+      // smoothing analogico
+      levels[i] += (target - levels[i]) * 0.08;
+
+      // peak morbido
+      if(levels[i] > peaks[i]){
+        peaks[i] = levels[i];
       }else{
-        b.style.height="6px";
-        b.className="vu";
+        peaks[i] -= 0.01;
       }
+
+      if(peaks[i] < 0) peaks[i] = 0;
+
+      const h = 6 + levels[i] * 60;
+
+      b.style.height = h + "px";
+      b.className = "vu " + (h>45?"r":h>30?"y":"g");
+
     });
-  },120);
+
+  },60);
 }
+
 function stopVu(){clearInterval(vuTimer)}
 audio.onplay=startVu;
 audio.onpause=stopVu;
