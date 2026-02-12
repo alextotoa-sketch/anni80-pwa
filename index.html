@@ -60,14 +60,23 @@ main{flex:1;padding:12px;padding-bottom:190px}
 /* CATEGORIE */
 .categories{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
 .category{
-  border:2px solid #00e5ff;
+  border:none;
   border-radius:14px;
   padding:12px;
   text-align:center;
   font-weight:bold;
   cursor:pointer;
+  color:#000;
 }
-.category.active{background:#00e5ff;color:#000}
+.categories > *:nth-child(6n+1){background:#ff0080;}
+.categories > *:nth-child(6n+2){background:#00e5ff;}
+.categories > *:nth-child(6n+3){background:#ffcc00;}
+.categories > *:nth-child(6n+4){background:#00ff66;}
+.categories > *:nth-child(6n+5){background:#ff6600;}
+.categories > *:nth-child(6n+6){background:#cc00ff;}
+.category.active{
+  transform:scale(1.05);
+}
 
 /* CONTENUTO */
 #content{border:none;border-radius:14px;padding:14px;min-height:200px}
