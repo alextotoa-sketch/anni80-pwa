@@ -471,8 +471,16 @@ function startChat(){
   onChildAdded(chatRef, s=>{
     const m = s.val();
 
-    const msg = document.createElement("div");
-    msg.className="message";
+   const msg = document.createElement("div");
+msg.classList.add("message");
+
+// 🔥 DIFFERENZIA TUOI / ALTRI
+if(m.nick === nickname){
+  msg.classList.add("me");
+} else {
+  msg.classList.add("other");
+}
+
 
     if(m.reply){
       const reply=document.createElement("div");
