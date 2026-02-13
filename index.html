@@ -559,16 +559,34 @@ const now=document.getElementById("now");
 
 
 /* VU */
-const vumeter=document.getElementById("vumeter");
-let bars=[],vuTimer=null;
+/* VU */
+const vumeter = document.getElementById("vumeter");
+let bars = [];
+let vuTimer = null;
+let fadeTimer = null;
+
+/* creazione barre */
 for(let i=0;i<40;i++){
-  const b=document.createElement("div");
-  b.className="vu";
+  const b = document.createElement("div");
+  b.className = "vu";
   vumeter.appendChild(b);
   bars.push(b);
 }
+
+/* stop immediato (senza fade) */
+function stopVuImmediate(){
+  clearInterval(vuTimer);
+}
+
+/* avvio VU */
 function startVu(){
-  stopVu();
+
+  stopVuImmediate();
+
+  if(fadeTimer){
+    clearInterval(fadeTimer);
+    fadeTimer = null;
+  }
 
   let levels = new Array(bars.length).fill(0);
   let peaks  = new Array(bars.length).fill(0);
@@ -577,13 +595,10 @@ function startVu(){
 
     bars.forEach((b,i)=>{
 
-      // valore finto ma più stabile
       const target = Math.random();
 
-      // smoothing analogico
       levels[i] += (target - levels[i]) * 0.08;
 
-      // peak morbido
       if(levels[i] > peaks[i]){
         peaks[i] = levels[i];
       }else{
@@ -592,30 +607,28 @@ function startVu(){
 
       if(peaks[i] < 0) peaks[i] = 0;
 
-     const h = 6 + levels[i] * 90;
-
+      const h = 6 + levels[i] * 90;
       b.style.height = h + "px";
-     let c="";
-if(h>60) c="m";
-else if(h>50) c="r";
-else if(h>40) c="o";
-else if(h>30) c="y";
-else if(h>20) c="l";
-else c="g";
 
-b.className="vu "+c;
+      let c="";
+      if(h>60) c="m";
+      else if(h>50) c="r";
+      else if(h>40) c="o";
+      else if(h>30) c="y";
+      else if(h>20) c="l";
+      else c="g";
 
+      b.className = "vu " + c;
 
     });
 
   },60);
 }
 
-let fadeTimer = null;
-
+/* fade morbido */
 function stopVu(){
 
-  clearInterval(vuTimer);
+  stopVuImmediate();
 
   if(fadeTimer){
     clearInterval(fadeTimer);
@@ -629,7 +642,6 @@ function stopVu(){
 
       let current = parseFloat(b.style.height) || 6;
 
-      // discesa morbida
       current -= current * 0.08;
 
       if(current <= 6){
@@ -648,7 +660,7 @@ function stopVu(){
       else if(current>20) c="l";
       else c="g";
 
-      b.className="vu "+c;
+      b.className = "vu " + c;
 
     });
 
@@ -659,10 +671,25 @@ function stopVu(){
 
   },40);
 }
- audio.addEventListener("play", startVu);
+
+/* eventi audio */
+audio.addEventListener("play", startVu);
 audio.addEventListener("pause", stopVu);
 audio.addEventListener("ended", stopVu);
-audio.addEventListener("error", stopVu);function open(i,el){
+audio.addEventListener("error", stopVu);
+
+
+/* UI */
+/* UI */
+["Playlist","Radio","Giochi","Chat-Info"].forEach((c,i)=>{
+  const d=document.createElement("div");
+  d.className="category";
+  d.textContent=c;
+  d.onclick=()=>open(i,d);
+  categoriesEl.appendChild(d);
+});
+
+function open(i,el){
   document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
   el.classList.add("active");
 
