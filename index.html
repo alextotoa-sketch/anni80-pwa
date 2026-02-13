@@ -629,7 +629,7 @@ function stopVu(){
 
       let current = parseFloat(b.style.height) || 6;
 
-      // discesa morbida inerziale
+      // discesa morbida
       current -= current * 0.08;
 
       if(current <= 6){
@@ -659,7 +659,10 @@ function stopVu(){
 
   },40);
 }
-function open(i,el){
+ audio.addEventListener("play", startVu);
+audio.addEventListener("pause", stopVu);
+audio.addEventListener("ended", stopVu);
+audio.addEventListener("error", stopVu);function open(i,el){
   document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
   el.classList.add("active");
 
