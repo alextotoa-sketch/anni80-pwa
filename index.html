@@ -724,11 +724,18 @@ audio.addEventListener("error", stopVu);
 
 /* UI */
 /* UI */
-["Playlist","Radio","Giochi","Chat-Info"].forEach((c,i)=>{
-  const d=document.createElement("div");
-  d.className="category";
-  d.textContent=c;
-  d.onclick=()=>open(i,d);
+["Playlist","Radio","Giochi","Chat-Info","Segui i nostri canali"].forEach((c,i)=>{
+  const d = document.createElement("div");
+  d.className = "category";
+  d.textContent = c;
+
+  // 👇 SOLO questo pezzo è nuovo
+  if(i === 4){
+    d.classList.add("full-width");
+    d.classList.add("pulse80");
+  }
+
+  d.onclick = ()=>open(i,d);
   categoriesEl.appendChild(d);
 });
 
