@@ -439,11 +439,39 @@ const db = getDatabase(app);
 const auth = getAuth(app);
 
 /* NICK */
-let nickname = localStorage.getItem("anni80_nick");
-while(!nickname){
-  nickname = prompt("Inserisci il tuo nickname anni ’80:");
-  if(nickname) localStorage.setItem("anni80_nick",nickname);
-}
+const auth = getAuth(app);
+
+let nickname = null;
+let currentUser = null;
+
+signInAnonymously(auth)
+  .then(async (userCredential) => {
+
+    currentUser = userCredential.user;
+    const uid = currentUser.uid;
+
+    const userRef = ref(db, "users/" + uid);
+
+    // controlla se esiste già nickname salvato
+    onChildAdded(ref(db, "users/" + uid), snapshot => {
+      nickname = snapshot.val();
+    });
+
+    // se non esiste chiedilo
+    setTimeout(() => {
+      if (!nickname) {
+        nickname = prompt("Scegli il tuo nickname:");
+        if (!nickname || nickname.trim() === "") {
+          nickname = "Guest_" + Math.floor(Math.random() * 1000);
+        }
+        push(userRef, nickname);
+      }
+    }, 500);
+
+  })
+  .catch((error) => {
+    console.error("Errore login anonimo:", error);
+  });
 
 /* ELEMENTI CHAT */
 const chat = document.getElementById("chat");
