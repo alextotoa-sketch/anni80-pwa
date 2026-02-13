@@ -722,22 +722,35 @@ audio.addEventListener("error", stopVu);
 /* UI */
 /* UI */
 ["Playlist","Radio","Giochi","Chat-Info","Segui i nostri canali"].forEach((c,i)=>{
+
   const d = document.createElement("div");
   d.className = "category";
 
-  // Animazione solo per la quinta
   if(i === 4){
     d.classList.add("pulse80");
   }
 
   d.textContent = c;
   d.onclick = ()=>open(i,d);
-  categoriesEl.appendChild(d);
-});
 
-// Spostiamo la quinta nel player
-const followCategory = document.querySelectorAll(".category")[4];
-document.getElementById("player").prepend(followCategory);
+  // 🔥 Se è l’ultima (Segui i nostri canali)
+  if(i === 4){
+    
+    // la mettiamo al centro della home
+    contentEl.innerHTML = `
+      <div class="homeCenter"></div>
+    `;
+
+    document.querySelector(".homeCenter").appendChild(d);
+
+  } else {
+
+    // tutte le altre restano nella barra categorie
+    categoriesEl.appendChild(d);
+
+  }
+
+});
 
 
 // ---------------------
