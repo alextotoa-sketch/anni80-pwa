@@ -135,8 +135,18 @@ audio{
 }
 
 /* VU METER */
-#vumeter-wrapper{display:flex;justify-content:center;margin-bottom:6px}
-#vumeter{display:flex;gap:2px;align-items:flex-end;height:50px}
+#vumeter-wrapper{
+  display:flex;
+  justify-content:center;
+  margin-bottom:6px;
+  opacity:0;                     /* nascosto all'inizio */
+  transition:opacity 0.3s ease;
+}
+
+#vumeter-wrapper.hidden{
+  opacity:0;
+  pointer-events:none;
+}#vumeter{display:flex;gap:2px;align-items:flex-end;height:50px}
 .vu{width:6px;height:6px;background:#222;border-radius:2px;transition:height .12s}
 .vu.g{background:#00ff66}
 .vu.l{background:#66ff00}
@@ -1052,6 +1062,22 @@ window.play=(u,n)=>{audio.src=u;audio.play();now.textContent="In riproduzione: "
   document.getElementById("splash")?.remove();
 },8000);
 </script>
+ <script>
+const audio = document.getElementById("audio");
+const vuWrapper = document.getElementById("vumeter-wrapper");
 
+audio.addEventListener("play", () => {
+  vuWrapper.style.opacity = "1";
+  vuWrapper.classList.remove("hidden");
+});
+
+audio.addEventListener("pause", () => {
+  vuWrapper.classList.add("hidden");
+});
+
+audio.addEventListener("ended", () => {
+  vuWrapper.classList.add("hidden");
+});
+</script>
 </body>
 </html>
