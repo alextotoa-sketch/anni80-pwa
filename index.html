@@ -724,23 +724,37 @@ audio.addEventListener("error", stopVu);
 ["Playlist","Radio","Giochi","Chat-Info","Segui i nostri canali"].forEach((c,i)=>{
   const d = document.createElement("div");
   d.className = "category";
-  d.textContent = c;
 
-  // 👇 SOLO questo pezzo è nuovo
+  // Animazione solo per la quinta
   if(i === 4){
-    d.classList.add("full-width");
     d.classList.add("pulse80");
   }
 
+  d.textContent = c;
   d.onclick = ()=>open(i,d);
   categoriesEl.appendChild(d);
 });
 
+// Spostiamo la quinta nel player
+const followCategory = document.querySelectorAll(".category")[4];
+document.getElementById("player").prepend(followCategory);
+
+
+// ---------------------
+// FUNZIONE OPEN
+// ---------------------
+
 function open(i,el){
-  document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
+
+  document.querySelectorAll(".category")
+    .forEach(x => x.classList.remove("active"));
+
   el.classList.add("active");
 
-  if(i===0){
+
+  // PLAYLIST
+  if(i === 0){
+
     contentEl.innerHTML = `
       <h2>🎶 Playlist</h2>
       <div class="grid">
@@ -752,9 +766,12 @@ function open(i,el){
         </div>
       </div>
     `;
+
   }
 
-  if(i===1){
+  // RADIO
+  else if(i === 1){
+
     contentEl.innerHTML = `
       <div class="grid">
         ${radio.map(r=>`
@@ -764,118 +781,39 @@ function open(i,el){
         `).join("")}
       </div>
     `;
+
   }
 
-if(i===2){
-  contentEl.innerHTML = `
-    <h2>🕹️ Archivio Giochi anni ’80</h2>
-    <div id="gamesFolders"></div>
-  `;
-  loadGameFolders();
-}
+  // GIOCHI
+  else if(i === 2){
 
+    contentEl.innerHTML = `
+      <h2>🕹️ Archivio Giochi anni ’80</h2>
+      <div id="gamesFolders"></div>
+    `;
 
-  if(i===3){
+    loadGameFolders();
+  }
+
+  // CHAT-INFO
+  else if(i === 3){
+
     contentEl.innerHTML = `
       <h2>Chat-Info</h2>
-      
-      <h1>App PWA (Progressive Web App)</h1>
-
-      <h2>Cos’è una PWA</h2>
-      <p>Una PWA è un’app web che può essere installata come un’app nativa, funziona offline (in parte), si aggiorna automaticamente e non richiede store obbligatori.</p>
-
-      <hr>
-
-      <h2>Installazione su tutti i dispositivi</h2>
-      
-      <h3>Android (Chrome, Edge, Firefox)</h3>
-      <ol>
-        <li>Tocca <strong>Installa app</strong> oppure <strong>Aggiungi a schermata Home</strong>.</li>
-        <li>Conferma: l’app apparirà tra le app installate.</li>
-      </ol>
-
-      <h3>iOS / iPadOS (Safari)</h3>
-      <ol>
-        <li>Tocca <strong>Condividi</strong> (icona quadrato con freccia).</li>
-        <li>Seleziona <strong>Aggiungi alla schermata Home</strong>.</li>
-        <li>Conferma il nome dell’app.</li>
-      </ol>
-      <p>⚠️ Nota: su iOS le PWA hanno alcune limitazioni (es. notifiche e processi in background dipendono dalla versione di iOS).</p>
-
-      <h3>Desktop (Windows, macOS, Linux)</h3>
-      <ul>
-        <li><strong>Chrome / Edge</strong>: icona <strong>Installa</strong> nella barra degli indirizzi.</li>
-        <li><strong>Safari macOS</strong>: aggiunta come app web (versioni recenti).</li>
-        <li>Dopo l’installazione, la PWA si apre come un’app indipendente.</li>
-      </ul>
-
-      <hr>
-
-      <h2>Aggiornamenti dell’app PWA</h2>
-      <ul>
-        <li>Gli aggiornamenti sono <strong>automatici</strong>.</li>
-        <li>Alla chiusura e riapertura dell’app, viene caricata l’ultima versione disponibile.</li>
-        <li>In caso di aggiornamenti importanti:
-          <ul>
-            <li>può essere richiesto un <strong>refresh</strong></li>
-            <li>oppure il riavvio dell’app</li>
-          </ul>
-        </li>
-        <li>👉 L’utente <strong>non deve fare nulla manualmente</strong> per aggiornare.</li>
-      </ul>
-
-      <h2>Dati e cache</h2>
-      <ul>
-        <li>I dati possono essere salvati localmente (cache o storage).</li>
-        <li>Cancellando i dati del browser o disinstallando la PWA, i dati locali vengono rimossi.</li>
-      </ul>
-
-      <hr>
-
-      <h1>Regole di comportamento in chat pubblica</h1>
-
-      <h2>Regole generali</h2>
-      <ul>
-        <li>Rispetto reciproco obbligatorio.</li>
-        <li>Vietati insulti, linguaggio offensivo, discriminazioni o incitamento all’odio.</li>
-        <li>Niente spam, flood o messaggi ripetuti.</li>
-      </ul>
-
-      <h2>Contenuti non consentiti</h2>
-      <ul>
-        <li>Violenza, minacce o molestie.</li>
-        <li>Contenuti sessuali espliciti.</li>
-        <li>Condivisione di dati personali propri o di terzi.</li>
-        <li>Link dannosi o tentativi di truffa.</li>
-      </ul>
-
-      <h2>Buone pratiche</h2>
-      <ul>
-        <li>Usa un linguaggio chiaro e civile.</li>
-        <li>Rimani in tema con la discussione.</li>
-        <li>Segnala comportamenti scorretti ai moderatori.</li>
-      </ul>
-
-      <h2>Moderazione</h2>
-      <ul>
-        <li>I messaggi possono essere moderati.</li>
-        <li>Violazioni ripetute possono portare a:
-          <ul>
-            <li>avvisi</li>
-            <li>silenziamento temporaneo</li>
-            <li>esclusione dalla chat</li>
-          </ul>
-        </li>
-      </ul>
-
-      <h2>Accettazione</h2>
-      <p>L’uso della chat e dell’app implica l’accettazione di queste regole.</p>
+      ...
     `;
-  
 
   }
 
-} // ← QUESTA CHIUDE open()
+  // SEGUI I NOSTRI CANALI
+  else if(i === 4){
+    contentEl.innerHTML = `
+      <h2>📡 Segui i nostri canali</h2>
+      <!-- Qui metterai i link -->
+    `;
+  }
+
+} // chiude open()
 function artist(name, query){
   return `
     <div class="card">
