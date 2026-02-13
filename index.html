@@ -450,18 +450,29 @@ let replyTo = null;
 
 function startChat(){
 
+  const chatForm = document.getElementById("chatForm");
+  const chatInput = document.getElementById("chatInput");
   const chatRef = ref(db,"chat");
 
   chatForm.addEventListener("submit", e=>{
-    e.preventDefault();
+    e.preventDefault();   // 🔥 BLOCCA RICARICA PAGINA
 
-    if(chatInput.value.trim()){
+    if(chatInput.value.trim() && nickname){
+
       push(chatRef,{
         nick:nickname,
         text:chatInput.value,
         reply:replyTo || null,
         timestamp: Date.now()
       });
+
+      chatInput.value="";
+      replyTo=null;
+      replyBox.style.display="none";
+    }
+  });
+
+}
 
       chatInput.value="";
       replyTo=null;
