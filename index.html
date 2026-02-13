@@ -611,19 +611,48 @@ b.className="vu "+c;
   },60);
 }
 
-function stopVu(){clearInterval(vuTimer)}
-audio.onplay=startVu;
-audio.onpause=stopVu;
+function stopVu(){
 
-/* UI */
-/* UI */
-["Playlist","Radio","Giochi","Chat-Info"].forEach((c,i)=>{
-  const d=document.createElement("div");
-  d.className="category";
-  d.textContent=c;
-  d.onclick=()=>open(i,d);
-  categoriesEl.appendChild(d);
-});
+  clearInterval(vuTimer);
+
+  let fadeTimer = setInterval(()=>{
+
+    let allZero = true;
+
+    bars.forEach((b,i)=>{
+
+      let current = parseFloat(b.style.height) || 6;
+
+      // scendi gradualmente
+      current -= 4;
+
+      if(current <= 6){
+        current = 6;
+      } else {
+        allZero = false;
+      }
+
+      b.style.height = current + "px";
+
+      // aggiorna colore coerente
+      let c="";
+      if(current>60) c="m";
+      else if(current>50) c="r";
+      else if(current>40) c="o";
+      else if(current>30) c="y";
+      else if(current>20) c="l";
+      else c="g";
+
+      b.className="vu "+c;
+
+    });
+
+    if(allZero){
+      clearInterval(fadeTimer);
+    }
+
+  },40);
+}
 
 function open(i,el){
   document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
