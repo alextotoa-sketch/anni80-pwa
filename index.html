@@ -64,7 +64,12 @@ header h1{
     3px 3px 0 #000,
     6px 6px 0 rgba(0,0,0,0.6);
 }
-header p{color:#aaa;font-size:.9rem}
+ @media (max-width:600px){
+  header h1{
+    font-size:1.5rem;
+  }
+}
+ header p{color:#aaa;font-size:.9rem}
 
 /* MAIN */
 main{flex:1;padding:12px;padding-bottom:190px}
