@@ -94,7 +94,38 @@ main{flex:1;padding:12px;padding-bottom:190px}
 .category.active{
   transform:scale(1.05);
 }
+ /* Categoria speciale centrale */
+.categories .full-width{
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: 60%;
+  max-width: 420px;
+}
 
+/* Pulsante colorato animato */
+.category.pulse80{
+  background: linear-gradient(90deg, #ff0080, #ffef00, #00e5ff);
+  background-size: 300% 300%;
+  color:#000 !important;
+  animation: pulseBg 4s ease infinite;
+  transform: scale(1);
+}
+
+/* Animazione morbida */
+@keyframes pulseBg{
+  0%{
+    background-position: 0% 50%;
+    transform: scale(1);
+  }
+  50%{
+    background-position: 100% 50%;
+    transform: scale(1.05);
+  }
+  100%{
+    background-position: 0% 50%;
+    transform: scale(1);
+  }
+}
 /* CONTENUTO */
 #content{border:none;border-radius:14px;padding:14px;min-height:200px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
