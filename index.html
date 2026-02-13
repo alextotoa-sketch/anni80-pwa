@@ -1111,10 +1111,19 @@ window.openExternal = function(url){
 
 
 
-window.play=(u,n)=>{audio.src=u;audio.play();now.textContent="In riproduzione: "+n};
+window.play = (u,n)=>{
+
+  if(!audio.paused){
+    audio.pause();   // questo attiverà già stopVu via event listener
+  }
+
   setTimeout(()=>{
-  document.getElementById("splash")?.remove();
-},8000);
+    audio.src = u;
+    audio.play();
+    now.textContent = "In riproduzione: " + n;
+  },250);
+
+};
 </script>
 
 </body>
