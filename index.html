@@ -455,7 +455,7 @@ function startChat(){
   const chatRef = ref(db,"chat");
 
   chatForm.addEventListener("submit", e=>{
-    e.preventDefault();   // 🔥 BLOCCA RICARICA PAGINA
+    e.preventDefault();
 
     if(chatInput.value.trim() && nickname){
 
@@ -473,12 +473,6 @@ function startChat(){
   });
 
 }
-
-      chatInput.value="";
-      replyTo=null;
-      replyBox.style.display="none";
-    }
-  });
 
   onChildAdded(chatRef, s=>{
     const m = s.val();
