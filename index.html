@@ -364,6 +364,14 @@ audio{
 }
 
 /* ALTRI */
+
+/* TUOI */
+/* Testo sempre nero */
+.message span{
+  color:#000;
+}
+
+/* 🔵 Altri utenti */
 .message.other{
   align-self:flex-start;
   background:#00e5ff;
@@ -372,7 +380,11 @@ audio{
   box-shadow:0 0 8px #00e5ff;
 }
 
-/* TUOI */
+.message.other strong{
+  color:#d60000; /* nick rosso */
+}
+
+/* 🩷 Tu */
 .message.me{
   align-self:flex-end;
   background:#ff0080;
@@ -380,7 +392,11 @@ audio{
   border-bottom-right-radius:6px;
   box-shadow:0 0 8px #ff0080;
 }
-</style>
+
+.message.me strong{
+  color:#ffffff; /* nick bianco */
+}
+}</style>
 
 </head>
 
