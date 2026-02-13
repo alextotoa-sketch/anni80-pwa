@@ -611,20 +611,26 @@ b.className="vu "+c;
   },60);
 }
 
+let fadeTimer = null;
+
 function stopVu(){
 
   clearInterval(vuTimer);
 
-  let fadeTimer = setInterval(()=>{
+  if(fadeTimer){
+    clearInterval(fadeTimer);
+  }
+
+  fadeTimer = setInterval(()=>{
 
     let allZero = true;
 
-    bars.forEach((b,i)=>{
+    bars.forEach((b)=>{
 
       let current = parseFloat(b.style.height) || 6;
 
-      // scendi gradualmente
-      current -= 4;
+      // discesa morbida inerziale
+      current -= current * 0.08;
 
       if(current <= 6){
         current = 6;
@@ -634,7 +640,6 @@ function stopVu(){
 
       b.style.height = current + "px";
 
-      // aggiorna colore coerente
       let c="";
       if(current>60) c="m";
       else if(current>50) c="r";
@@ -649,11 +654,11 @@ function stopVu(){
 
     if(allZero){
       clearInterval(fadeTimer);
+      fadeTimer = null;
     }
 
   },40);
 }
-
 function open(i,el){
   document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
   el.classList.add("active");
