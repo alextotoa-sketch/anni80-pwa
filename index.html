@@ -1051,23 +1051,27 @@ window.play=(u,n)=>{audio.src=u;audio.play();now.textContent="In riproduzione: "
 },8000);
 </script>
 <script>
-const audio = document.getElementById("audio");
-const vuWrapper = document.getElementById("vumeter-wrapper");
-const now = document.getElementById("now");
+document.addEventListener("DOMContentLoaded", function(){
 
-window.play = function(u, n){
-  audio.src = u;
-  audio.play();
-  now.textContent = "In riproduzione: " + n;
-  vuWrapper.style.display = "flex";   // mostra VU meter
-};
+  const audio = document.getElementById("audio");
+  const vuWrapper = document.getElementById("vumeter-wrapper");
+  const now = document.getElementById("now");
 
-audio.addEventListener("pause", function(){
-  vuWrapper.style.display = "none";   // nasconde
-});
+  window.play = function(u, n){
+    audio.src = u;
+    audio.play();
+    now.textContent = "In riproduzione: " + n;
+    vuWrapper.style.display = "flex";
+  };
 
-audio.addEventListener("ended", function(){
-  vuWrapper.style.display = "none";   // nasconde
+  audio.addEventListener("pause", function(){
+    vuWrapper.style.display = "none";
+  });
+
+  audio.addEventListener("ended", function(){
+    vuWrapper.style.display = "none";
+  });
+
 });
 </script>
 </body>
