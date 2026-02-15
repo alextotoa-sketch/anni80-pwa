@@ -459,19 +459,23 @@ const app = initializeApp({
 const db = getDatabase(app);
 const auth = getAuth(app);
 
-// 👇 QUI — ESATTAMENTE QUI
-
+// 🔐 login anonimo
 await signInAnonymously(auth);
 
-const onlineRef = ref(db, "onlineUsers");
-const myRef = push(onlineRef);
+// 👥 contatore utenti app
+auth.onAuthStateChanged(user => {
+  if (!user) return;
 
-set(myRef, true);
-onDisconnect(myRef).remove();
+  const onlineRef = ref(db, "onlineUsers");
+  const myRef = push(onlineRef);
 
-onValue(onlineRef, (snap) => {
-  const count = snap.size || snap.numChildren();
-  document.getElementById("onlineCount").textContent = "👥 " + count;
+  set(myRef, true);
+  onDisconnect(myRef).remove();
+
+  onValue(onlineRef, (snap) => {
+    const count = snap.exists() ? snap.numChildren() : 0;
+    document.getElementById("appOnlineCount").textContent = "🌐 " + count;
+  });
 });
 
 /* NICK */
