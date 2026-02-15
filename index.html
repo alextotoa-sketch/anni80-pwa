@@ -434,11 +434,19 @@ audio{
 </div>
 
 <script type="module">
-const contentEl = document.getElementById("content");
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
+
+import { getDatabase, ref, push, onChildAdded, set, onDisconnect, onValue } 
+from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
+
 import { getAuth, signInAnonymously } 
 from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+
+/* ORA puoi scrivere codice */
+const contentEl = document.getElementById("content");
+
+/* FIREBASE */
 /* FIREBASE */
 /* FIREBASE */
 const app = initializeApp({
@@ -450,6 +458,21 @@ const app = initializeApp({
 
 const db = getDatabase(app);
 const auth = getAuth(app);
+
+// 👇 QUI — ESATTAMENTE QUI
+
+await signInAnonymously(auth);
+
+const onlineRef = ref(db, "onlineUsers");
+const myRef = push(onlineRef);
+
+set(myRef, true);
+onDisconnect(myRef).remove();
+
+onValue(onlineRef, (snap) => {
+  const count = snap.size || snap.numChildren();
+  document.getElementById("onlineCount").textContent = "👥 " + count;
+});
 
 /* NICK */
 let nickname = localStorage.getItem("anni80_nick");
