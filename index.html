@@ -459,23 +459,46 @@ const app = initializeApp({
 const db = getDatabase(app);
 const auth = getAuth(app);
 
-// 🔐 login anonimo
-await signInAnonymously(auth);
+// 👇 QUI — SUBITO DOPO getAuth
 
-// 👥 contatore utenti app
-auth.onAuthStateChanged(user => {
-  if (!user) return;
+signInAnonymously(auth).then(() => {
 
-  const onlineRef = ref(db, "onlineUsers");
-  const myRef = push(onlineRef);
+  console.log("Autenticazione anonima attiva");
 
-  set(myRef, true);
-  onDisconnect(myRef).remove();
+  // 🌐 CONTATORE UTENTI APP
+  auth.onAuthStateChanged(user => {
+    if (!user) return;
 
-  onValue(onlineRef, (snap) => {
-    const count = snap.exists() ? snap.numChildren() : 0;
-    document.getElementById("appOnlineCount").textContent = "🌐 " + count;
+    const appRef = ref(db, "onlineUsers");
+    const myAppRef = push(appRef);
+
+    set(myAppRef, true);
+    onDisconnect(myAppRef).remove();
+
+    onValue(appRef, (snap) => {
+      const count = snap.exists() ? snap.numChildren() : 0;
+      document.getElementById("appOnlineCount").textContent = "🌐 " + count;
+    });
   });
+
+  // 👥 CONTATORE UTENTI CHAT
+  auth.onAuthStateChanged(user => {
+    if (!user) return;
+
+    const statusRef = ref(db, "status/" + user.uid);
+
+    set(statusRef, true);
+    onDisconnect(statusRef).remove();
+
+    onValue(ref(db, "status"), snapshot => {
+      const count = snapshot.exists() ? snapshot.numChildren() : 0;
+      document.getElementById("onlineCount").textContent = "👥 " + count;
+    });
+  });
+
+  // 💬 AVVIA CHAT
+  startChat();
+
 });
 
 /* NICK */
