@@ -461,26 +461,11 @@ const auth = getAuth(app);
 
 // 👇 QUI — SUBITO DOPO getAuth
 
-signInAnonymously(auth).then(() => {
-
-  console.log("Autenticazione anonima attiva");
-
-  const user = auth.currentUser;
-  if (!user) return;
-
-  /* 🌐 PRESENZA APP */
-signInAnonymously(auth).then(() => {
-
-  const user = auth.currentUser;
-  if (!user) return;
-
-  /* 🌐 PRESENZA APP */
-signInAnonymously(auth).then(() => {
+signInAnonymously(auth).then(cred => {
 
   console.log("Login anonimo OK");
 
-  const user = auth.currentUser;
-  if (!user) return;
+  const user = cred.user;   // 👈 QUESTO È SEMPRE VALIDO
 
   /* 🌐 PRESENZA APP */
   const appRef = ref(db, "onlineUsers");
