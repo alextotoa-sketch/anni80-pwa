@@ -471,11 +471,27 @@ let replyTo = null;
 signInAnonymously(auth)
   .then(() => {
     console.log("Autenticazione anonima attiva");
-    startChat(); // 👈 parte SOLO dopo auth
-  })
-  .catch((error) => {
-    console.error("Errore autenticazione:", error);
+    startChat(); // parte SOLO dopo auth
   });
+
+/* PRESENZA UTENTE + CONTATORE */
+auth.onAuthStateChanged(user => {
+  if (!user) return;
+
+  const statusRef = ref(db, "status/" + user.uid);
+
+  // utente online
+  set(statusRef, true);
+
+  // offline automatico quando chiude la pagina
+  onDisconnect(statusRef).remove();
+
+  // contatore live
+  onValue(ref(db, "status"), snapshot => {
+    const count = snapshot.exists() ? snapshot.size : 0;
+    document.getElementById("onlineCount").textContent = "👥 " + count;
+  });
+});
 
 function startChat(){
 
