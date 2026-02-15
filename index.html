@@ -465,42 +465,52 @@ signInAnonymously(auth).then(() => {
 
   console.log("Autenticazione anonima attiva");
 
-  // 🌐 CONTATORE UTENTI APP
-  auth.onAuthStateChanged(user => {
-    if (!user) return;
+  const user = auth.currentUser;
+  if (!user) return;
 
-    const appRef = ref(db, "onlineUsers");
-    const myAppRef = push(appRef);
+  /* 🌐 PRESENZA APP */
+signInAnonymously(auth).then(() => {
 
-    set(myAppRef, true);
-    onDisconnect(myAppRef).remove();
+  const user = auth.currentUser;
+  if (!user) return;
 
-    onValue(appRef, (snap) => {
-      const count = snap.exists() ? snap.numChildren() : 0;
-      document.getElementById("appOnlineCount").textContent = "🌐 " + count;
-    });
+  /* 🌐 PRESENZA APP */
+signInAnonymously(auth).then(() => {
+
+  console.log("Login anonimo OK");
+
+  const user = auth.currentUser;
+  if (!user) return;
+
+  /* 🌐 PRESENZA APP */
+  const appRef = ref(db, "onlineUsers");
+  const myAppRef = push(appRef);
+
+  set(myAppRef, true);
+  onDisconnect(myAppRef).remove();
+
+  onValue(appRef, snap => {
+    const count = snap.exists() ? snap.numChildren() : 0;
+    document.getElementById("appOnlineCount").textContent = "🌐 " + count;
   });
 
-  // 👥 CONTATORE UTENTI CHAT
-  auth.onAuthStateChanged(user => {
-    if (!user) return;
+  /* 👥 PRESENZA CHAT */
+  const statusRef = ref(db, "status/" + user.uid);
 
-    const statusRef = ref(db, "status/" + user.uid);
+  set(statusRef, true);
+  onDisconnect(statusRef).remove();
 
-    set(statusRef, true);
-    onDisconnect(statusRef).remove();
-
-    onValue(ref(db, "status"), snapshot => {
-      const count = snapshot.exists() ? snapshot.numChildren() : 0;
-      document.getElementById("onlineCount").textContent = "👥 " + count;
-    });
+  onValue(ref(db, "status"), snap => {
+    const count = snap.exists() ? snap.numChildren() : 0;
+    document.getElementById("onlineCount").textContent = "👥 " + count;
   });
 
-  // 💬 AVVIA CHAT
+  /* 💬 AVVIA CHAT */
   startChat();
 
+}).catch(err => {
+  console.error("Errore login anonimo:", err);
 });
-
 /* NICK */
 let nickname = localStorage.getItem("anni80_nick");
 while(!nickname){
