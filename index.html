@@ -1141,21 +1141,21 @@ window.play = (u,n)=>{
   },250);
 
 };
- function setupPresence(){
+<script type="module">
 
-  const uid = auth.currentUser.uid;
+function setupPresence(user) {
 
-  const myRef = ref(db, "online/" + uid);
-  const onlineRef = ref(db, "online");
+  const myRef = ref(db, "status/" + user.uid);
+  const allRef = ref(db, "status");
 
-  // ti segna come online
+  // Segna TE come online
   set(myRef, true);
 
-  // ti toglie quando chiudi app
+  // Quando chiudi app → offline
   onDisconnect(myRef).remove();
 
-  // aggiorna il numero utenti online
-  onValue(onlineRef, snap => {
+  // Conta utenti online
+  onValue(allRef, snap => {
 
     const count = snap.exists()
       ? Object.keys(snap.val()).length
@@ -1165,7 +1165,10 @@ window.play = (u,n)=>{
       .textContent = "Utenti online: " + count;
 
   });
-}</script>
+
+}
+
+</script>
 
 </body>
 </html>
