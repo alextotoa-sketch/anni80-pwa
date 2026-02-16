@@ -492,34 +492,32 @@ auth.onAuthStateChanged(user => {
 
   if (!user) return;
 
+  /* ===== PRESENZA ===== */
+
   const uid = user.uid;
   const myRef = ref(db, "onlineUsers/" + uid);
 
-  // Segna utente come online
   set(myRef, true);
-
-  // Rimuove automaticamente quando chiude app / perde connessione
   onDisconnect(myRef).remove();
 
+
+  /* ===== CONTATORE HOME ===== */
+
+  const counterEl = document.getElementById("onlineCounter");
+
+  onValue(ref(db, "onlineUsers"), snapshot => {
+
+    const count = snapshot.exists()
+      ? Object.keys(snapshot.val()).length
+      : 0;
+
+    if (counterEl) {
+      counterEl.textContent = "👥 ONLINE: " + count;
+    }
+
+  });
+
 });
-
-
-/* ===== CONTATORE UTENTI ONLINE (HOME APP) ===== */
-
-const counterEl = document.getElementById("onlineCounter");
-
-onValue(ref(db, "onlineUsers"), snapshot => {
-
-  const count = snapshot.exists()
-    ? Object.keys(snapshot.val()).length
-    : 0;
-
-  if (counterEl) {
-    counterEl.textContent = "👥 ONLINE: " + count;
-  }
-
-});
- 
 
   if (!user) return;
 
