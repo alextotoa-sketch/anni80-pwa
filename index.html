@@ -396,9 +396,9 @@ audio{
 </div>
 <header>
   <h1>Io negli anni ’80 c’ero</h1>
-  <!-- <p>Musica · Radio · Giochi · Chat</p> -->
 </header>
 
+<div id="appOnlineCount">🌐 0</div>
 
 <main>
   <div class="categories" id="categories"></div>
@@ -416,7 +416,8 @@ audio{
 <div id="chat">
   <div id="chatHeader">
     <strong>💬 Chat anni ’80</strong>
-    <button onclick="closeChat()" style="background:none;border:none;color:#00e5ff;font-size:22px">✕</button>
+   <div id="onlineCount">👥 0</div>
+   <button onclick="closeChat()" style="background:none;border:none;color:#00e5ff;font-size:22px">✕</button>
   </div>
 
   <div id="chatMessages"></div>
@@ -433,11 +434,19 @@ audio{
 </div>
 
 <script type="module">
-const contentEl = document.getElementById("content");
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
+
+import { getDatabase, ref, push, onChildAdded, set, onDisconnect, onValue } 
+from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
+
 import { getAuth, signInAnonymously } 
 from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+
+/* ORA puoi scrivere codice */
+const contentEl = document.getElementById("content");
+
+/* FIREBASE */
 /* FIREBASE */
 /* FIREBASE */
 const app = initializeApp({
@@ -450,6 +459,43 @@ const app = initializeApp({
 const db = getDatabase(app);
 const auth = getAuth(app);
 
+// 👇 QUI — SUBITO DOPO getAuth
+
+signInAnonymously(auth).then(cred => {
+
+  console.log("Login anonimo OK");
+
+  const user = cred.user;   // 👈 QUESTO È SEMPRE VALIDO
+
+  /* 🌐 PRESENZA APP */
+  const appRef = ref(db, "onlineUsers");
+  const myAppRef = push(appRef);
+
+  set(myAppRef, true);
+  onDisconnect(myAppRef).remove();
+
+  onValue(appRef, snap => {
+    const count = snap.exists() ? snap.numChildren() : 0;
+    document.getElementById("appOnlineCount").textContent = "🌐 " + count;
+  });
+
+  /* 👥 PRESENZA CHAT */
+  const statusRef = ref(db, "status/" + user.uid);
+
+  set(statusRef, true);
+  onDisconnect(statusRef).remove();
+
+  onValue(ref(db, "status"), snap => {
+    const count = snap.exists() ? snap.numChildren() : 0;
+    document.getElementById("onlineCount").textContent = "👥 " + count;
+  });
+
+  /* 💬 AVVIA CHAT */
+  startChat();
+
+}).catch(err => {
+  console.error("Errore login anonimo:", err);
+});
 /* NICK */
 let nickname = localStorage.getItem("anni80_nick");
 while(!nickname){
@@ -470,11 +516,27 @@ let replyTo = null;
 signInAnonymously(auth)
   .then(() => {
     console.log("Autenticazione anonima attiva");
-    startChat(); // 👈 parte SOLO dopo auth
-  })
-  .catch((error) => {
-    console.error("Errore autenticazione:", error);
+    startChat(); // parte SOLO dopo auth
   });
+
+/* PRESENZA UTENTE + CONTATORE */
+auth.onAuthStateChanged(user => {
+  if (!user) return;
+
+  const statusRef = ref(db, "status/" + user.uid);
+
+  // utente online
+  set(statusRef, true);
+
+  // offline automatico quando chiude la pagina
+  onDisconnect(statusRef).remove();
+
+  // contatore live
+  onValue(ref(db, "status"), snapshot => {
+    const count = snapshot.exists() ? snapshot.size : 0;
+    document.getElementById("onlineCount").textContent = "👥 " + count;
+  });
+});
 
 function startChat(){
 
