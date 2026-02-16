@@ -485,7 +485,7 @@ signInAnonymously(auth)
 
     const uid = userCredential.user.uid;
 
-    // 🔥 Riferimento allo stato di connessione
+    // 🔥 Stato connessione Firebase
     const connectedRef = ref(db, ".info/connected");
 
     onValue(connectedRef, (snap) => {
@@ -493,7 +493,7 @@ signInAnonymously(auth)
       if (snap.val() === true) {
 
         // ======================
-        // PRESENZA APP
+        // 👥 PRESENZA NELL’APP
         // ======================
 
         const appRef = ref(db, "presence/app/" + uid);
@@ -501,17 +501,12 @@ signInAnonymously(auth)
         set(appRef, true);
         onDisconnect(appRef).remove();
 
-        // ======================
-        // PRESENZA CHAT
-        // ======================
+        // ⭐ Avvia chat UNA SOLA VOLTA
+        if (!chatStarted) {
+          chatStarted = true;
+          startChat();
+        }
 
-        const chatRef = ref(db, "presence/chat/" + uid);
-
-        set(chatRef, true);
-        onDisconnect(chatRef).remove();
-
-        // Avvia chat SOLO quando online
-        startChat();
       }
 
     });
