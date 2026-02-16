@@ -476,7 +476,20 @@ let replyTo = null;
 
 /* AUTENTICAZIONE + AVVIO CHAT */
 signInAnonymously(auth)
-  .then(() => {
+ auth.onAuthStateChanged(user => {
+
+  if (!user) return;
+
+  const uid = user.uid;
+  const myRef = ref(db, "onlineUsers/" + uid);
+
+  // Utente online
+  set(myRef, true);
+
+  // Rimozione automatica alla disconnessione
+  onDisconnect(myRef).remove();
+
+});  .then(() => {
     console.log("Autenticazione anonima attiva");
     startChat(); // 👈 parte SOLO dopo auth
   })
