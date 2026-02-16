@@ -486,8 +486,25 @@ signInAnonymously(auth)
 
 /* ===== PRESENZA UTENTE ONLINE ===== */
 
+/* ===== PRESENZA UTENTE ONLINE ===== */
+
 auth.onAuthStateChanged(user => {
- /* ===== CONTATORE UTENTI ONLINE (HOME APP) ===== */
+
+  if (!user) return;
+
+  const uid = user.uid;
+  const myRef = ref(db, "onlineUsers/" + uid);
+
+  // Segna utente come online
+  set(myRef, true);
+
+  // Rimuove automaticamente quando chiude app / perde connessione
+  onDisconnect(myRef).remove();
+
+});
+
+
+/* ===== CONTATORE UTENTI ONLINE (HOME APP) ===== */
 
 const counterEl = document.getElementById("onlineCounter");
 
@@ -501,7 +518,7 @@ onValue(ref(db, "onlineUsers"), snapshot => {
     counterEl.textContent = "👥 ONLINE: " + count;
   }
 
-}); 
+});
  
 
   if (!user) return;
