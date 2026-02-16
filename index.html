@@ -470,12 +470,16 @@ let replyTo = null;
 
 /* AUTENTICAZIONE + AVVIO CHAT */
 signInAnonymously(auth)
-  .then(() => {
-    console.log("Autenticazione anonima attiva");
+  .then((userCredential) => {
 
-    setupPresence();   // 👈 AGGIUNGI QUESTA RIGA
+    const user = userCredential.user;
 
-    startChat();
+    console.log("Login anonimo OK");
+
+    setupPresence(user);   // ⭐ QUESTA RIGA ATTIVA IL CONTATORE
+
+    startChat();           // (se già ce l'hai)
+
   })
   .catch((error) => {
     console.error("Errore autenticazione:", error);
