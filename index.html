@@ -398,15 +398,7 @@ audio{
   <h1>Io negli anni ’80 c’ero</h1>
   <!-- <p>Musica · Radio · Giochi · Chat</p> -->
 </header>
- <div id="onlineCounter" style="
-  text-align:center;
-  font-weight:bold;
-  color:#ffef00;
-  text-shadow:0 0 8px #ffef00, 0 0 18px #ffef00;
-  margin-bottom:10px;
-">
-  👥 ONLINE: 0
-</div>
+
 
 <main>
   <div class="categories" id="categories"></div>
@@ -478,60 +470,11 @@ let replyTo = null;
 signInAnonymously(auth)
   .then(() => {
     console.log("Autenticazione anonima attiva");
-    startChat(); // parte SOLO dopo auth
+    startChat(); // 👈 parte SOLO dopo auth
   })
   .catch((error) => {
     console.error("Errore autenticazione:", error);
   });
-
-/* ===== PRESENZA UTENTE ONLINE ===== */
-
-/* ===== PRESENZA UTENTE ONLINE ===== */
-
-auth.onAuthStateChanged(user => {
-
-  if (!user) return;
-
-  /* ===== PRESENZA ===== */
-
-  const uid = user.uid;
-  const myRef = ref(db, "onlineUsers/" + uid);
-
-  set(myRef, true);
-  onDisconnect(myRef).remove();
-
-
-  /* ===== CONTATORE HOME ===== */
-
-  const counterEl = document.getElementById("onlineCounter");
-
-  onValue(ref(db, "onlineUsers"), snapshot => {
-
-    const count = snapshot.exists()
-      ? Object.keys(snapshot.val()).length
-      : 0;
-
-    if (counterEl) {
-      counterEl.textContent = "👥 ONLINE: " + count;
-    }
-
-  });
-
-});
-
-  if (!user) return;
-
-  const uid = user.uid;
-  const myRef = ref(db, "onlineUsers/" + uid);
-
-  // Utente online
-  set(myRef, true);
-
-  // Rimozione automatica alla disconnessione
-  onDisconnect(myRef).remove();
-
-});
-
 
 function startChat(){
 
