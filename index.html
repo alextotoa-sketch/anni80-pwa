@@ -399,11 +399,6 @@ audio{
   <!-- <p>Musica · Radio · Giochi · Chat</p> -->
 </header>
 
-<!-- 🔴 CONTATORE UTENTI -->
-<div style="padding:10px;background:#111;color:white;text-align:center">
-  👥 Utenti nell'app: <span id="appCount">0</span> |
-  💬 In chat: <span id="chatCount">0</span>
-</div>
 
 <main>
   <div class="categories" id="categories"></div>
@@ -440,15 +435,8 @@ audio{
 <script type="module">
 const contentEl = document.getElementById("content");
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-import {
-  getDatabase,
-  ref,
-  push,
-  onChildAdded,
-  onValue,
-  set,
-  onDisconnect
-} from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";import { getAuth, signInAnonymously } 
+import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
+import { getAuth, signInAnonymously } 
 from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
 /* FIREBASE */
 /* FIREBASE */
@@ -478,61 +466,17 @@ const replyBox = document.getElementById("replyBox");
 const replyNick = document.getElementById("replyNick");
 let replyTo = null;
 
-/* AUTENTICAZIONE + PRESENZA + AVVIO CHAT */
-
+/* AUTENTICAZIONE + AVVIO CHAT */
 signInAnonymously(auth)
-  .then((userCredential) => {
-
+  .then(() => {
     console.log("Autenticazione anonima attiva");
-
-    const uid = userCredential.user.uid;
-
-    // ======================
-    // PRESENZA NELL'APP
-    // ======================
-
-    const appRef = ref(db, "presence/app/" + uid);
-    set(appRef, true);
-    onDisconnect(appRef).remove();
-
-    // ======================
-    // PRESENZA IN CHAT
-    // ======================
-
-    const chatRef = ref(db, "presence/chat/" + uid);
-    set(chatRef, true);
-    onDisconnect(chatRef).remove();
-
-    // Avvia chat SOLO dopo presenza
-    startChat();
-
+    startChat(); // 👈 parte SOLO dopo auth
   })
   .catch((error) => {
     console.error("Errore autenticazione:", error);
   });
- // ======================
-// CONTATORE UTENTI APP
-// ======================
 
-onValue(ref(db, "presence/app"), (snapshot) => {
-  const count = snapshot.exists()
-    ? Object.keys(snapshot.val()).length
-    : 0;
-
-  document.getElementById("appCount").textContent = count;
-});
-
-// ======================
-// CONTATORE UTENTI CHAT
-// ======================
-
-onValue(ref(db, "presence/chat"), (snapshot) => {
-  const count = snapshot.exists()
-    ? Object.keys(snapshot.val()).length
-    : 0;
-
-  document.getElementById("chatCount").textContent = count;
-});function startChat(){
+function startChat(){
 
   const chatRef = ref(db,"chat");
 
