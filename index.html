@@ -471,17 +471,61 @@ const replyBox = document.getElementById("replyBox");
 const replyNick = document.getElementById("replyNick");
 let replyTo = null;
 
-/* AUTENTICAZIONE + AVVIO CHAT */
+/* AUTENTICAZIONE + PRESENZA + AVVIO CHAT */
+
 signInAnonymously(auth)
-  .then(() => {
+  .then((userCredential) => {
+
     console.log("Autenticazione anonima attiva");
-    startChat(); // 👈 parte SOLO dopo auth
+
+    const uid = userCredential.user.uid;
+
+    // ======================
+    // PRESENZA NELL'APP
+    // ======================
+
+    const appRef = ref(db, "presence/app/" + uid);
+    set(appRef, true);
+    onDisconnect(appRef).remove();
+
+    // ======================
+    // PRESENZA IN CHAT
+    // ======================
+
+    const chatRef = ref(db, "presence/chat/" + uid);
+    set(chatRef, true);
+    onDisconnect(chatRef).remove();
+
+    // Avvia chat SOLO dopo presenza
+    startChat();
+
   })
   .catch((error) => {
     console.error("Errore autenticazione:", error);
   });
+ // ======================
+// CONTATORE UTENTI APP
+// ======================
 
-function startChat(){
+onValue(ref(db, "presence/app"), (snapshot) => {
+  const count = snapshot.exists()
+    ? Object.keys(snapshot.val()).length
+    : 0;
+
+  document.getElementById("appCount").textContent = count;
+});
+
+// ======================
+// CONTATORE UTENTI CHAT
+// ======================
+
+onValue(ref(db, "presence/chat"), (snapshot) => {
+  const count = snapshot.exists()
+    ? Object.keys(snapshot.val()).length
+    : 0;
+
+  document.getElementById("chatCount").textContent = count;
+});function startChat(){
 
   const chatRef = ref(db,"chat");
 
