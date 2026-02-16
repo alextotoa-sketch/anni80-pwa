@@ -483,28 +483,38 @@ let replyTo = null;
 signInAnonymously(auth)
   .then((userCredential) => {
 
-    console.log("Autenticazione anonima attiva");
-
     const uid = userCredential.user.uid;
 
-    // ======================
-    // PRESENZA NELL'APP
-    // ======================
+    // 🔥 Riferimento allo stato di connessione
+    const connectedRef = ref(db, ".info/connected");
 
-    const appRef = ref(db, "presence/app/" + uid);
-    set(appRef, true);
-    onDisconnect(appRef).remove();
+    onValue(connectedRef, (snap) => {
 
-    // ======================
-    // PRESENZA IN CHAT
-    // ======================
+      if (snap.val() === true) {
 
-    const chatRef = ref(db, "presence/chat/" + uid);
-    set(chatRef, true);
-    onDisconnect(chatRef).remove();
+        // ======================
+        // PRESENZA APP
+        // ======================
 
-    // Avvia chat SOLO dopo presenza
-    startChat();
+        const appRef = ref(db, "presence/app/" + uid);
+
+        set(appRef, true);
+        onDisconnect(appRef).remove();
+
+        // ======================
+        // PRESENZA CHAT
+        // ======================
+
+        const chatRef = ref(db, "presence/chat/" + uid);
+
+        set(chatRef, true);
+        onDisconnect(chatRef).remove();
+
+        // Avvia chat SOLO quando online
+        startChat();
+      }
+
+    });
 
   })
   .catch((error) => {
