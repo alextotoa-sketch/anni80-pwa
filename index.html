@@ -1153,26 +1153,29 @@ function setupPresence(user) {
   const connectedRef = ref(db, ".info/connected");
   const allRef = ref(db, "status");
 
-  // 🔌 Aspetta vera connessione a Firebase
+  // 🔌 Aspetta vera connessione
   onValue(connectedRef, snap => {
 
     if (snap.val() === true) {
 
       // Quando perdi connessione → offline
-      onDisconnect(myRef).remove();
+      onDisconnect(myRef).set(false);
 
-      // Ora puoi segnarti online
+      // Ora sei online
       set(myRef, true);
     }
 
   });
 
-  // 👥 Conta utenti online
+  // 👥 Conta SOLO chi è true
   onValue(allRef, snap => {
 
-    const count = snap.exists()
-      ? Object.keys(snap.val()).length
-      : 0;
+    let count = 0;
+
+    if (snap.exists()) {
+      const data = snap.val();
+      count = Object.values(data).filter(v => v === true).length;
+    }
 
     document.getElementById("onlineCount")
       .textContent = "Utenti online: " + count;
