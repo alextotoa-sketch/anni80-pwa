@@ -487,40 +487,24 @@ signInAnonymously(auth)
 
     const uid = userCredential.user.uid;
 
-  import { ref, onValue, set, onDisconnect } from "firebase/database";
-import { signInAnonymously } from "firebase/auth";
-
-// LOGIN
-signInAnonymously(auth)
-  .then((userCredential) => {
-
-    const uid = userCredential.user.uid;
-
-    console.log("UID:", uid);
-
     // ======================
-    // CONNESSIONE FIREBASE
+    // PRESENZA NELL'APP
     // ======================
 
-    const connectedRef = ref(db, ".info/connected");
+    const appRef = ref(db, "presence/app/" + uid);
+    set(appRef, true);
+    onDisconnect(appRef).remove();
 
-    onValue(connectedRef, (snap) => {
-      if (snap.val() === true) {
+    // ======================
+    // PRESENZA IN CHAT
+    // ======================
 
-        // PRESENZA APP
-        const appRef = ref(db, "presence/app/" + uid);
-        set(appRef, true);
-        onDisconnect(appRef).remove();
+    const chatRef = ref(db, "presence/chat/" + uid);
+    set(chatRef, true);
+    onDisconnect(chatRef).remove();
 
-        // PRESENZA CHAT
-        const chatRef = ref(db, "presence/chat/" + uid);
-        set(chatRef, true);
-        onDisconnect(chatRef).remove();
-
-        // Avvia chat
-        startChat();
-      }
-    });
+    // Avvia chat SOLO dopo presenza
+    startChat();
 
   })
   .catch((error) => {
