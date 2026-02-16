@@ -462,7 +462,7 @@ const app = initializeApp({
 
 const db = getDatabase(app);
 const auth = getAuth(app);
- function startChat() {
+function startChat() {
 
   // 🔥 evita che la chat parta più volte
   if (chatListenerAttached) return;
@@ -484,6 +484,30 @@ const auth = getAuth(app);
     chatMessages.appendChild(div);
     chatMessages.scrollTop = chatMessages.scrollHeight;
   });
+
+  // ======================
+  // INVIO MESSAGGI
+  // ======================
+
+  chatForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    if (chatInput.value.trim()) {
+
+      push(messagesRef, {
+        nick: nickname,
+        text: chatInput.value,
+        reply: replyTo || null,
+        timestamp: Date.now()
+      });
+
+      chatInput.value = "";
+      replyTo = null;
+      replyBox.style.display = "none";
+    }
+  });
+
+}
 
   // ======================
   // INVIO MESSAGGI
