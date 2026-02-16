@@ -462,7 +462,52 @@ const app = initializeApp({
 
 const db = getDatabase(app);
 const auth = getAuth(app);
+ function startChat() {
 
+  // 🔥 evita che la chat parta più volte
+  if (chatListenerAttached) return;
+  chatListenerAttached = true;
+
+  const messagesRef = ref(db, "chat");
+
+  // ======================
+  // RICEZIONE MESSAGGI
+  // ======================
+
+  onChildAdded(messagesRef, (snap) => {
+
+    const msg = snap.val();
+
+    const div = document.createElement("div");
+    div.textContent = msg.nick + ": " + msg.text;
+
+    chatMessages.appendChild(div);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  });
+
+  // ======================
+  // INVIO MESSAGGI
+  // ======================
+
+  chatForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    if (chatInput.value.trim()) {
+
+      push(messagesRef, {
+        nick: nickname,
+        text: chatInput.value,
+        reply: replyTo || null,
+        timestamp: Date.now()
+      });
+
+      chatInput.value = "";
+      replyTo = null;
+      replyBox.style.display = "none";
+    }
+  });
+
+}
 /* NICK */
 let nickname = localStorage.getItem("anni80_nick");
 while(!nickname){
@@ -511,9 +556,11 @@ signInAnonymously(auth)
         set(chatRef, true);
         onDisconnect(chatRef).remove();
 
-        // Avvia chat SOLO quando online
-        startChat();
-      }
+   // ⭐ Avvia chat UNA SOLA VOLTA
+if (!chatStarted) {
+  chatStarted = true;
+  startChat();
+}
 
     });
 
