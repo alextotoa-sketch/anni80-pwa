@@ -470,7 +470,10 @@ let replyTo = null;
 signInAnonymously(auth)
   .then(() => {
     console.log("Autenticazione anonima attiva");
-    startChat(); // 👈 parte SOLO dopo auth
+
+    setupPresence();   // 👈 AGGIUNGI QUESTA RIGA
+
+    startChat();
   })
   .catch((error) => {
     console.error("Errore autenticazione:", error);
