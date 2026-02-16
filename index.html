@@ -440,8 +440,15 @@ audio{
 <script type="module">
 const contentEl = document.getElementById("content");
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
-import { getAuth, signInAnonymously } 
+import {
+  getDatabase,
+  ref,
+  push,
+  onChildAdded,
+  onValue,
+  set,
+  onDisconnect
+} from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";import { getAuth, signInAnonymously } 
 from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
 /* FIREBASE */
 /* FIREBASE */
