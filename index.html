@@ -396,7 +396,7 @@ audio{
 </div>
 <header>
   <h1>Io negli anni ’80 c’ero</h1>
-  <!-- <p>Musica · Radio · Giochi · Chat</p> -->
+ <p id="onlineCount">Utenti online: 0</p>  <!-- <p>Musica · Radio · Giochi · Chat</p> -->
 </header>
 
 
@@ -1136,7 +1136,31 @@ window.play = (u,n)=>{
   },250);
 
 };
-</script>
+ function setupPresence(){
+
+  const uid = auth.currentUser.uid;
+
+  const myRef = ref(db, "online/" + uid);
+  const onlineRef = ref(db, "online");
+
+  // ti segna come online
+  set(myRef, true);
+
+  // ti toglie quando chiudi app
+  onDisconnect(myRef).remove();
+
+  // aggiorna il numero utenti online
+  onValue(onlineRef, snap => {
+
+    const count = snap.exists()
+      ? Object.keys(snap.val()).length
+      : 0;
+
+    document.getElementById("onlineCount")
+      .textContent = "Utenti online: " + count;
+
+  });
+}</script>
 
 </body>
 </html>
