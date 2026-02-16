@@ -476,7 +476,17 @@ let replyTo = null;
 
 /* AUTENTICAZIONE + AVVIO CHAT */
 signInAnonymously(auth)
- auth.onAuthStateChanged(user => {
+  .then(() => {
+    console.log("Autenticazione anonima attiva");
+    startChat(); // parte SOLO dopo auth
+  })
+  .catch((error) => {
+    console.error("Errore autenticazione:", error);
+  });
+
+/* ===== PRESENZA UTENTE ONLINE ===== */
+
+auth.onAuthStateChanged(user => {
 
   if (!user) return;
 
@@ -489,13 +499,8 @@ signInAnonymously(auth)
   // Rimozione automatica alla disconnessione
   onDisconnect(myRef).remove();
 
-});  .then(() => {
-    console.log("Autenticazione anonima attiva");
-    startChat(); // 👈 parte SOLO dopo auth
-  })
-  .catch((error) => {
-    console.error("Errore autenticazione:", error);
-  });
+});
+
 
 function startChat(){
 
