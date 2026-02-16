@@ -450,7 +450,8 @@ import {
   onDisconnect
 } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";import { getAuth, signInAnonymously } 
 from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
-/* FIREBASE */
+ let chatStarted = false;
+let chatListenerAttached = false;/* FIREBASE */
 /* FIREBASE */
 const app = initializeApp({
   apiKey:"AIzaSyB8h3fvyPxq_Tjp2R5RzsgEC7jv6FASeWE",
