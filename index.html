@@ -487,6 +487,22 @@ signInAnonymously(auth)
 /* ===== PRESENZA UTENTE ONLINE ===== */
 
 auth.onAuthStateChanged(user => {
+ /* ===== CONTATORE UTENTI ONLINE (HOME APP) ===== */
+
+const counterEl = document.getElementById("onlineCounter");
+
+onValue(ref(db, "onlineUsers"), snapshot => {
+
+  const count = snapshot.exists()
+    ? Object.keys(snapshot.val()).length
+    : 0;
+
+  if (counterEl) {
+    counterEl.textContent = "👥 ONLINE: " + count;
+  }
+
+}); 
+ 
 
   if (!user) return;
 
