@@ -1150,15 +1150,24 @@ window.play = (u,n)=>{
 function setupPresence(user) {
 
   const myRef = ref(db, "status/" + user.uid);
+  const connectedRef = ref(db, ".info/connected");
   const allRef = ref(db, "status");
 
-  // Segna TE come online
-  set(myRef, true);
+  // 🔌 Aspetta vera connessione a Firebase
+  onValue(connectedRef, snap => {
 
-  // Quando chiudi app → offline
-  onDisconnect(myRef).remove();
+    if (snap.val() === true) {
 
-  // Conta utenti online
+      // Quando perdi connessione → offline
+      onDisconnect(myRef).remove();
+
+      // Ora puoi segnarti online
+      set(myRef, true);
+    }
+
+  });
+
+  // 👥 Conta utenti online
   onValue(allRef, snap => {
 
     const count = snap.exists()
