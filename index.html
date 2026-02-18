@@ -331,6 +331,64 @@ audio{
   border-bottom-right-radius:4px;
   box-shadow:0 0 8px #ff0080;
 }
+ /* ===== ARTISTI PLAYLIST ===== */
+
+.artistCard{
+  background:#111;
+  border-radius:16px;
+  padding:12px;
+  text-align:center;
+  box-shadow:0 0 10px rgba(0,0,0,0.6);
+}
+
+.artistCard h3{
+  margin-bottom:10px;
+  font-size:1rem;
+  color:#fff;
+}
+
+/* contenitore bottoni */
+.artistBtns{
+  display:flex;
+  gap:8px;
+}
+
+/* bottoni base */
+.artistBtns a{
+  flex:1;
+  padding:8px 6px;
+  border-radius:20px;
+  text-decoration:none;
+  font-weight:bold;
+  font-size:.85rem;
+  text-align:center;
+  background:#111;
+  transition:.2s;
+}
+
+/* YouTube */
+.artistBtns a:first-child{
+  border:2px solid #ff0033;
+  color:#ff0033;
+}
+
+.artistBtns a:first-child:hover{
+  background:#ff0033;
+  color:#000;
+  box-shadow:0 0 10px #ff0033;
+}
+
+/* Spotify */
+.artistBtns a:last-child{
+  border:2px solid #00ff66;
+  color:#00ff66;
+}
+
+.artistBtns a:last-child:hover{
+  background:#00ff66;
+  color:#000;
+  box-shadow:0 0 10px #00ff66;
+}
 
 /* FIX VISIBILITÀ NICK */
 .message.other strong{
