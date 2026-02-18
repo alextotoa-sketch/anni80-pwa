@@ -945,7 +945,7 @@ function openPlaylist(type){
   }
 
 }
- const gamesData = [
+const gamesData = [
 
 {
   name:"🕹️ Arcade",
@@ -954,7 +954,11 @@ function openPlaylist(type){
     links:[
       {t:"Internet Arcade",u:"https://archive.org/details/internetarcade"},
       {t:"Arcade - RetroGames",u:"https://www.retrogames.cc/arcade-games.html"},
-      {t:"Arcade - ClassicReload",u:"https://classicreload.com/arcade.html"}
+      {t:"Arcade - ClassicReload",u:"https://classicreload.com/arcade.html"},
+      {t:"Free 80s Arcade",u:"https://www.free80sarcade.com"},
+      {t:"MAME Games Online",u:"https://emulatoronline.com/mame-games/"},
+      {t:"PlayRetroGames Arcade",u:"https://www.playretrogames.com/arcade-games"},
+      {t:"Arcade Database Play",u:"https://www.arcade-museum.com/play/"}
     ]
   }]
 },
@@ -966,7 +970,9 @@ function openPlaylist(type){
     links:[
       {t:"NES - RetroGames",u:"https://www.retrogames.cc/nes-games.html"},
       {t:"NES - ClassicReload",u:"https://classicreload.com/nes.html"},
-      {t:"NES - Archive",u:"https://archive.org/details/softwarelibrary_nes"}
+      {t:"NES - Archive",u:"https://archive.org/details/softwarelibrary_nes"},
+      {t:"NES - PlayRetroGames",u:"https://www.playretrogames.com/nes-games"},
+      {t:"NES - EmulatorOnline",u:"https://emulatoronline.com/nes-games/"}
     ]
   }]
 },
@@ -978,7 +984,8 @@ function openPlaylist(type){
     links:[
       {t:"Sega Master - RetroGames",u:"https://www.retrogames.cc/sega-master-system-games.html"},
       {t:"Sega - ClassicReload",u:"https://classicreload.com/sega-master-system.html"},
-      {t:"Sega - Archive",u:"https://archive.org/details/softwarelibrary_sms"}
+      {t:"Sega - Archive",u:"https://archive.org/details/softwarelibrary_sms"},
+      {t:"Sega - PlayRetroGames",u:"https://www.playretrogames.com/sega-master-system-games"}
     ]
   }]
 },
@@ -990,7 +997,8 @@ function openPlaylist(type){
     links:[
       {t:"Atari - RetroGames",u:"https://www.retrogames.cc/atari-2600-games.html"},
       {t:"Atari - ClassicReload",u:"https://classicreload.com/atari-2600.html"},
-      {t:"Atari - Archive",u:"https://archive.org/details/softwarelibrary_atari_2600"}
+      {t:"Atari - Archive",u:"https://archive.org/details/softwarelibrary_atari_2600"},
+      {t:"Atari - EmulatorOnline",u:"https://emulatoronline.com/atari-2600-games/"}
     ]
   }]
 },
@@ -1002,7 +1010,8 @@ function openPlaylist(type){
     links:[
       {t:"C64 - RetroGames",u:"https://www.retrogames.cc/c64-games.html"},
       {t:"C64 - ClassicReload",u:"https://classicreload.com/c64.html"},
-      {t:"C64 - Archive",u:"https://archive.org/details/softwarelibrary_c64"}
+      {t:"C64 - Archive",u:"https://archive.org/details/softwarelibrary_c64"},
+      {t:"C64 - PlayRetroGames",u:"https://www.playretrogames.com/c64-games"}
     ]
   }]
 },
@@ -1014,7 +1023,8 @@ function openPlaylist(type){
     links:[
       {t:"Amiga - RetroGames",u:"https://www.retrogames.cc/amiga-games.html"},
       {t:"Amiga - ClassicReload",u:"https://classicreload.com/amiga.html"},
-      {t:"Amiga - Archive",u:"https://archive.org/details/softwarelibrary_amiga"}
+      {t:"Amiga - Archive",u:"https://archive.org/details/softwarelibrary_amiga"},
+      {t:"Amiga Online",u:"https://amigaonline.games"}
     ]
   }]
 },
@@ -1026,7 +1036,9 @@ function openPlaylist(type){
     links:[
       {t:"MS-DOS - Archive",u:"https://archive.org/details/softwarelibrary_msdos_games"},
       {t:"DOS - ClassicReload",u:"https://classicreload.com/msdos.html"},
-      {t:"DOS - RetroGames",u:"https://www.retrogames.cc/dos-games.html"}
+      {t:"DOS - RetroGames",u:"https://www.retrogames.cc/dos-games.html"},
+      {t:"DOS - PlayClassic",u:"https://playclassic.games/games/dos-games-online"},
+      {t:"DOS Zone",u:"https://dos.zone"}
     ]
   }]
 },
@@ -1038,12 +1050,39 @@ function openPlaylist(type){
     links:[
       {t:"ZX - RetroGames",u:"https://www.retrogames.cc/zx-spectrum-games.html"},
       {t:"ZX - ClassicReload",u:"https://classicreload.com/zx-spectrum.html"},
-      {t:"ZX - Archive",u:"https://archive.org/details/softwarelibrary_zx_spectrum"}
+      {t:"ZX - Archive",u:"https://archive.org/details/softwarelibrary_zx_spectrum"},
+      {t:"ZX Spectrum Games",u:"https://www.zxspectrumgames.com"}
+    ]
+  }]
+},
+
+{
+  name:"🧩 Altre console anni '80",
+  sub:[{
+    name:"ColecoVision / Intellivision / Odyssey²",
+    links:[
+      {t:"ColecoVision - Archive",u:"https://archive.org/details/softwarelibrary_colecovision"},
+      {t:"Intellivision - Archive",u:"https://archive.org/details/softwarelibrary_intellivision"},
+      {t:"Odyssey² - Archive",u:"https://archive.org/details/softwarelibrary_odyssey2"}
+    ]
+  }]
+},
+
+{
+  name:"🌐 Mega portali multi-sistema",
+  sub:[{
+    name:"Collezioni complete",
+    links:[
+      {t:"EmulatorOnline",u:"https://emulatoronline.com"},
+      {t:"PlayRetroGames",u:"https://www.playretrogames.com"},
+      {t:"MyAbandonware",u:"https://www.myabandonware.com"},
+      {t:"ClassicGaming",u:"https://www.classicgaming.cc"}
     ]
   }]
 }
 
 ];
+
 
 function loadGameFolders(){
 
