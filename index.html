@@ -912,39 +912,128 @@ function artist(name, query){
 
 function openPlaylist(type){
 
-  if(type === "italian"){
-    contentEl.innerHTML = `
-      <h2>🇮🇹 Artisti italiani anni ’80</h2>
-      <div class="grid">
-        ${artist("Pooh","pooh+anni+80")}
-        ${artist("Vasco Rossi","vasco+rossi+anni+80")}
-        ${artist("Claudio Baglioni","claudio+baglioni+anni+80")}
-        ${artist("Umberto Tozzi","umberto+tozzi+anni+80")}
-        ${artist("Eros Ramazzotti","eros+ramazzotti+anni+80")}
-        ${artist("Lucio Dalla","lucio+dalla+anni+80")}
-        ${artist("Renato Zero","renato+zero+anni+80")}
-        ${artist("Gianna Nannini","gianna+nannini+anni+80")}
+  function artistCard(name, ytQuery, spQuery){
+    return `
+      <div class="artistCard">
+        <h3>${name}</h3>
+        <div class="artistBtns">
+          <a target="_blank"
+             href="https://www.youtube.com/results?search_query=${ytQuery}">
+             ▶️ YouTube
+          </a>
+
+          <a target="_blank"
+             href="https://open.spotify.com/search/${spQuery}">
+             🎧 Spotify
+          </a>
+        </div>
       </div>
     `;
   }
 
-  if(type === "foreign"){
+  // 🇮🇹 ITALIANI
+  if(type === "italian"){
+    contentEl.innerHTML = `
+      <h2>🇮🇹 Artisti italiani anni ’80</h2>
+      <div class="grid">
+
+        ${artistCard("Vasco Rossi","vasco+rossi+anni+80","vasco+rossi")}
+        ${artistCard("Eros Ramazzotti","eros+ramazzotti+anni+80","eros+ramazzotti")}
+        ${artistCard("Lucio Dalla","lucio+dalla+anni+80","lucio+dalla")}
+        ${artistCard("Renato Zero","renato+zero+anni+80","renato+zero")}
+        ${artistCard("Gianna Nannini","gianna+nannini+anni+80","gianna+nannini")}
+        ${artistCard("Claudio Baglioni","baglioni+anni+80","claudio+baglioni")}
+        ${artistCard("Umberto Tozzi","tozzi+anni+80","umberto+tozzi")}
+        ${artistCard("Pooh","pooh+anni+80","pooh")}
+        ${artistCard("Antonello Venditti","venditti+anni+80","antonello+venditti")}
+        ${artistCard("Pino Daniele","pino+daniele+anni+80","pino+daniele")}
+        ${artistCard("Franco Battiato","battiato+anni+80","franco+battiato")}
+        ${artistCard("Alice","alice+per+elisa","alice")}
+        ${artistCard("Loredana Bertè","berte+anni+80","loredana+berte")}
+        ${artistCard("Raf","raf+self+control","raf")}
+        ${artistCard("Sabrina Salerno","sabrina+salerno+boys","sabrina+salerno")}
+        ${artistCard("Gazebo","gazebo+i+like+chopin","gazebo")}
+        ${artistCard("Den Harrow","den+harrow+future+brain","den+harrow")}
+        ${artistCard("Ryan Paris","ryan+paris+dolce+vita","ryan+paris")}
+        ${artistCard("Matia Bazar","matia+bazar+ti+sento","matia+bazar")}
+        ${artistCard("Ricchi e Poveri","ricchi+e+poveri+sara+perche","ricchi+e+poveri")}
+        ${artistCard("Al Bano e Romina","al+bano+romina+felicita","al+bano+romina")}
+        ${artistCard("Ivana Spagna","spagna+call+me","spagna")}
+        ${artistCard("Righeira","righeira+vamos+a+la+playa","righeira")}
+        ${artistCard("Giuni Russo","giuni+russo+alghero","giuni+russo")}
+        ${artistCard("Scialpi","scialpi+rocking+rolling","scialpi")}
+        ${artistCard("Mango","mango+oro","mango")}
+        ${artistCard("Toto Cutugno","cutugno+litaliano","toto+cutugno")}
+        ${artistCard("Fiordaliso","fiordaliso+non+voglio","fiordaliso")}
+        ${artistCard("Donatella Rettore","rettore+splendido","donatella+rettore")}
+        ${artistCard("Amedeo Minghi","minghi+1950","amedeo+minghi")}
+
+      </div>
+    `;
+  }
+
+  // ⭐ STRANIERI
+  else if(type === "foreign"){
     contentEl.innerHTML = `
       <h2>⭐ Artisti stranieri anni ’80</h2>
       <div class="grid">
-        ${artist("Michael Jackson","michael+jackson+80s")}
-        ${artist("Madonna","madonna+80s")}
-        ${artist("Prince","prince+80s")}
-        ${artist("George Michael","george+michael+80s")}
-        ${artist("Depeche Mode","depeche+mode+80s")}
-        ${artist("Duran Duran","duran+duran+80s")}
-        ${artist("A-ha","a+ha+80s")}
-        ${artist("U2","u2+80s")}
+
+        ${artistCard("Michael Jackson","michael+jackson+80s","michael+jackson")}
+        ${artistCard("Madonna","madonna+80s","madonna")}
+        ${artistCard("Prince","prince+80s","prince")}
+        ${artistCard("George Michael","george+michael+80s","george+michael")}
+        ${artistCard("Wham!","wham+80s","wham")}
+        ${artistCard("Queen","queen+80s","queen")}
+        ${artistCard("David Bowie","bowie+80s","david+bowie")}
+        ${artistCard("Elton John","elton+john+80s","elton+john")}
+        ${artistCard("Phil Collins","phil+collins+80s","phil+collins")}
+        ${artistCard("Genesis","genesis+80s","genesis")}
+        ${artistCard("The Police","the+police+80s","the+police")}
+        ${artistCard("Sting","sting+80s","sting")}
+        ${artistCard("U2","u2+80s","u2")}
+        ${artistCard("Bruce Springsteen","springsteen+80s","bruce+springsteen")}
+        ${artistCard("Bon Jovi","bon+jovi+80s","bon+jovi")}
+        ${artistCard("Guns N Roses","guns+n+roses+80s","guns+n+roses")}
+        ${artistCard("AC/DC","acdc+80s","acdc")}
+        ${artistCard("Dire Straits","dire+straits+80s","dire+straits")}
+        ${artistCard("Van Halen","van+halen+80s","van+halen")}
+        ${artistCard("Scorpions","scorpions+80s","scorpions")}
+        ${artistCard("Europe","europe+final+countdown","europe")}
+        ${artistCard("Foreigner","foreigner+80s","foreigner")}
+        ${artistCard("Journey","journey+80s","journey")}
+        ${artistCard("Survivor","survivor+80s","survivor")}
+        ${artistCard("Billy Idol","billy+idol+80s","billy+idol")}
+        ${artistCard("Cyndi Lauper","cyndi+lauper+80s","cyndi+lauper")}
+        ${artistCard("Whitney Houston","whitney+houston+80s","whitney+houston")}
+        ${artistCard("Tina Turner","tina+turner+80s","tina+turner")}
+        ${artistCard("Lionel Richie","lionel+richie+80s","lionel+richie")}
+        ${artistCard("Kylie Minogue","kylie+minogue+80s","kylie+minogue")}
+        ${artistCard("Rick Astley","rick+astley+80s","rick+astley")}
+        ${artistCard("A-ha","a-ha+80s","a-ha")}
+        ${artistCard("Duran Duran","duran+duran+80s","duran+duran")}
+        ${artistCard("Spandau Ballet","spandau+ballet+80s","spandau+ballet")}
+        ${artistCard("Depeche Mode","depeche+mode+80s","depeche+mode")}
+        ${artistCard("The Cure","the+cure+80s","the+cure")}
+        ${artistCard("New Order","new+order+80s","new+order")}
+        ${artistCard("Pet Shop Boys","pet+shop+boys+80s","pet+shop+boys")}
+        ${artistCard("Erasure","erasure+80s","erasure")}
+        ${artistCard("Simple Minds","simple+minds+80s","simple+minds")}
+        ${artistCard("Eurythmics","eurythmics+80s","eurythmics")}
+        ${artistCard("Tears for Fears","tears+for+fears+80s","tears+for+fears")}
+        ${artistCard("Modern Talking","modern+talking+80s","modern+talking")}
+        ${artistCard("Sandra","sandra+80s","sandra")}
+        ${artistCard("Alphaville","alphaville+80s","alphaville")}
+        ${artistCard("Talk Talk","talk+talk+80s","talk+talk")}
+        ${artistCard("Soft Cell","soft+cell+80s","soft+cell")}
+        ${artistCard("Roxette","roxette+80s","roxette")}
+
       </div>
     `;
   }
 
 }
+
+
 const gamesData = [
 
 {
