@@ -443,6 +443,95 @@ audio{
 </head>
 
 <body>
+
+  <div id="radioName">Radio 80</div>
+  <div id="trackInfo">In diretta...</div>
+
+
+  <div id="splash">
+    <div class="splash-inner">
+      <div class="splash-top">BENVENUTI</div>
+      <img src="/anni80-pwa/logo.png" alt="Io negli anni ’80 c’ero">
+      <div class="splash-bottom">Negli anni 80</div>
+    </div>
+  </div>
+
+  <header>
+    <h1>Io negli anni ’80 c’ero</h1>
+    <p id="onlineCount">Utenti online: 0</p>
+  </header>
+
+  <main>
+    <div class="categories" id="categories"></div>
+    <div id="content">Seleziona una sezione.</div>
+  </main>
+
+  <div id="player">
+    <div id="vumeter-wrapper"><div id="vumeter"></div></div>
+    <div id="now">Nessuna radio in riproduzione</div>
+    <audio id="audio" controls></audio>
+  </div>
+
+  <button id="chatToggle">💬</button>
+
+  <div id="chat">
+    <div id="chatHeader">
+      <strong>💬 Chat anni ’80</strong>
+      <button onclick="closeChat()" style="background:none;border:none;color:#00e5ff;font-size:22px">✕</button>
+    </div>
+
+    <div id="chatMessages"></div>
+
+    <div id="replyBox">
+      <span id="replyLabel">Rispondi a <span id="replyNick"></span></span>
+      <button onclick="cancelReply()" style="background:none;border:none;color:#00e5ff;font-size:18px">✕</button>
+    </div>
+
+    <form id="chatForm">
+      <input id="chatInput" placeholder="Scrivi un messaggio…" autocomplete="off">
+      <button>Invia</button>
+    </form>
+  </div>
+
+
+  <!-- ⭐ SCRIPT INFO RADIO — QUI -->
+  <script type="module">
+    import { IcecastMetadataReader } from 
+    "https://cdn.jsdelivr.net/npm/icecast-metadata-js@1.12.0/+esm";
+
+    function loadInfo(url) {
+
+      document.getElementById("trackInfo").textContent = "Caricamento...";
+
+      const reader = new IcecastMetadataReader(url);
+
+      fetch(url).then(res => {
+        const stream = res.body.getReader();
+
+        async function read() {
+          while (true) {
+            const { done, value } = await stream.read();
+            if (done) break;
+
+            const result = reader.readAll(value);
+
+            if (result.metadata) {
+              document.getElementById("trackInfo").textContent =
+                result.metadata.StreamTitle || "In diretta";
+            }
+          }
+        }
+
+        read();
+      });
+    }
+
+    loadInfo("https://streams.80s80s.de/80s80s/mp3-192");
+  </script>
+
+</body>
+
+
 <div id="splash">
   <div class="splash-inner">
     <div class="splash-top">BENVENUTI</div>
