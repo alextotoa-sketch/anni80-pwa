@@ -793,18 +793,21 @@ function open(i,el){
   el.classList.add("active");
 
   if(i===0){
-    contentEl.innerHTML = `
-      <h2>🎶 Playlist</h2>
-      <div class="grid">
-        <div class="card" onclick="openPlaylist('foreign')">
-          ⭐ Artisti stranieri
-        </div>
-        <div class="card" onclick="openPlaylist('italian')">
-          🇮🇹 Artisti italiani
-        </div>
+  contentEl.innerHTML = `
+    <h2>🎶 Playlist</h2>
+    <div class="grid">
+      <div class="card" onclick="openPlaylist('foreign')">
+        ⭐ Artisti stranieri
       </div>
-    `;
-  }
+      <div class="card" onclick="openPlaylist('italian')">
+        🇮🇹 Artisti italiani
+      </div>
+      <div class="card" onclick="window.openExternal('https://www.youtube.com/@prokaraokebyalex/featured')">
+        🎤 Karaoke (iscriviti al canale)
+      </div>
+    </div>
+  `;
+}
 
   if(i===1){
     contentEl.innerHTML = `
