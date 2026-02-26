@@ -1391,21 +1391,51 @@ function setupPresence(user) {
   });
 
 }
- // ===== CONTATORE INSTALLAZIONI PWA =====
-window.addEventListener('appinstalled', () => {
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
 
-  console.log("PWA installata!");
+// ===== INIZIALIZZAZIONE FIREBASE =====
+const app = initializeApp({
+  apiKey: "AIzaSyB8h3fvyPxq_Tjp2R5RzsgEC7jv6FASeWE",
+  authDomain: "anni-80-chat-a1192.firebaseapp.com",
+  databaseURL: "https://anni-80-chat-a1192-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "anni-80-chat-a1192"
+});
 
-  // riferimento al nodo "installations" sul tuo DB
-  const installationsRef = ref(db, "installations");
+const db = getDatabase(app);
+const auth = getAuth(app);
 
-  // salva un nuovo record
-  push(installationsRef, {
-    timestamp: Date.now(),
-    uid: nickname || "anonimo"
+// ===== LOGIN ANONIMO =====
+signInAnonymously(auth)
+  .then(() => {
+    console.log("Login anonimo eseguito correttamente!");
+  })
+  .catch((error) => {
+    console.error("Errore login anonimo:", error);
   });
 
+// ===== CONTATORE INSTALLAZIONI PWA =====
+window.addEventListener('appinstalled', () => {
+  console.log("PWA installata!");
+
+  // Nodo 'installations' nel DB
+  const installationsRef = ref(db, "installations");
+
+  // Salva un nuovo record
+  push(installationsRef, {
+    timestamp: Date.now(),
+    uid: auth.currentUser?.uid || "anonimo"
+  })
+  .then(() => {
+    console.log("Installazione salvata su Firebase!");
+  })
+  .catch((error) => {
+    console.error("Errore nel salvataggio:", error);
+  });
 });
+
 </script>
 
 </body>
