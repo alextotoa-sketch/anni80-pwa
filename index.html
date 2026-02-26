@@ -1391,7 +1391,21 @@ function setupPresence(user) {
   });
 
 }
+ // ===== CONTATORE INSTALLAZIONI PWA =====
+window.addEventListener('appinstalled', () => {
 
+  console.log("PWA installata!");
+
+  // riferimento al nodo "installations" sul tuo DB
+  const installationsRef = ref(db, "installations");
+
+  // salva un nuovo record
+  push(installationsRef, {
+    timestamp: Date.now(),
+    uid: nickname || "anonimo"
+  });
+
+});
 </script>
 
 </body>
