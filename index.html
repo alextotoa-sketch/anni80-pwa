@@ -1355,45 +1355,9 @@ window.play = (u,n)=>{
 };
 
 
-function setupPresence(user) {
-
-  const myRef = ref(db, "status/" + user.uid);
-  const connectedRef = ref(db, ".info/connected");
-  const allRef = ref(db, "status");
-
-  // 🔌 Aspetta vera connessione
-  onValue(connectedRef, snap => {
-
-    if (snap.val() === true) {
-
-      // Quando perdi connessione → offline
-      onDisconnect(myRef).set(false);
-
-      // Ora sei online
-      set(myRef, true);
-    }
-
-  });
-
-  // 👥 Conta SOLO chi è true
-  onValue(allRef, snap => {
-
-    let count = 0;
-
-    if (snap.exists()) {
-      const data = snap.val();
-      count = Object.values(data).filter(v => v === true).length;
-    }
-
-    document.getElementById("onlineCount")
-      .textContent = "Utenti online: " + count;
-
-  });
-
-}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
+import { getDatabase, ref, push, onValue, onDisconnect, set } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
 import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
 
 // ===== INIZIALIZZAZIONE FIREBASE =====
@@ -1411,6 +1375,8 @@ const auth = getAuth(app);
 signInAnonymously(auth)
   .then(() => {
     console.log("Login anonimo eseguito correttamente!");
+    // Avvia presenza utente online
+    setupPresence(auth.currentUser);
   })
   .catch((error) => {
     console.error("Errore login anonimo:", error);
@@ -1420,10 +1386,8 @@ signInAnonymously(auth)
 window.addEventListener('appinstalled', () => {
   console.log("PWA installata!");
 
-  // Nodo 'installations' nel DB
   const installationsRef = ref(db, "installations");
 
-  // Salva un nuovo record
   push(installationsRef, {
     timestamp: Date.now(),
     uid: auth.currentUser?.uid || "anonimo"
@@ -1436,7 +1400,31 @@ window.addEventListener('appinstalled', () => {
   });
 });
 
-</script>
+// ===== FUNZIONE PRESENCE =====
+function setupPresence(user) {
+  const myRef = ref(db, "status/" + user.uid);
+  const connectedRef = ref(db, ".info/connected");
+  const allRef = ref(db, "status");
 
-</body>
-</html>
+  // 🔌 Aspetta vera connessione
+  onValue(connectedRef, snap => {
+    if (snap.val() === true) {
+      // Quando perdi connessione → offline
+      onDisconnect(myRef).set(false);
+      // Ora sei online
+      set(myRef, true);
+    }
+  });
+
+  // 👥 Conta SOLO chi è true
+  onValue(allRef, snap => {
+    let count = 0;
+    if (snap.exists()) {
+      const data = snap.val();
+      count = Object.values(data).filter(v => v === true).length;
+    }
+    document.getElementById("onlineCount")
+      .textContent = "Utenti online: " + count;
+  });
+}
+</script>
