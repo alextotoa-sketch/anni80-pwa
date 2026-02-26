@@ -631,6 +631,7 @@ const radio = [
   { n:"80s80s Italo Disco", u:"https://streams.80s80s.de/italodisco/mp3-192" },
   { n:"Italia 80", u:"https://stream.laut.fm/italia80" },
 
+  { n:"80s80s Radio", u:"https://streams.80s80s.de/80s80s/mp3-192" },
   { n:"181.FM Awesome 80s", u:"https://listen.181fm.com/181-awesome80s_128k.mp3" },
   { n:"181.FM Lite 80s", u:"https://listen.181fm.com/181-lite80s_128k.mp3" },
   { n:"BestNetRadio 80s", u:"https://bigrradio.cdnstream1.com/5187_128" },
@@ -1355,76 +1356,44 @@ window.play = (u,n)=>{
 };
 
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-import { getDatabase, ref, push, onValue, onDisconnect, set } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
-import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
-
-// ===== INIZIALIZZAZIONE FIREBASE =====
-const app = initializeApp({
-  apiKey: "AIzaSyB8h3fvyPxq_Tjp2R5RzsgEC7jv6FASeWE",
-  authDomain: "anni-80-chat-a1192.firebaseapp.com",
-  databaseURL: "https://anni-80-chat-a1192-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "anni-80-chat-a1192"
-});
-
-const db = getDatabase(app);
-const auth = getAuth(app);
-
-// ===== LOGIN ANONIMO =====
-signInAnonymously(auth)
-  .then(() => {
-    console.log("Login anonimo eseguito correttamente!");
-    // Avvia presenza utente online
-    setupPresence(auth.currentUser);
-  })
-  .catch((error) => {
-    console.error("Errore login anonimo:", error);
-  });
-
-// ===== CONTATORE INSTALLAZIONI PWA =====
-window.addEventListener('appinstalled', () => {
-  console.log("PWA installata!");
-
-  const installationsRef = ref(db, "installations");
-
-  push(installationsRef, {
-    timestamp: Date.now(),
-    uid: auth.currentUser?.uid || "anonimo"
-  })
-  .then(() => {
-    console.log("Installazione salvata su Firebase!");
-  })
-  .catch((error) => {
-    console.error("Errore nel salvataggio:", error);
-  });
-});
-
-// ===== FUNZIONE PRESENCE =====
 function setupPresence(user) {
+
   const myRef = ref(db, "status/" + user.uid);
   const connectedRef = ref(db, ".info/connected");
   const allRef = ref(db, "status");
 
   // 🔌 Aspetta vera connessione
   onValue(connectedRef, snap => {
+
     if (snap.val() === true) {
+
       // Quando perdi connessione → offline
       onDisconnect(myRef).set(false);
+
       // Ora sei online
       set(myRef, true);
     }
+
   });
 
   // 👥 Conta SOLO chi è true
   onValue(allRef, snap => {
+
     let count = 0;
+
     if (snap.exists()) {
       const data = snap.val();
       count = Object.values(data).filter(v => v === true).length;
     }
+
     document.getElementById("onlineCount")
       .textContent = "Utenti online: " + count;
+
   });
+
 }
+
 </script>
+
+</body>
+</html>
